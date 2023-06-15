@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">jMedia</string>
+
+    <string name="mangas">Mangas</string>
+    <string name="books">Livres</string>
+    <string name="movies">Films</string>
+    <string name="series">Series</string>
+    <string name="animes">Animés</string>
+</resources>
