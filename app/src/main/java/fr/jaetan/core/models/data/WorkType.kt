@@ -7,12 +7,12 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.ui.theme.Green
 import fr.jaetan.jmedia.ui.theme.Red
 
-enum class WorkType(@StringRes val textRes: Int, private val _backgroundColor: Color) {
-    Manga(R.string.mangas, Red),
-    Book(R.string.books, Color(0xFFFFAF42)),
-    Anime(R.string.animes, Green),
-    Serie(R.string.series, Color(0xFF37BD35)),
-    Movie(R.string.movies, Color(0xFFC9316A));
+enum class WorkType(@StringRes val textRes: Int, @StringRes val titleRes: Int, private val _backgroundColor: Color) {
+    Manga(R.string.mangas, R.string.my_mangas, Red),
+    Book(R.string.books, R.string.my_books, Color(0xFFFFAF42)),
+    Anime(R.string.animes, R.string.my_animes, Green),
+    Serie(R.string.series, R.string.my_series, Color(0xFF37BD35)),
+    Movie(R.string.movies, R.string.my_movies, Color(0xFFC9316A));
 
     fun getBackgroundColor(isDarkTheme: Boolean): Color {
         if (isDarkTheme) return _backgroundColor.copy(alpha = .7f)
@@ -30,7 +30,9 @@ enum class WorkType(@StringRes val textRes: Int, private val _backgroundColor: C
             return null
         }
 
-        private fun getFromString(name: String): WorkType? = all.find { it.name == name }
+        fun getFromString(name: String?): WorkType? = all.find { it.name == name }
+
+        const val key = "work_type"
     }
 }
 

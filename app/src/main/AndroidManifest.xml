@@ -27,7 +27,13 @@
         </activity>
 
         <activity
-            android:name=".works.WorkActivity"
+            android:name=".library.LibraryActivity"
+            android:exported="true"
+            android:theme="@style/Theme.JMedia">
+        </activity>
+
+        <activity
+            android:name=".search.SearchActivity"
             android:exported="true"
             android:theme="@style/Theme.JMedia">
         </activity>
