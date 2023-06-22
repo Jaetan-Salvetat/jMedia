@@ -9,7 +9,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fr.jaetan.core.models.data.WorkType
+import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.services.ISampleScreen
 import fr.jaetan.jmedia.search.views.SearchScreen
 import fr.jaetan.jmedia.ui.theme.JMediaTheme
@@ -29,7 +29,7 @@ class SearchActivity: ComponentActivity() {
             JMediaTheme {
                 NavHost(navController, SearchNavigator.search.route){
                     composable(SearchNavigator.search.route) {
-                        SearchScreen(workType).GetView()
+                        SearchScreen(this@SearchActivity, workType).GetView()
                     }
                 }
             }

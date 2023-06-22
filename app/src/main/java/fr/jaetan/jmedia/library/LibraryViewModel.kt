@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import fr.jaetan.core.models.data.WorkType
+import fr.jaetan.core.models.data.works.WorkType
 
 class LibraryViewModel(workType: WorkType): ViewModel() {
     var workType by mutableStateOf(workType)

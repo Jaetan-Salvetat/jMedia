@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.ui.widgets
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +21,7 @@ fun JScaledContent(
     onPressed: () -> Unit,
     onLongPressed: () -> Unit = {},
     pressedScale: Float = .8f,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(if (isPressed) pressedScale else 1f, label = "")

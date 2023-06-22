@@ -2,7 +2,7 @@ package fr.jaetan.core.services
 
 import android.content.Context
 import androidx.navigation.NavHostController
-import fr.jaetan.core.models.data.WorkType
+import fr.jaetan.core.models.data.works.WorkType
 
 // region Screens interfaces
 interface IScreen {

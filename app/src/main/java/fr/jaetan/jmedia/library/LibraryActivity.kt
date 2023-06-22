@@ -9,7 +9,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import fr.jaetan.core.models.data.WorkType
+import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.services.ISampleScreen
 import fr.jaetan.core.services.IScreenWork
 import fr.jaetan.jmedia.library.views.LibraryScreen

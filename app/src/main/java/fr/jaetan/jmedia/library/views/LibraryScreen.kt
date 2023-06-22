@@ -15,7 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import fr.jaetan.core.models.data.WorkType
+import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.models.ui.Screen
 import fr.jaetan.jmedia.library.LibraryNavigator
 import fr.jaetan.jmedia.library.LibraryViewModel

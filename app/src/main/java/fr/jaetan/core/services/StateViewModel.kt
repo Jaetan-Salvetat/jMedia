@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.core.extensions.isNotNull
 import fr.jaetan.core.extensions.toStringOrNull
-import fr.jaetan.core.models.data.WorkType
-import fr.jaetan.core.models.data.toStringList
+import fr.jaetan.core.models.data.works.WorkType
+import fr.jaetan.core.models.data.works.toStringList
 import kotlinx.coroutines.launch
 
 class StateViewModel: ViewModel() {

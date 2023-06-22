@@ -1,10 +1,11 @@
 package fr.jaetan.core.services
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
+import fr.jaetan.core.repositories.MangaRepository
 
-object MainViewModel: ViewModel() {
+object MainViewModel {
     val state = StateViewModel()
+    val mangaRepository = MangaRepository()
 
     fun initialize(context: Context) {
         state.initialize(context)

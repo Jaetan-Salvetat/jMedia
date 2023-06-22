@@ -37,7 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.jaetan.core.models.data.WorkType
+import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.services.MainViewModel
 import fr.jaetan.jmedia.HomeNavigator
 import fr.jaetan.jmedia.ui.theme.Green
