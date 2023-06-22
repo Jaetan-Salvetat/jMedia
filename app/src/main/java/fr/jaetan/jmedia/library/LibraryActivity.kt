@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.services.ISampleScreen
-import fr.jaetan.core.services.IScreenWork
+import fr.jaetan.core.services.IScreenWorkActivity
 import fr.jaetan.jmedia.library.views.LibraryScreen
 import fr.jaetan.jmedia.search.SearchActivity
 import fr.jaetan.jmedia.ui.theme.JMediaTheme
@@ -53,7 +53,7 @@ object LibraryNavigator {
         override val route = "library"
     }
 
-    val search = object: IScreenWork {
+    val search = object: IScreenWorkActivity {
         override fun openActivity(context: Context, workType: WorkType) {
             context.startActivity(SearchActivity.launch(context, workType))
         }

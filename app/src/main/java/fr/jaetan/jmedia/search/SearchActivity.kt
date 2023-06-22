@@ -11,8 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.services.ISampleScreen
+import fr.jaetan.core.services.IScreenWork
 import fr.jaetan.jmedia.search.views.SearchScreen
 import fr.jaetan.jmedia.ui.theme.JMediaTheme
+import fr.jaetan.jmedia.works.views.WorkDetailScreen
 
 class SearchActivity: ComponentActivity() {
     private lateinit var workType: WorkType
@@ -29,7 +31,11 @@ class SearchActivity: ComponentActivity() {
             JMediaTheme {
                 NavHost(navController, SearchNavigator.search.route){
                     composable(SearchNavigator.search.route) {
-                        SearchScreen(this@SearchActivity, workType).GetView()
+                        SearchScreen(this@SearchActivity, workType).GetView(navController)
+                    }
+                    composable(SearchNavigator.workDetail.route) {
+                        val workName = it.arguments?.getString(SearchNavigator.workDetail.workNameKey)!!
+                        WorkDetailScreen(workName).GetView(navController)
                     }
                 }
             }
@@ -48,5 +54,10 @@ class SearchActivity: ComponentActivity() {
 object SearchNavigator {
     val search = object: ISampleScreen {
         override val route = "search"
+    }
+    val workDetail = object: IScreenWork {
+        override val workName = "work_detail"
+        override val workNameKey = "work_name"
+        override val route = "$workName/{$workNameKey}"
     }
 }

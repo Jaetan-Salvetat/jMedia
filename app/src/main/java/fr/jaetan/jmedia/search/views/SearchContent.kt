@@ -32,7 +32,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import fr.jaetan.core.models.data.works.IWork
 import fr.jaetan.core.models.ui.ListState
+import fr.jaetan.core.services.push
 import fr.jaetan.jmedia.R
+import fr.jaetan.jmedia.search.SearchNavigator
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 
 @Composable
@@ -101,7 +103,12 @@ private fun SearchScreen.DataList() {
 @Composable
 private fun SearchScreen.DataListItem(work: IWork) {
     Column {
-        JScaledContent(onPressed = {  }, pressedScale = .9f) {
+        JScaledContent(
+            onPressed = {
+                navController?.push(SearchNavigator.workDetail.getNavRoute(work.title))
+            },
+            pressedScale = .9f
+        ) {
             Row(
                 modifier = Modifier.height(110.dp).fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically

@@ -1,6 +1,7 @@
 package fr.jaetan.core.services
 
 import android.content.Context
+import android.util.Log
 import androidx.navigation.NavHostController
 import fr.jaetan.core.models.data.works.WorkType
 
@@ -17,8 +18,19 @@ interface ISampleScreen: IScreen {
 interface IScreenWithActivity {
     fun openActivity(context: Context)
 }
-interface IScreenWork {
+interface IScreenWorkActivity {
     fun openActivity(context: Context, workType: WorkType)
+}
+interface IScreenWork: IScreen {
+    val workName: String
+    val workNameKey: String
+
+    fun getNavRoute(name: String): String {
+        Log.d("testt", workName)
+        Log.d("testt", workNameKey)
+        Log.d("testt", route)
+        return "$workName/$name"
+    }
 }
 // endregion
 

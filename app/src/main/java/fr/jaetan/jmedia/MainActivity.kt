@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.services.ISampleScreen
-import fr.jaetan.core.services.IScreenWork
+import fr.jaetan.core.services.IScreenWorkActivity
 import fr.jaetan.core.services.MainViewModel
 import fr.jaetan.jmedia.home.views.HomeScreen
 import fr.jaetan.jmedia.library.LibraryActivity
@@ -52,7 +52,7 @@ object HomeNavigator {
         override val route = "home"
     }
 
-    val work = object: IScreenWork {
+    val work = object: IScreenWorkActivity {
         override fun openActivity(context: Context, workType: WorkType) {
             context.startActivity(LibraryActivity.launch(context, workType))
         }
