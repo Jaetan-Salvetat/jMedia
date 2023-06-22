@@ -1,7 +1,5 @@
 package fr.jaetan.jmedia.search
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,13 +14,10 @@ import fr.jaetan.core.services.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.IOException
-import java.net.URL
 
 class SearchViewModel(val workType: WorkType): ViewModel() {
     var searchValue by mutableStateOf("")
-    var state by mutableStateOf(ListState.Empty)
+    var state by mutableStateOf(ListState.Initial)
     var works = mutableStateListOf<IWork>()
 
     private var job: Job? = null
@@ -34,20 +29,15 @@ class SearchViewModel(val workType: WorkType): ViewModel() {
         job?.cancel()
         job = viewModelScope.launch(Dispatchers.IO) {
             state = ListState.Loading
-            val items = controller.getAll(searchValue)
-
-            for (i in items.indices) {
-                items[i].coverImageBitmap = convertImageUrlToBitmap(items[i].coverImageUrl)
-            }
 
             works.clear()
-            works.addAll(items)
+            works.addAll(controller.getAll(searchValue))
 
             state = if (works.isEmpty()) ListState.Empty else ListState.Data
         }
     }
 
-    private suspend fun convertImageUrlToBitmap(imageUrl: String): Bitmap? {
+/*    private suspend fun convertImageUrlToBitmap(imageUrl: String): Bitmap? {
         return try {
             val inputStream = withContext(Dispatchers.IO) {
                 URL(imageUrl).openStream()
@@ -57,5 +47,5 @@ class SearchViewModel(val workType: WorkType): ViewModel() {
             e.printStackTrace()
             null
         }
-    }
+    }*/
 }

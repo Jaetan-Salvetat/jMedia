@@ -24,6 +24,7 @@ object Scrapper {
 
         return titles.mapIndexed { index, title ->
             Manga(
+                id = index,
                 title = title,
                 description = descriptions[index],
                 coverImageUrl = covers[index]

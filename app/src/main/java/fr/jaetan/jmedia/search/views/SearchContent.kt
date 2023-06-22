@@ -24,15 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import fr.jaetan.core.models.data.works.IWork
 import fr.jaetan.core.models.ui.ListState
 import fr.jaetan.jmedia.R
@@ -94,7 +93,7 @@ private fun SearchScreen.ErrorState() {
 @Composable
 private fun SearchScreen.DataList() {
     LazyVerticalGrid(columns = GridCells.Fixed(3), contentPadding = PaddingValues(5.dp)) {
-        items(viewModel.works) {
+        items(viewModel.works, key = { it.id }) {
             DataListItem(it)
         }
     }
@@ -109,6 +108,7 @@ private fun SearchScreen.DataListItem(work: IWork) {
             .padding(5.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable { }) {
+        
         WorkImage(work)
 
         Box(
@@ -129,19 +129,15 @@ private fun SearchScreen.DataListItem(work: IWork) {
     }
 }
 
+
 @Composable
 private fun SearchScreen.WorkImage(work: IWork) {
-    if (work.coverImageBitmap != null) {
-        Image(
-            bitmap = work.coverImageBitmap!!.asImageBitmap(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
-        )
-    } else {
-        Image(
-            painter = painterResource(R.drawable.placeholder),
-            contentDescription = null
-        )
-    }
+    val imagePainter = rememberAsyncImagePainter(model = work.coverImageUrl)
+
+    Image(
+        painter = imagePainter,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxSize()
+    )
 }
