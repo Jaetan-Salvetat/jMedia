@@ -41,7 +41,7 @@ private fun getMangaTitles(doc: Document): List<String> = try {
 }
 
 private fun getMangaDescriptions(doc: Document): List<String> = try {
-    doc.select(".left").map { it.text() }
+    doc.select(".left").map { it.text().removeSuffix(" Lire la suite") }
 } catch (e: Exception) {
     emptyList()
 }

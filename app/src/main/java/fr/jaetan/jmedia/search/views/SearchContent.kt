@@ -1,32 +1,30 @@
 package fr.jaetan.jmedia.search.views
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -35,6 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import fr.jaetan.core.models.data.works.IWork
 import fr.jaetan.core.models.ui.ListState
 import fr.jaetan.jmedia.R
+import fr.jaetan.jmedia.ui.widgets.JScaledContent
 
 @Composable
 fun SearchScreen.ContentView() {
@@ -92,7 +91,7 @@ private fun SearchScreen.ErrorState() {
 
 @Composable
 private fun SearchScreen.DataList() {
-    LazyVerticalGrid(columns = GridCells.Fixed(3), contentPadding = PaddingValues(5.dp)) {
+    LazyColumn(modifier = Modifier.padding(vertical = 15.dp)) {
         items(viewModel.works, key = { it.id }) {
             DataListItem(it)
         }
@@ -101,34 +100,24 @@ private fun SearchScreen.DataList() {
 
 @Composable
 private fun SearchScreen.DataListItem(work: IWork) {
-    Box(
-        Modifier
-            .width(150.dp)
-            .height(195.dp)
-            .padding(5.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .clickable { }) {
-        
-        WorkImage(work)
-
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Color.Gray.copy(alpha = 0f), Color.Gray)
-                    )
-                )
-                .padding(horizontal = 10.dp)
-                .padding(bottom = 5.dp, top = 20.dp)
-                .align(Alignment.BottomCenter),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Text(work.title, overflow = TextOverflow.Ellipsis, maxLines = 1)
+    Column {
+        JScaledContent(onPressed = {  }, pressedScale = .9f) {
+            Row(
+                modifier = Modifier.height(110.dp).fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                WorkImage(work)
+                WorkTexts(work)
+            }
         }
+
+        Divider(
+            Modifier
+                .padding(vertical = 15.dp)
+                .padding(start = 15.dp)
+        )
     }
 }
-
 
 @Composable
 private fun SearchScreen.WorkImage(work: IWork) {
@@ -138,6 +127,29 @@ private fun SearchScreen.WorkImage(work: IWork) {
         painter = imagePainter,
         contentDescription = null,
         contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .width(70.dp)
+            .fillMaxHeight()
+            .padding(start = 15.dp)
+            .clip(RoundedCornerShape(10.dp))
     )
+}
+
+@Composable
+private fun SearchScreen.WorkTexts(work: IWork) {
+    Column(Modifier.padding(start = 15.dp)) {
+        Text(
+            work.title,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 5.dp, end = 15.dp)
+        )
+        Text(
+            work.description,
+            fontSize = 11.sp,
+            lineHeight = 12.sp,
+            modifier = Modifier.padding(end = 15.dp)
+        )
+    }
 }
