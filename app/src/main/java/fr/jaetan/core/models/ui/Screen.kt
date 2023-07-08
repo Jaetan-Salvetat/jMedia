@@ -16,7 +16,6 @@ import androidx.navigation.NavHostController
 abstract class Screen <T: ViewModel> {
     abstract val viewModel: T
     var navController: NavHostController? = null
-    lateinit var scrollBehavior: TopAppBarScrollBehavior
 
     @Composable
     open fun TopBar() = Unit
@@ -28,15 +27,13 @@ abstract class Screen <T: ViewModel> {
     open fun BottomBar() = Unit
 
     @Composable
-    fun GetView(nc: NavHostController? = null) {
-        scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-        navController = nc
+    open fun GetView(nc: NavHostController? = null) {
+        initialize(nc)
 
         Scaffold(
             topBar = { TopBar() },
             bottomBar = { BottomBar() },
-            floatingActionButton = { Fab() },
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+            floatingActionButton = { Fab() }
         ) {
             Box(Modifier.padding(it)) { Content() }
         }
@@ -53,4 +50,8 @@ abstract class Screen <T: ViewModel> {
 
     @Composable
     open fun BottomSheet() = Unit
+
+    open fun initialize(nc: NavHostController?) {
+        navController = nc
+    }
 }

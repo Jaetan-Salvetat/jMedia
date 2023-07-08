@@ -14,16 +14,18 @@ import fr.jaetan.core.services.ISampleScreen
 import fr.jaetan.core.services.IScreenWork
 import fr.jaetan.jmedia.search.views.SearchScreen
 import fr.jaetan.jmedia.ui.theme.JMediaTheme
-import fr.jaetan.jmedia.works.views.WorkDetailScreen
+import fr.jaetan.jmedia.work_detail.views.WorkDetailScreen
 
 class SearchActivity: ComponentActivity() {
     private lateinit var workType: WorkType
+    private lateinit var searchViewModel: SearchViewModel
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         workType = WorkType.getFromString(intent.getStringExtra(WorkType.key))!!
+        searchViewModel = SearchViewModel(workType)
         
         setContent {
             val navController = rememberNavController()
@@ -31,11 +33,11 @@ class SearchActivity: ComponentActivity() {
             JMediaTheme {
                 NavHost(navController, SearchNavigator.search.route){
                     composable(SearchNavigator.search.route) {
-                        SearchScreen(this@SearchActivity, workType).GetView(navController)
+                        SearchScreen(this@SearchActivity, searchViewModel, workType).GetView(navController)
                     }
                     composable(SearchNavigator.workDetail.route) {
                         val workName = it.arguments?.getString(SearchNavigator.workDetail.workNameKey)!!
-                        WorkDetailScreen(workName).GetView(navController)
+                        WorkDetailScreen(workType, workName).GetView(navController)
                     }
                 }
             }

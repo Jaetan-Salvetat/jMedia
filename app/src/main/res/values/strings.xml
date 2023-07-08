@@ -13,4 +13,5 @@
     <string name="my_animes">Mes animés</string>
     <string name="search_placeholder">Rechercher</string>
     <string name="empty_manga_search">Essaie une autre recherche, nous n\'avons pas réussi à trouver un seul manga</string>
+    <string name="in_progress_state">En cours</string>
 </resources>

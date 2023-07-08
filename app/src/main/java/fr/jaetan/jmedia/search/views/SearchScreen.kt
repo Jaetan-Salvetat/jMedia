@@ -30,9 +30,11 @@ import fr.jaetan.core.models.ui.Screen
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.search.SearchViewModel
 
-class SearchScreen(private val activity: Activity, workType: WorkType): Screen<SearchViewModel>() {
-    override val viewModel = SearchViewModel(workType)
-
+class SearchScreen(
+    private val activity: Activity,
+    override val viewModel: SearchViewModel,
+    workType: WorkType
+): Screen<SearchViewModel>() {
     @Composable
     override fun TopBar() {
         val focusRequester = FocusRequester()
