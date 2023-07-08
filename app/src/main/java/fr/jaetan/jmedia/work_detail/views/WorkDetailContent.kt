@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.work_detail.views
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -107,12 +108,36 @@ private fun WorkDetailScreen.TitleSection() {
                     Text(it, fontSize = 19.sp, fontWeight = FontWeight.Bold)
                 }
 
-                Text("First Author", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                Authors()
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Schedule, null, modifier = Modifier.size(15.dp))
                     Text(stringResource(R.string.in_progress_state), fontSize = 14.sp, modifier = Modifier.padding(start = 5.dp))
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WorkDetailScreen.Authors() {
+    Log.d("testt", viewModel.work!!.authors.toString())
+    if (viewModel.work?.authors?.isEmpty() == true) {
+        Text(stringResource(R.string.unknown_author))
+    } else {
+        Row {
+            viewModel.work?.authors?.forEachIndexed { index, workAuthor ->
+                val name = if (index == 0) {
+                    workAuthor.name
+                } else {
+                    ", ${workAuthor.name}"
+                }
+
+                Text(
+                    text = name,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
             }
         }
     }

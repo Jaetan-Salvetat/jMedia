@@ -18,4 +18,5 @@
     <string name="cancel">Annuler</string>
     <string name="error_upper_case">ERREUR</string>
     <string name="error_text">Une erreur s\'est produite. Vérifie ta connexion internet.</string>
+    <string name="unknown_author">Auteur inconnu</string>
 </resources>

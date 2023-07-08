@@ -1,16 +1,15 @@
 package fr.jaetan.core.services
 
+import android.util.Log
 import fr.jaetan.core.models.data.works.Manga
+import fr.jaetan.core.models.data.works.WorkAuthor
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.extractIt
 import it.skrape.fetcher.skrape
 import it.skrape.selects.Doc
-import it.skrape.selects.html5.a
-import it.skrape.selects.html5.div
-import it.skrape.selects.html5.img
-import it.skrape.selects.html5.p
-import it.skrape.selects.html5.td
+import it.skrape.selects.html5.*
+import it.skrape.selects.text
 
 object Scrapper {
     private val baseUrl by lazy {
@@ -54,12 +53,14 @@ object Scrapper {
                             id = 0,
                             title = titleText,
                             description = getMangaFullDescription(this),
-                            coverImageUrl = getMangaCover(this)
+                            coverImageUrl = getMangaCover(this),
+                            authors = getMangaAuthors(this)
                         )
                     }
                 }.data
             }
         } catch (e: Exception) {
+            Log.e("testt::error", e.toString())
             null
         }
     }
@@ -73,6 +74,7 @@ private fun getMangaTitlesFromList(doc: Doc): List<String> = try {
         }
     }
 } catch (e: Exception) {
+    Log.e("testt::error", e.toString())
     emptyList()
 }
 private fun getMangaDescriptionsFromList(doc: Doc): List<String> = try {
@@ -84,6 +86,7 @@ private fun getMangaDescriptionsFromList(doc: Doc): List<String> = try {
         }
     }
 } catch (e: Exception) {
+    Log.e("testt::error", e.toString())
     emptyList()
 }
 private fun getMangaCoversFromList(doc: Doc): List<String> = try {
@@ -95,6 +98,7 @@ private fun getMangaCoversFromList(doc: Doc): List<String> = try {
         }
     }
 } catch (e: Exception) {
+    Log.e("testt::error", e.toString())
     emptyList()
 }
 
@@ -107,6 +111,7 @@ private fun getMangaCover(doc: Doc): String = try {
         }
     }
 } catch (e: Exception) {
+    Log.e("testt::error", e.toString())
     ""
 }
 private fun getMangaFullDescription(doc: Doc): String = try {
@@ -116,7 +121,25 @@ private fun getMangaFullDescription(doc: Doc): String = try {
         }
     }
 } catch (e: Exception) {
+    Log.e("testt::error", e.toString())
     ""
+}
+
+private fun getMangaAuthors(doc: Doc): List<WorkAuthor> = try {
+    doc.a(".sim") {
+        span {
+            findAll {
+                map {
+                    WorkAuthor(
+                        name = it.text
+                    )
+                }
+            }
+        }
+    }
+} catch (e: Exception) {
+    Log.e("testt::error", e.toString())
+    emptyList()
 }
 
 data class MangasResult(var data: MutableList<Manga> = mutableListOf())

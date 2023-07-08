@@ -8,10 +8,10 @@ data class Manga(
     override val description: String,
     override val coverImageUrl: String,
     override var coverImageBitmap: Bitmap? = null,
+    override val authors: List<WorkAuthor> = emptyList(),
     val status: WorkStatus = WorkStatus.Unknown,
     val currentTome: Int = 1,
     //val tomesCount: Int,
     //val tomesInFrench: Int,
-    //val authors: List<WorkAuthor>,
     //val genres: List<WorkGenre> = emptyList(),
 ): IWork
