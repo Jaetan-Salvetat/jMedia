@@ -33,7 +33,7 @@ class SearchActivity: ComponentActivity() {
             JMediaTheme {
                 NavHost(navController, SearchNavigator.search.route){
                     composable(SearchNavigator.search.route) {
-                        SearchScreen(this@SearchActivity, searchViewModel, workType).GetView(navController)
+                        SearchScreen(this@SearchActivity, searchViewModel).GetView(navController)
                     }
                     composable(SearchNavigator.workDetail.route) {
                         val workName = it.arguments?.getString(SearchNavigator.workDetail.workNameKey)!!

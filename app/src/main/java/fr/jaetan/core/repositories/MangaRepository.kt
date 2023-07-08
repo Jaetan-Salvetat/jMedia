@@ -10,7 +10,7 @@ class MangaRepository: IRepository {
         return Scrapper.getMangas(search)
     }
 
-    override suspend fun getOne(name: String): IWork {
+    override suspend fun getOne(name: String): IWork? {
         return Scrapper.getManga(name)
     }
 }

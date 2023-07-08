@@ -23,6 +23,8 @@ class WorkDetailViewModel(val workType: WorkType, private val workName: String):
     }
 
     fun fetchManga() {
+        state = ListState.Loading
+
         viewModelScope.launch(Dispatchers.IO) {
             work = controller.getOne(workName)
             state = if (work.isNotNull()) ListState.Data else ListState.Error

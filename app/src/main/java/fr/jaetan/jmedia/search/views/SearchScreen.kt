@@ -25,15 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.models.ui.Screen
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.search.SearchViewModel
 
 class SearchScreen(
     private val activity: Activity,
-    override val viewModel: SearchViewModel,
-    workType: WorkType
+    override val viewModel: SearchViewModel
 ): Screen<SearchViewModel>() {
     @Composable
     override fun TopBar() {

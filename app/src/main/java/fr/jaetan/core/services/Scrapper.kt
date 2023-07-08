@@ -43,21 +43,24 @@ object Scrapper {
         }
     }
 
-    suspend fun getManga(name: String): Manga {
+    suspend fun getManga(name: String): Manga? {
+        return try {
+            skrape(HttpFetcher) {
+                request { url = "$baseUrl${name.trim().replace(" ", "+").lowercase()}.html" }
 
-        return skrape(HttpFetcher) {
-            request { url = "$baseUrl${name.trim().replace(" ", "+").lowercase()}.html" }
-
-            extractIt<MangaResult> {
-                htmlDocument {
-                    it.data = Manga(
-                        id = 0,
-                        title = titleText,
-                        description = getMangaFullDescription(this),
-                        coverImageUrl = getMangaCover(this)
-                    )
-                }
-            }.data!!
+                extractIt<MangaResult> {
+                    htmlDocument {
+                        it.data = Manga(
+                            id = 0,
+                            title = titleText,
+                            description = getMangaFullDescription(this),
+                            coverImageUrl = getMangaCover(this)
+                        )
+                    }
+                }.data
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 }
