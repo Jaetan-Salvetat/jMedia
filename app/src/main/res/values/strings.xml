@@ -26,5 +26,5 @@
     <string name="unknown">Inconnu</string>
     <string name="vf">VF</string>
     <string name="vo">VO</string>
-    <string name="x_tomes"> • %1$d tomes</string>
+    <string name="x_tomes">%1$d tomes</string>
 </resources>

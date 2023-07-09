@@ -110,7 +110,7 @@ private fun SearchScreen.DataListItem(work: IWork) {
             pressedScale = .9f
         ) {
             Row(
-                modifier = Modifier.height(110.dp).fillMaxWidth(),
+                modifier = Modifier.height(110.dp).fillMaxWidth().padding(start = 15.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 WorkImage(work)
@@ -137,7 +137,6 @@ private fun SearchScreen.WorkImage(work: IWork) {
         modifier = Modifier
             .width(70.dp)
             .fillMaxHeight()
-            .padding(start = 15.dp)
             .clip(RoundedCornerShape(10.dp))
     )
 }
