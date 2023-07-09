@@ -3,6 +3,7 @@ package fr.jaetan.core.services
 import android.util.Log
 import fr.jaetan.core.models.data.works.Manga
 import fr.jaetan.core.models.data.works.WorkAuthor
+import fr.jaetan.core.models.data.works.WorkState
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.extractIt
@@ -49,12 +50,16 @@ object Scrapper {
 
                 extractIt<MangaResult> {
                     htmlDocument {
+                        val (vfTomesCount, vfWorkState) = getMangaVFStateAndNbrOfTome(this)
+
                         it.data = Manga(
                             id = 0,
                             title = titleText,
                             description = getMangaFullDescription(this),
                             coverImageUrl = getMangaCover(this),
-                            authors = getMangaAuthors(this)
+                            authors = getMangaAuthors(this),
+                            vfTomesCount = vfTomesCount,
+                            vfState = vfWorkState
                         )
                     }
                 }.data
@@ -140,6 +145,30 @@ private fun getMangaAuthors(doc: Doc): List<WorkAuthor> = try {
 } catch (e: Exception) {
     Log.e("testt::error", e.toString())
     emptyList()
+}
+
+private fun getMangaVFStateAndNbrOfTome(doc: Doc): Pair<Int, WorkState> = try {
+    doc.ul(".mb10") {
+        li {
+
+            findAll {
+                val lineString = find { text.contains("Nb volumes VF") }?.text
+                Log.d("testt:line", lineString.toString())
+                val workState = WorkState.fromString(lineString)
+                val nbrOfTome = lineString
+                    ?.split(":")
+                    ?.get(1)
+                    ?.split("(")
+                    ?.get(0)
+                    ?.toIntOrNull()
+
+                Pair(nbrOfTome ?: 0, workState)
+            }
+        }
+    }
+} catch (e: Exception) {
+    Log.e("testt::error", e.toString())
+    Pair(0, WorkState.Unknown)
 }
 
 data class MangasResult(var data: MutableList<Manga> = mutableListOf())

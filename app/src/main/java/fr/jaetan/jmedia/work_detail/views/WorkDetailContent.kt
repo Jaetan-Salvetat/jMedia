@@ -5,10 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import fr.jaetan.core.models.data.works.Manga
+import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.models.ui.ListState
 import fr.jaetan.jmedia.R
 
@@ -44,6 +44,7 @@ private fun WorkDetailScreen.LoadingState() {
 private fun WorkDetailScreen.WorkDetail() {
     Column {
         Header()
+        ContentCell()
         Description()
     }
 }
@@ -109,11 +110,6 @@ private fun WorkDetailScreen.TitleSection() {
                 }
 
                 Authors()
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Schedule, null, modifier = Modifier.size(15.dp))
-                    Text(stringResource(R.string.in_progress_state), fontSize = 14.sp, modifier = Modifier.padding(start = 5.dp))
-                }
             }
         }
     }
@@ -145,12 +141,73 @@ private fun WorkDetailScreen.Authors() {
 
 @Composable
 private fun WorkDetailScreen.Description() {
-    viewModel.work?.description?.let {
-        Text(
-            text = it,
-            modifier = Modifier
-                .padding(horizontal = 15.dp)
-                .padding(top = 20.dp),
-        )
+    Column(Modifier.padding(horizontal = 15.dp)) {
+        Divider(Modifier.padding(vertical = 20.dp))
+
+        viewModel.work?.description?.let {
+            Text(text = it)
+        }
+    }
+}
+
+@Composable
+private fun WorkDetailScreen.ContentCell() {
+    when (viewModel.workType) {
+        WorkType.Manga -> Column {
+            StateCellManga()
+        }
+    }
+}
+
+@Composable
+private fun WorkDetailScreen.StateCellManga() {
+    // val work = viewModel.work as Manga?
+
+    Row(
+        modifier = Modifier.padding(horizontal = 15.dp).padding(top = 20.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(stringResource(R.string.vf), fontWeight = FontWeight.Bold)
+            Row {
+                Text(
+                    text = stringResource(R.string.in_progress),
+                    color = MaterialTheme.colorScheme.outline,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = " • ",
+                    color = MaterialTheme.colorScheme.outline,
+                    fontSize = 12.sp
+                )
+                Text(
+                    text = stringResource(R.string.x_tomes, 12),
+                    color = MaterialTheme.colorScheme.outline,
+                    fontSize = 12.sp
+                )
+            }
+        }
+        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(stringResource(R.string.vo), fontWeight = FontWeight.Bold)
+            Row {
+                Text(
+                    text = stringResource(R.string.finished),
+                    color = MaterialTheme.colorScheme.outline,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = " • ",
+                    color = MaterialTheme.colorScheme.outline,
+                    fontSize = 12.sp
+                )
+                Text(
+                    text = stringResource(R.string.x_tomes, 15),
+                    color = MaterialTheme.colorScheme.outline,
+                    fontSize = 12.sp
+                )
+            }
+        }
     }
 }
