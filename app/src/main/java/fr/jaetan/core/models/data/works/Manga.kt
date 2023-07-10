@@ -10,8 +10,8 @@ data class Manga(
     override var coverImageBitmap: Bitmap? = null,
     val vfState: WorkState? = null,
     val vfTomesCount: Int? = null,
+    val voState: WorkState? = null,
+    val voTomesCount: Int? = null,
     override val authors: List<WorkAuthor> = emptyList(),
-    //val tomesCount: Int,
-    //val tomesInFrench: Int,
-    //val genres: List<WorkGenre> = emptyList(),
+    val genres: List<WorkGenre> = emptyList(),
 ): IWork

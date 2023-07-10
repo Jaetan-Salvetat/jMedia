@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import fr.jaetan.core.models.data.works.Manga
+import fr.jaetan.core.models.data.works.WorkGenre
 import fr.jaetan.core.models.data.works.WorkType
 import fr.jaetan.core.models.ui.ListState
 import fr.jaetan.jmedia.R
@@ -153,7 +156,8 @@ private fun WorkDetailScreen.Description() {
 @Composable
 private fun WorkDetailScreen.ContentCell() {
     when (viewModel.workType) {
-        WorkType.Manga -> Column {
+        WorkType.Manga -> Column(Modifier.padding(top = 20.dp)) {
+            GenresListManga()
             StateCellManga()
         }
     }
@@ -163,51 +167,88 @@ private fun WorkDetailScreen.ContentCell() {
 private fun WorkDetailScreen.StateCellManga() {
     // val work = viewModel.work as Manga?
 
-    Row(
-        modifier = Modifier.padding(horizontal = 15.dp).padding(top = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+    Column(Modifier.padding(horizontal = 15.dp)) {
+        Divider(Modifier.padding(vertical = 20.dp))
+
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(stringResource(R.string.vf), fontWeight = FontWeight.Bold)
+                Row {
+                    Text(
+                        text = stringResource(R.string.in_progress),
+                        color = MaterialTheme.colorScheme.outline,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = " • ",
+                        color = MaterialTheme.colorScheme.outline,
+                        fontSize = 12.sp
+                    )
+                    Text(
+                        text = stringResource(R.string.x_tomes, 12),
+                        color = MaterialTheme.colorScheme.outline,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+            Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(stringResource(R.string.vo), fontWeight = FontWeight.Bold)
+                Row {
+                    Text(
+                        text = stringResource(R.string.finished),
+                        color = MaterialTheme.colorScheme.outline,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = " • ",
+                        color = MaterialTheme.colorScheme.outline,
+                        fontSize = 12.sp
+                    )
+                    Text(
+                        text = stringResource(R.string.x_tomes, 15),
+                        color = MaterialTheme.colorScheme.outline,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun WorkDetailScreen.GenresListManga() {
+    // var genres = (viewModel.work!! as Manga).genres
+    val genres = listOf(
+        WorkGenre("Drame"),
+        WorkGenre("Humour"),
+        WorkGenre("Psychologique"),
+        WorkGenre("Slice of Life"),
+        WorkGenre("Horreur"),
+    )
+
+    LazyRow(contentPadding = PaddingValues(horizontal = 10.dp)) {
+        items(genres.size) {
+            Row {
+                if (it != 0) {
+                    Box(Modifier.width(10.dp))
+                }
+                GenresMangaListItem(genres[it].name)
+            }
+        }
+    }
+}
+
+@Composable
+fun WorkDetailScreen.GenresMangaListItem(name: String) {
+    val shape = RoundedCornerShape(10.dp)
+
+    Box(
+        Modifier
+            .background(MaterialTheme.colorScheme.secondaryContainer, shape)
+            .padding(horizontal = 10.dp, vertical = 5.dp)
     ) {
-        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(stringResource(R.string.vf), fontWeight = FontWeight.Bold)
-            Row {
-                Text(
-                    text = stringResource(R.string.in_progress),
-                    color = MaterialTheme.colorScheme.outline,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = " • ",
-                    color = MaterialTheme.colorScheme.outline,
-                    fontSize = 12.sp
-                )
-                Text(
-                    text = stringResource(R.string.x_tomes, 12),
-                    color = MaterialTheme.colorScheme.outline,
-                    fontSize = 12.sp
-                )
-            }
-        }
-        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(stringResource(R.string.vo), fontWeight = FontWeight.Bold)
-            Row {
-                Text(
-                    text = stringResource(R.string.finished),
-                    color = MaterialTheme.colorScheme.outline,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = " • ",
-                    color = MaterialTheme.colorScheme.outline,
-                    fontSize = 12.sp
-                )
-                Text(
-                    text = stringResource(R.string.x_tomes, 15),
-                    color = MaterialTheme.colorScheme.outline,
-                    fontSize = 12.sp
-                )
-            }
-        }
+        Text(name)
     }
 }
