@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class WorkDetailViewModel(val workType: WorkType, private val workName: String): ViewModel() {
     var work by mutableStateOf(null as IWork?)
     var state by mutableStateOf(ListState.Loading)
+    var isInLibrary by mutableStateOf(false)
 
     private val controller: IRepository = when (workType) {
         WorkType.Manga -> MainViewModel.mangaRepository
@@ -29,5 +30,9 @@ class WorkDetailViewModel(val workType: WorkType, private val workName: String):
             work = controller.getOne(workName)
             state = if (work.isNotNull()) ListState.Data else ListState.Error
         }
+    }
+
+    fun likeHandler() {
+        isInLibrary = !isInLibrary
     }
 }
