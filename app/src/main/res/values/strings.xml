@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">jMedia</string>
+
+    <string name="mangas">Mangas</string>
+    <string name="my_mangas">Mes mangas</string>
+    <string name="books">Livres</string>
+    <string name="my_books">Mes livres</string>
+    <string name="movies">Films</string>
+    <string name="my_movies">Mes films</string>
+    <string name="series">Series</string>
+    <string name="my_series">Mes series</string>
+    <string name="animes">Animés</string>
+    <string name="my_animes">Mes animés</string>
+    <string name="feature_not_available">Fonctionalité bientôt disponible !</string>
+</resources>
