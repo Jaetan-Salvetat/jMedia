@@ -9,6 +9,8 @@ import fr.jaetan.jmedia.core.services.MainViewModel
 
 class LibraryViewModel: ViewModel() {
     var showWorkTypeSelectorSheet by mutableStateOf(false)
+    var searchValue by mutableStateOf("")
+    var searchBarIsActive by mutableStateOf(false)
 
     init {
         if (MainViewModel.state.currentWorkType.isNull()) {

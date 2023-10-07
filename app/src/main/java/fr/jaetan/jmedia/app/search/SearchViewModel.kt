@@ -6,6 +6,5 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class SearchViewModel: ViewModel() {
-    var searchValue by mutableStateOf("")
-    var searchBarIsActive by mutableStateOf(false)
+
 }

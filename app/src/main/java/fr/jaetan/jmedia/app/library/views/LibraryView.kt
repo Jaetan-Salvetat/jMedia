@@ -19,15 +19,11 @@ class LibraryView: Screen<LibraryViewModel>() {
 
     @Composable
     override fun TopBar() {
-        SearchView().Content()
+        TopBarView()
     }
 
     @Composable
-    override fun Content() {
-        Button(onClick = { viewModel.showWorkTypeSelectorSheet = true }) {
-            Text("Select work type")
-        }
-    }
+    override fun Content() = Unit
 
     @Composable
     override fun BottomSheet() {

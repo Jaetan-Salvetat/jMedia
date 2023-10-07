@@ -1,12 +1,17 @@
 package fr.jaetan.jmedia.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
@@ -14,7 +19,10 @@ import androidx.navigation.NavHostController
 @OptIn(ExperimentalMaterial3Api::class)
 abstract class Screen <T: ViewModel> {
     abstract val viewModel: T
-    open val useDefaultPadding = true
+    /**
+     * Default value is **TopAppBarDefaults.enterAlwaysScrollBehavior()**
+     */
+    lateinit var scrollBehavior: TopAppBarScrollBehavior
     var navController: NavHostController? = null
 
     @Composable
@@ -26,6 +34,7 @@ abstract class Screen <T: ViewModel> {
     @Composable
     open fun BottomBar() = Unit
 
+    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     open fun GetView(nc: NavHostController? = null) {
         Initialize(nc)
@@ -33,9 +42,12 @@ abstract class Screen <T: ViewModel> {
         Scaffold(
             topBar = { TopBar() },
             bottomBar = { BottomBar() },
-            floatingActionButton = { Fab() }
+            floatingActionButton = { Fab() },
+            modifier = Modifier
+                .imeNestedScroll()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
-            Box(Modifier.padding(if (useDefaultPadding) it else PaddingValues(0.dp))) { Content() }
+            Box(Modifier.padding(it)) { Content() }
         }
 
         Dialogs()
@@ -54,5 +66,6 @@ abstract class Screen <T: ViewModel> {
     @Composable
     open fun Initialize(nc: NavHostController?) {
         navController = nc
+        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     }
 }
