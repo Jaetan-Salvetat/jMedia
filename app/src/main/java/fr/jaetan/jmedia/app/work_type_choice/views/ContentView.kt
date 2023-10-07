@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import fr.jaetan.jmedia.core.models.WorkType
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WorkTypeChoiceView.ContentView() {
     LazyColumn(
@@ -31,7 +31,7 @@ fun WorkTypeChoiceView.ContentView() {
             .fillMaxSize()
             .padding(horizontal = 30.dp)
     ) {
-        items(WorkType.all) {
+        items(WorkType.all.sortedByDescending { it.implemented }) {
             ListItem(it)
         }
     }
@@ -43,7 +43,7 @@ private fun WorkTypeChoiceView.ListItem(workType: WorkType) {
 
     JScaledContent(
         modifier = Modifier.fillMaxWidth(),
-        onPressed = { viewModel.goToLibrary(workType) },
+        onPressed = { viewModel.setWorkType(workType) },
         pressedScale = .9f
     ) {
         Box(
@@ -51,7 +51,7 @@ private fun WorkTypeChoiceView.ListItem(workType: WorkType) {
                 .fillMaxWidth()
                 .padding(vertical = 10.dp)
                 .clip(RoundedCornerShape(20.dp))
-                .background(workType.getBackgroundColor(isDarkTheme))
+                .background(workType.getBackgroundColor())
                 .padding(vertical = 30.dp),
             contentAlignment = Alignment.Center
         ) {

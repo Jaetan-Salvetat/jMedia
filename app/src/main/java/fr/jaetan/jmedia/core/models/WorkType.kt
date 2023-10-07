@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.core.models
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import fr.jaetan.jmedia.R
@@ -15,15 +17,19 @@ enum class WorkType(
     val implemented: Boolean
 ) {
     Manga(R.string.mangas, R.string.my_mangas, JColor.Red, true),
-    Book(R.string.books, R.string.my_books, JColor.Orange, false),
     Anime(R.string.animes, R.string.my_animes, JColor.VeryLightGreen, false),
+    Book(R.string.books, R.string.my_books, JColor.Orange, false),
     Serie(R.string.series, R.string.my_series, JColor.Green, false),
     Movie(R.string.movies, R.string.my_movies, JColor.Pink, false);
 
     @Composable
-    fun getBackgroundColor(isDarkTheme: Boolean): Color {
-        if (isDarkTheme) return backgroundColor.copy(alpha = .7f)
-        return backgroundColor
+    fun getBackgroundColor(): Color {
+        val isDarkTheme = isSystemInDarkTheme()
+
+        return when {
+            isDarkTheme -> backgroundColor.copy(alpha = .7f)
+            else -> backgroundColor
+        }
     }
 
     companion object {

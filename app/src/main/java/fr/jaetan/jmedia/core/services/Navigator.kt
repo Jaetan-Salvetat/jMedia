@@ -13,7 +13,10 @@ import androidx.navigation.compose.composable
 object Navigator {
     val library = object: ISampleScreen {
         override val route = "library"
+    }
 
+    val search = object: ISampleScreen {
+        override val route = "search"
     }
 }
 

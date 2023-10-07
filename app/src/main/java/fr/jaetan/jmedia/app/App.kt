@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fr.jaetan.jmedia.app.library.views.LibraryView
 import fr.jaetan.jmedia.core.services.Navigator
-import kotlinx.coroutines.FlowPreview
 
 @Composable
 fun App(navController: NavHostController) {

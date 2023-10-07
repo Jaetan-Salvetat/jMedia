@@ -7,6 +7,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import fr.jaetan.jmedia.app.library.LibraryViewModel
+import fr.jaetan.jmedia.app.search.views.SearchView
 import fr.jaetan.jmedia.app.work_type_choice.WorkTypeChoiceViewModel
 import fr.jaetan.jmedia.app.work_type_choice.views.WorkTypeChoiceView
 import fr.jaetan.jmedia.ui.Screen
@@ -17,32 +18,19 @@ class LibraryView: Screen<LibraryViewModel>() {
     override val viewModel = LibraryViewModel()
 
     @Composable
+    override fun TopBar() {
+        SearchView().Content()
+    }
+
+    @Composable
     override fun Content() {
         Button(onClick = { viewModel.showWorkTypeSelectorSheet = true }) {
             Text("Select work type")
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun BottomSheet() {
-        val sheetState = rememberModalBottomSheetState(true)
-        val scope = rememberCoroutineScope()
-
-        val hide: () -> Unit = {
-            scope.launch {
-                sheetState.hide()
-                viewModel.showWorkTypeSelectorSheet = false
-            }
-        }
-
-        JBottomSheet(
-            isVisible = viewModel.showWorkTypeSelectorSheet,
-            dismiss = { viewModel.showWorkTypeSelectorSheet = false },
-            state = sheetState,
-            shouldBeFullScreen = true
-        ) {
-            WorkTypeChoiceView(WorkTypeChoiceViewModel(), hide).GetView(navController)
-        }
+        BottomSheetView()
     }
 }
