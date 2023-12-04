@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fr.jaetan.jmedia.app.work_type_choice.WorkTypeChoiceView
 import fr.jaetan.jmedia.core.models.WorkType
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 

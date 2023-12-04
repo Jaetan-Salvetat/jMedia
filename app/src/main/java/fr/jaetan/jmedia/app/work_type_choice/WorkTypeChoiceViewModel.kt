@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.core.services.MainViewModel
 import kotlinx.coroutines.launch
 
 class WorkTypeChoiceViewModel(private val hide: suspend () -> Unit): ViewModel() {
@@ -16,7 +17,7 @@ class WorkTypeChoiceViewModel(private val hide: suspend () -> Unit): ViewModel()
             showErrorSheet = true
             return
         }
-
+        MainViewModel.state.currentWorkType = type
         viewModelScope.launch { hide() }
     }
 }
