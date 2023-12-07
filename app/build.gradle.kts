@@ -55,15 +55,17 @@ android {
 }
 
 dependencies {
+    val composeVersion = "1.5.4"
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
-    implementation("androidx.compose.ui:ui:1.5.4")
-    implementation("androidx.compose.ui:ui-graphics:1.5.4")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.material3:material3:1.1.2")
     implementation("androidx.navigation:navigation-compose:2.7.5")
-    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation("androidx.compose.animation:animation:$composeVersion")
 
     // Networking
     implementation("io.ktor:ktor-client-core:2.3.5")
@@ -75,7 +77,10 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:2.3.5")
 
     // Data
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+
+    // Images!
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Tests
     testImplementation("junit:junit:4.13.2")
