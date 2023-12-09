@@ -146,7 +146,7 @@ private fun WorksListItem(work: Manga) {
 @Composable
 private fun ImageCell(image: Image) {
     AsyncImage(
-        model = image.imageUrl,
+        model = image.smallImageUrl,
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier.width(70.dp)
