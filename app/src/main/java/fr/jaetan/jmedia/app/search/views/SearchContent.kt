@@ -98,7 +98,7 @@ private fun WorksListItem(work: Manga) {
         }
 
         // Work details
-        Column(Modifier.clickable {  }) {
+        Column {
             Row(
                 modifier = Modifier
                     .offset { IntOffset(x = offsetX.value.roundToInt(), y = 0) }
@@ -109,6 +109,7 @@ private fun WorksListItem(work: Manga) {
                     )
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
+                    .clickable {  }
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
             ) {
