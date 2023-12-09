@@ -6,6 +6,9 @@
 - [ ] Series
 - [ ] Series
 
+### Bugfix
+- [ ] Mangas synopsis are in english (we want it in french) 
+
 ### Global Features
 - [ ] Open **library** screen on app startup when the last work type is not null
 
