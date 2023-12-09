@@ -15,4 +15,5 @@
     <string name="feature_not_available">Fonctionalité bientôt disponible !</string>
     <string name="research">Rechercher</string>
     <string name="empty_description">Aucune description.</string>
+    <string name="library">Bibliothèque</string>
 </resources>
