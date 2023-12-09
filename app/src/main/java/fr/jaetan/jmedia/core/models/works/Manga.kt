@@ -11,3 +11,5 @@ data class Manga(
     val genres: List<Genre>,
     val demographics: List<Demographic>
 )
+
+data class MyTest(val tet: String)
