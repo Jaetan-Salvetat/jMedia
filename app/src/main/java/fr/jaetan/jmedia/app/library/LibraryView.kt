@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.app.library
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.library.views.BottomSheetView
+import fr.jaetan.jmedia.app.library.views.ContentView
 import fr.jaetan.jmedia.app.library.views.FabView
 import fr.jaetan.jmedia.app.library.views.TopBarView
 import fr.jaetan.jmedia.core.extensions.isNull
@@ -18,7 +19,9 @@ class LibraryView: Screen<LibraryViewModel>() {
     }
 
     @Composable
-    override fun Content() = Unit
+    override fun Content() {
+        ContentView()
+    }
 
     @Composable
     override fun BottomSheet() {

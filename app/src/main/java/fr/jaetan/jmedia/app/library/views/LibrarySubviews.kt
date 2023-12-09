@@ -1,7 +1,13 @@
 package fr.jaetan.jmedia.app.library.views
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.LibraryBooks
@@ -15,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,29 +66,54 @@ fun LibraryView.BottomSheetView() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryView.TopBarView() {
-    val implementedWorkTypes = WorkType.all
-
-
-    Column {
         TopAppBar(
             title = {
                 Text(text = stringResource(R.string.library))
             }
         )
-        ScrollableTabRow (
-            selectedTabIndex = WorkType.all.indexOf(viewModel.currentLibrary),
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun LibraryView.ContentView() {
+    val implementedWorkTypes = WorkType.all
+    val pagerState = rememberPagerState( pageCount = { WorkType.all.count() })
+    val scope = rememberCoroutineScope()
+
+    Column {
+
+        ScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
             edgePadding = 0.dp
         ) {
             implementedWorkTypes.forEach { workType ->
                 Tab(
-                    selected = workType == viewModel.currentLibrary,
-                    onClick = { viewModel.currentLibrary = workType },
+                    selected = pagerState.currentPage == WorkType.all.indexOf(workType),
+                    onClick = { scope.launch { pagerState.animateScrollToPage(WorkType.all.indexOf(workType)) } },
                     text = { Text(stringResource(id = workType.textRes)) }
                 )
             }
         }
+
+        HorizontalPager(state = pagerState) {
+            PageContent(it)
+        }
     }
 }
+
+
+
+@Composable
+fun PageContent(page: Int) {
+    Column (
+        modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = stringResource(WorkType.all[page].titleRes))
+    }
+}
+
 
 @Composable
 fun LibraryView.FabView() {
