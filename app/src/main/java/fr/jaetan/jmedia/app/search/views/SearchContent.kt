@@ -64,7 +64,7 @@ private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
     ) {
         Text(
             text = smiley.text,
-            style = MaterialTheme.typography.displayMedium
+            style = MaterialTheme.typography.displaySmall
         )
         Text(
             text = stringResource(message),
