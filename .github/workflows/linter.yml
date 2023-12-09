@@ -1,18 +1,18 @@
 name: Linter
 on: [push]
 jobs:
-  ktlint:
-    name: Linter
+  Linter:
     runs-on: ubuntu-latest
+
     steps:
-      # Setup
-      - name: Clone repo
-        uses: actions/checkout@master
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
         with:
-          fetch-depth: 1
-      #Linter
-      - name: ktlint
-        uses: ScaCap/action-ktlint@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
+          distribution: "adopt"
+          java-version: "11"
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - run: ./gradlew ktlintCheck
