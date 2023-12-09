@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
@@ -62,7 +63,7 @@ fun SearchView.WorksList() {
 @Composable
 private fun WorksListItem(work: Manga) {
     val density = LocalDensity.current
-    val actionsButtonsSize = 100.dp
+    val actionsButtonsSize = 150.dp
 
     val offsetX = remember { Animatable(0f, 30f) }
     val scope = rememberCoroutineScope()
@@ -72,7 +73,7 @@ private fun WorksListItem(work: Manga) {
     }
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
-            if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
+            if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize / 2) {
                 scope.launch { offsetX.animateTo(-actionsButtonsSize.toPx()) }
             } else {
                 scope.launch { offsetX.animateTo(0f) }
@@ -93,7 +94,14 @@ private fun WorksListItem(work: Manga) {
                 modifier = Modifier.fillMaxHeight().weight(1f).clickable {  },
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Filled.Favorite, null)
+                Icon(painterResource(R.drawable.heart_plus_24px), null)
+            }
+            Divider(Modifier.fillMaxHeight().width(1.dp))
+            Box(
+                modifier = Modifier.fillMaxHeight().weight(1f).clickable {  },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Outlined.LibraryAdd, null)
             }
         }
 
