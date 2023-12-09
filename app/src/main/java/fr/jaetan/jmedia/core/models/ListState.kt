@@ -1,7 +1,7 @@
 package fr.jaetan.jmedia.core.models
 
 enum class ListState {
-    None,
+    Default,
     Loading,
     HasData,
     EmptyData,

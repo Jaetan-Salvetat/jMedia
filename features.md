@@ -33,7 +33,7 @@
 - [ ] Can open the **work detail** screen
 - [ ] Can add a work to library
 - [ ] Can add a work to wishlist
-- [ ] Show the empty/default/error states
+- [x] Show the empty/default/error states
 - [ ] display worklist tab
 - [ ] save previous search on work type change
 - [ ] display result of selected types

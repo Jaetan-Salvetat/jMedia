@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.app.search.views
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +26,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -34,6 +37,7 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.models.ListState
+import fr.jaetan.jmedia.core.models.Smiley
 import fr.jaetan.jmedia.core.models.works.Manga
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -42,18 +46,45 @@ import kotlin.math.roundToInt
 @Composable
 fun SearchView.ContentView() {
     when (viewModel.listState) {
+        ListState.Default -> InfoCell(Smiley.Wink, R.string.default_search_text)
+        ListState.Loading -> LoadingState()
         ListState.HasData -> WorksList()
-        ListState.Loading -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        }
-        else -> Box {}
+        ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
+        else -> InfoCell(Smiley.Sad, R.string.request_error_message)
+    }
+}
+
+
+@Composable
+private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = smiley.text,
+            style = MaterialTheme.typography.displayMedium
+        )
+        Text(
+            text = stringResource(message),
+            style = MaterialTheme.typography.bodyMedium,
+            fontStyle = FontStyle.Italic,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 20.dp)
+        )
     }
 }
 
 @Composable
-fun SearchView.WorksList() {
+private fun LoadingState() {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun SearchView.WorksList() {
     LazyColumn {
         items(viewModel.works) {
             WorksListItem(it)

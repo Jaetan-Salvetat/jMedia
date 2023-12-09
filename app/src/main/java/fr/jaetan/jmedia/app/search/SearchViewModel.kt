@@ -20,7 +20,7 @@ import java.net.URL
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
     var searchValue by mutableStateOf("")
     var works = mutableStateListOf<Manga>()
-    var listState by mutableStateOf(ListState.None)
+    var listState by mutableStateOf(ListState.Default)
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2
 
