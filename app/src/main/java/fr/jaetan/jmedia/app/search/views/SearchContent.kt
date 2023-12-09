@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.app.search.views
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -19,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -32,7 +34,6 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.models.ListState
-import fr.jaetan.jmedia.core.models.works.Image
 import fr.jaetan.jmedia.core.models.works.Manga
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -121,7 +122,7 @@ private fun WorksListItem(work: Manga) {
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
             ) {
-                ImageCell(work.image)
+                ImageCell(work)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
                     Text(
@@ -152,13 +153,24 @@ private fun WorksListItem(work: Manga) {
 }
 
 @Composable
-private fun ImageCell(image: Image) {
-    AsyncImage(
-        model = image.smallImageUrl,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.width(70.dp)
-            .fillMaxHeight()
-            .clip(RoundedCornerShape(10.dp))
-    )
+private fun ImageCell(work: Manga) {
+    if (work.image.bitmap.isNotNull()) {
+        Image(
+            bitmap = work.image.bitmap!!.asImageBitmap(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.width(70.dp)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(10.dp))
+        )
+    } else {
+        AsyncImage(
+            model = work.image.smallImageUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.width(70.dp)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(10.dp))
+        )
+    }
 }
