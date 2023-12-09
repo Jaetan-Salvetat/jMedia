@@ -8,9 +8,9 @@
 
 ### Bugfix
 - [ ] Mangas synopsis are in english (we want it in french) 
+- [ ] Media list bottom sheet not closing properly when scrolling down
 
 ### Global Features
-- [ ] Open **library** screen on app startup when the last work type is not null
 
 # Screens
 ### Library
@@ -25,18 +25,19 @@
 - [ ] Show empty state
 - [ ] Remove one or more works from library
 - [ ] if the display mode is *grid*, can change the numbers of works by row
+- [ ] display work type tab bar
 
 ### Search
-- [ ] Can search a work
+- [x] Can search a work
 - [ ] Can open the **work detail** screen
 - [ ] Can add a work to library
 - [ ] Can add a work to wishlist
-- [ ] Can change the display mode
-- [ ] Show the empty state
-- [ ] Show error state
-- [ ] if the display mode is *grid*, can change the numbers of works by row
+- [ ] Show the empty/default/error states
+- [ ] display worklist tab
+- [ ] save previous search on work type change
+- [ ] display result of selected types
 
-### Library detail
+### Work detail
 - [ ] Can show all work detail
 - [ ] Can add a work to library
 - [ ] Can add a work to wishlist
