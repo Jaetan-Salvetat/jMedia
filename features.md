@@ -7,8 +7,9 @@
 - [ ] Series
 
 ### Bugfix
-- [ ] Mangas synopsis are in english (we want it in french) 
+- [ ] Mangas synopsis are in english (we want it in french)
 - [ ] Media list bottom sheet not closing properly when scrolling down
+- [ ] improve the quality of the image in the search view
 
 ### Global Features
 
