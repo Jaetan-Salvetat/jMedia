@@ -17,8 +17,14 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var searchValue by mutableStateOf("")
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.None)
+    val searchIsEnabled: Boolean
+        get() = searchValue.length >= 2
 
     fun fetchWorks() {
+        if (!searchIsEnabled) {
+            return
+        }
+
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading
 

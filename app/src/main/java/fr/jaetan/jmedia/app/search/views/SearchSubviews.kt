@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.R
+import fr.jaetan.jmedia.app.search.SearchView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +39,7 @@ fun SearchView.TopBarView() {
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 trailingIcon = {
-                    IconButton(onClick = { search() }) {
+                    IconButton(onClick = search, enabled = viewModel.searchIsEnabled) {
                         Icon(Icons.Default.Search, null)
                     }
                 },
