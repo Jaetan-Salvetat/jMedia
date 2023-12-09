@@ -7,8 +7,9 @@
 - [ ] Series
 
 ### Bugfix
-- [ ] Mangas synopsis are in english (we want it in french) 
+- [ ] Mangas synopsis are in english (we want it in french)
 - [ ] Media list bottom sheet not closing properly when scrolling down
+- [x] improve the quality of the image in the search view
 
 ### Global Features
 
@@ -32,7 +33,7 @@
 - [ ] Can open the **work detail** screen
 - [ ] Can add a work to library
 - [ ] Can add a work to wishlist
-- [ ] Show the empty/default/error states
+- [x] Show the empty/default/error states
 - [ ] display worklist tab
 - [ ] save previous search on work type change
 - [ ] display result of selected types
