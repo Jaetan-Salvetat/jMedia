@@ -46,7 +46,7 @@ import kotlin.math.roundToInt
 @Composable
 fun SearchView.ContentView() {
     when (viewModel.listState) {
-        ListState.Default -> InfoCell(Smiley.Wink, R.string.default_search_text)
+        ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
         ListState.Loading -> LoadingState()
         ListState.HasData -> WorksList()
         ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
