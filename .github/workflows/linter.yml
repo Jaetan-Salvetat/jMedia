@@ -12,7 +12,7 @@ jobs:
           distribution: "adopt"
           java-version: "11"
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Ktint set up
+        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.50.0/ktlint && chmod a+x ktlint && sudo mv ktlint /usr/local/bin/
 
-      - run: ./gradlew ktlintCheck
+      - run: ktlint '!**/build/**'
