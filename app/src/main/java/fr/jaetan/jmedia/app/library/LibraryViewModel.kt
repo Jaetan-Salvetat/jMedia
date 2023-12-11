@@ -9,5 +9,4 @@ import fr.jaetan.jmedia.core.models.WorkType
 
 class LibraryViewModel: ViewModel() {
     var showWorkTypeSelectorSheet by mutableStateOf(false)
-    var currentLibrary by mutableStateOf(WorkType.all[0])
 }
