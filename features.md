@@ -12,7 +12,7 @@
 - [x] improve the quality of the image in the search view
 
 ### Global Features
-
+ 
 # Screens
 ### Library
 - [ ] Show all works
