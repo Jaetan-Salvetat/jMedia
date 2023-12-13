@@ -3,7 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("kotlin-kapt")
-    id("io.objectbox") // Apply last.
+
+    id("io.objectbox")
+// Apply last.
 }
 
 android {
@@ -58,6 +60,7 @@ android {
 
 dependencies {
     val composeVersion = "1.5.4"
+    val objectBoxVersion = "3.7.1"
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -80,6 +83,8 @@ dependencies {
 
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+    implementation("io.objectbox:objectbox-android:$objectBoxVersion")
+    annotationProcessor("io.objectbox:objectbox-processor:$objectBoxVersion")
 
     // Images!
     implementation("io.coil-kt:coil-compose:2.5.0")
