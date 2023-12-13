@@ -1,7 +1,7 @@
 package fr.jaetan.jmedia.app
 
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,8 +18,18 @@ fun App(navController: NavHostController) {
         }
         composable(
             route = Navigator.search.route,
-            enterTransition = { scaleIn() },
-            exitTransition = { scaleOut() }
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    spring(.85f, 100f)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    spring(.85f, 100f)
+                )
+            }
         ) {
             SearchView().GetView(navController)
         }
