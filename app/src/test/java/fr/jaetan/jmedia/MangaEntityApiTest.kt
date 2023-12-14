@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class MangaApiTest {
+class MangaEntityApiTest {
     @Test
     fun search_ValidRecherche_ReturnNotEmpty() = runTest {
         val mangas = MangaApi.search("oshi no ko")

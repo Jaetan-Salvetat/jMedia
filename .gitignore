@@ -11,3 +11,4 @@ local.properties
 gradle
 gradlew
 gradlew.bat
+/app/objectbox-models/
