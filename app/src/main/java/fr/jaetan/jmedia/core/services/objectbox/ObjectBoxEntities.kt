@@ -1,15 +1,18 @@
 package fr.jaetan.jmedia.core.services.objectbox
 
+import fr.jaetan.jmedia.core.services.objectbox.converters.AuthorEntityConverter
+import fr.jaetan.jmedia.core.services.objectbox.converters.DemographicEntityConverter
+import fr.jaetan.jmedia.core.services.objectbox.converters.GenreEntityConverter
+import fr.jaetan.jmedia.core.services.objectbox.converters.ImageEntityConverter
 import fr.jaetan.jmedia.core.services.objectbox.converters.StatusEntityConverter
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.relation.ToMany
-import io.objectbox.relation.ToOne
 
 @Entity
 data class StatusEntity(
-    @Id(assignable = true)
+    @Id
     var id: Long = 0,
 
     var status: String,
@@ -17,7 +20,7 @@ data class StatusEntity(
 
 @Entity
 data class ImageEntity(
-    @Id(assignable = true)
+    @Id
     var id: Long = 0,
 
     var imageUrl: String,
@@ -27,7 +30,7 @@ data class ImageEntity(
 
 @Entity
 data class AuthorEntity(
-    @Id(assignable = true)
+    @Id
     var id: Long = 0,
 
     var name: String
@@ -35,7 +38,7 @@ data class AuthorEntity(
 
 @Entity
 data class GenreEntity(
-    @Id(assignable = true)
+    @Id
     var id: Long = 0,
 
     var name: String
@@ -43,14 +46,14 @@ data class GenreEntity(
 
 @Entity
 data class DemographicEntity(
-    @Id(assignable = true)
+    @Id
     var id: Long = 0,
 
     var name: String
 )
 
 data class MangaEntity(
-    @Id(assignable = true)
+    @Id
     var id: Long = 0,
 
     var title: String,
@@ -59,8 +62,12 @@ data class MangaEntity(
 ) {
     @Convert(converter = StatusEntityConverter::class, dbType = String::class)
     lateinit var status: StatusEntity
+    @Convert(converter = ImageEntityConverter::class, dbType = String::class)
     lateinit var image: ImageEntity
+    @Convert(converter = AuthorEntityConverter::class, dbType = String::class)
     lateinit var authors: ToMany<AuthorEntity>
+    @Convert(converter = GenreEntityConverter::class, dbType = String::class)
     lateinit var genres: ToMany<GenreEntity>
-    lateinit var demographics: ToOne<DemographicEntity>
+    @Convert(converter = DemographicEntityConverter::class, dbType = String::class)
+    lateinit var demographics: ToMany<DemographicEntity>
 }

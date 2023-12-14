@@ -93,7 +93,7 @@ private fun SearchView.WorksList() {
 }
 
 @Composable
-private fun WorksListItem(work: Manga) {
+private fun SearchView.WorksListItem(work: Manga) {
     val density = LocalDensity.current
     val actionsButtonsSize = 150.dp
 
@@ -130,7 +130,7 @@ private fun WorksListItem(work: Manga) {
             }
             Divider(Modifier.fillMaxHeight().width(1.dp))
             Box(
-                modifier = Modifier.fillMaxHeight().weight(1f).clickable {  },
+                modifier = Modifier.fillMaxHeight().weight(1f).clickable { viewModel.AddToLibrary(work) },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(Icons.Outlined.LibraryAdd, null)
