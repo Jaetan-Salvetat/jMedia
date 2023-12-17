@@ -20,17 +20,6 @@ import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.core.models.WorkType
 import kotlinx.coroutines.launch
 
-@Composable
-fun PageContent(page: Int) {
-    Column (
-        modifier = Modifier.fillMaxHeight().fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = stringResource(WorkType.all[page].titleRes))
-    }
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryView.ContentView() {
@@ -56,5 +45,16 @@ fun LibraryView.ContentView() {
         HorizontalPager(state = pagerState) {
             PageContent(it)
         }
+    }
+}
+
+@Composable
+fun PageContent(page: Int) {
+    Column (
+        modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = stringResource(WorkType.all[page].titleRes))
     }
 }
