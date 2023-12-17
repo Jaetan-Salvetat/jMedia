@@ -19,6 +19,7 @@ fun LibraryView.TopBarView() {
     )
 }
 
+
 @Composable
 fun LibraryView.FabView() {
     FloatingActionButton(onClick = { navController?.navigate(Navigator.search.getNavRoute()) }) {

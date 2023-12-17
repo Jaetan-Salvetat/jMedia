@@ -14,7 +14,9 @@ class LibraryView: Screen<LibraryViewModel>() {
     }
 
     @Composable
-    override fun Content() = Unit
+    override fun Content() {
+        ContentView()
+    }
 
     @Composable
     override fun Fab() {
