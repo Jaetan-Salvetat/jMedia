@@ -10,7 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.core.models.works.toBdd
 import fr.jaetan.jmedia.core.networking.MangaApi
+import fr.jaetan.jmedia.core.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,5 +62,9 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         return tempWorks
+    }
+
+    fun addToLibrary(work: Manga) {
+        MainViewModel.mangaRepository.put(work.toBdd())
     }
 }
