@@ -9,6 +9,7 @@ import fr.jaetan.jmedia.core.models.works.Status
 import fr.jaetan.jmedia.core.models.works.fromString
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
+import io.objectbox.annotation.Unique
 import io.objectbox.relation.ToMany
 import io.objectbox.relation.ToOne
 
@@ -23,25 +24,25 @@ data class ImageEntity(
 @Entity
 data class AuthorEntity(
     @Id var id: Long = 0,
-    var name: String = ""
+    @Unique var name: String = ""
 )
 
 @Entity
 data class GenreEntity(
     @Id var id: Long = 0,
-    var name: String = ""
+    @Unique var name: String = ""
 )
 
 @Entity
 data class DemographicEntity(
     @Id var id: Long = 0,
-    var name: String = ""
+    @Unique var name: String = ""
 )
 
 @Entity
 data class MangaEntity(
     @Id var id: Long = 0,
-    var title: String = "",
+    @Unique var title: String = "",
     var synopsis: String? = null,
     var volumes: Int? = null,
     var status: String = ""
@@ -76,6 +77,20 @@ fun List<DemographicEntity>.toDemographics(): List<Demographic> = map {
     Demographic(
         id = it.id,
         name = it.name
+    )
+}
+
+fun List<MangaEntity>.toMangas(): List<Manga> = map {
+    Manga(
+        id = it.id,
+        title = it.title,
+        synopsis = it.synopsis,
+        volumes = it.volumes,
+        status = Status.fromString(it.status),
+        image = it.image.target.toImage(),
+        authors = it.authors.toAuthors(),
+        genres = it.genres.toGenres(),
+        demographics = it.demographics.toDemographics()
     )
 }
 

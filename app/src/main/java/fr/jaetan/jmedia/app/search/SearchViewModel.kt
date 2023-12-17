@@ -12,7 +12,7 @@ import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.works.Manga
 import fr.jaetan.jmedia.core.models.works.toBdd
 import fr.jaetan.jmedia.core.networking.MangaApi
-import fr.jaetan.jmedia.core.services.objectbox.MangaRepository
+import fr.jaetan.jmedia.core.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,6 +65,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     }
 
     fun addToLibrary(work: Manga) {
-        MangaRepository.addManga(work.toBdd())
+        MainViewModel.mangaRepository.put(work.toBdd())
     }
 }
