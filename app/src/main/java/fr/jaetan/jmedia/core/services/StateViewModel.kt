@@ -7,5 +7,5 @@ import androidx.lifecycle.ViewModel
 import fr.jaetan.jmedia.core.models.WorkType
 
 class StateViewModel: ViewModel() {
-    var currentWorkType by mutableStateOf(null as WorkType?)
+    var currentWorkType by mutableStateOf(WorkType.Manga as WorkType?)
 }

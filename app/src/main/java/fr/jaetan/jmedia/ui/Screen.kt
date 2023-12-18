@@ -44,7 +44,6 @@ abstract class Screen <T: ViewModel> {
             bottomBar = { BottomBar() },
             floatingActionButton = { Fab() },
             modifier = Modifier
-                .imeNestedScroll()
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             Box(Modifier.padding(it)) { Content() }
@@ -66,6 +65,6 @@ abstract class Screen <T: ViewModel> {
     @Composable
     open fun Initialize(nc: NavHostController?) {
         navController = nc
-        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     }
 }
