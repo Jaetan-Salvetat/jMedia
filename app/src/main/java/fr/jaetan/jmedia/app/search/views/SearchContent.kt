@@ -2,6 +2,7 @@ package fr.jaetan.jmedia.app.search.views
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,8 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -36,8 +35,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -108,17 +109,29 @@ private fun SearchView.WorksList() {
 }
 
 @Composable
-private fun SearchView.WorksListItem(work: Manga) {
+private fun WorksListItem(work: Manga) {
     val density = LocalDensity.current
-    val actionsButtonsSize = 150.dp
+    val haptic = LocalHapticFeedback.current
+    val actionsButtonsSize = 70.dp
+    var hasVibrate = false
 
-    val offsetX = remember { Animatable(0f, 30f) }
+    val offsetX = remember { Animatable(0f, Spring.StiffnessLow) }
     val scope = rememberCoroutineScope()
     val state = rememberDraggableState { delta ->
-        val newValue = offsetX.value + delta
-        scope.launch { offsetX.animateTo(newValue) }
+        with(density) {
+            val newValue = offsetX.value + delta
+
+            if (newValue.roundToInt().toDp() < -actionsButtonsSize / 2 && !hasVibrate) {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                hasVibrate = true
+            }
+
+            scope.launch { offsetX.animateTo(newValue) }
+        }
     }
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
+        hasVibrate = false
+
         with(density) {
             if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize / 2) {
                 scope.launch { offsetX.animateTo(-actionsButtonsSize.toPx()) }
@@ -129,7 +142,7 @@ private fun SearchView.WorksListItem(work: Manga) {
     }
 
     Box(Modifier.height(140.dp)) {
-        // Action buttons
+        // Action button
         Row(
             modifier = Modifier
                 .fillMaxHeight()
@@ -145,19 +158,6 @@ private fun SearchView.WorksListItem(work: Manga) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(painterResource(R.drawable.heart_plus_24px), null)
-            }
-            Divider(
-                Modifier
-                    .fillMaxHeight()
-                    .width(1.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .clickable { viewModel.addToLibrary(work) },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Outlined.LibraryAdd, null)
             }
         }
 
