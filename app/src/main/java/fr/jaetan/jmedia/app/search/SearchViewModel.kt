@@ -25,7 +25,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
     var filters = mutableStateListOf<WorkType>()
-    var showUnavailableFeature by mutableStateOf(false)
 
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2

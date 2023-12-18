@@ -94,7 +94,8 @@ private fun SearchView.FilterCell() {
                     FilterChip(
                         selected = viewModel.filters.size == WorkType.all.size,
                         onClick = { viewModel.filterHandler() },
-                        label = { Text(stringResource(R.string.all)) }
+                        label = { Text(stringResource(R.string.all)) },
+                        enabled = false
                     )
 
                     Box(
@@ -114,7 +115,8 @@ private fun SearchView.FilterCell() {
                     FilterChip(
                         selected = viewModel.filters.contains(it),
                         onClick = { viewModel.filterHandler(it) },
-                        label = { Text(stringResource(it.titleRes)) }
+                        label = { Text(stringResource(it.textRes)) },
+                        enabled = it.implemented
                     )
                 }
             }
