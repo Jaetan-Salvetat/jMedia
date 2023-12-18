@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.core.models.ListState
+import fr.jaetan.jmedia.core.models.WorkType
 import fr.jaetan.jmedia.core.models.works.Manga
 import fr.jaetan.jmedia.core.models.works.toBdd
 import fr.jaetan.jmedia.core.networking.MangaApi
@@ -23,6 +24,9 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var searchValue by mutableStateOf("")
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
+    var filters = mutableStateListOf<WorkType>()
+    var showUnavailableFeature by mutableStateOf(false)
+
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2
 
@@ -66,5 +70,24 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
     fun addToLibrary(work: Manga) {
         MainViewModel.mangaRepository.put(work.toBdd())
+    }
+
+    fun filterHandler() {
+        if (filters.size == WorkType.all.size) {
+            filters.clear()
+            return
+        }
+
+        filters.clear()
+        filters.addAll(WorkType.all)
+    }
+
+    fun filterHandler(type: WorkType) {
+        if (filters.contains(type)) {
+            filters.remove(type)
+            return
+        }
+
+        filters.add(type)
     }
 }

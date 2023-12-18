@@ -1,24 +1,52 @@
 package fr.jaetan.jmedia.app.search.views
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
+import fr.jaetan.jmedia.core.extensions.scrollableTopAppBarBackground
+import fr.jaetan.jmedia.core.models.WorkType
+
+@Composable
+fun SearchView.TopBarView() {
+    Column {
+        TopBarCell()
+        FilterCell()
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchView.TopBarView() {
+private fun SearchView.TopBarCell() {
     val focusManager = LocalFocusManager.current
     val search = {
         viewModel.fetchWorks()
@@ -54,4 +82,45 @@ fun SearchView.TopBarView() {
         },
         scrollBehavior = scrollBehavior,
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SearchView.FilterCell() {
+    Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {
+        LazyRow {
+            item {
+                Row(Modifier.padding(start = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    FilterChip(
+                        selected = viewModel.filters.size == WorkType.all.size,
+                        onClick = { viewModel.filterHandler() },
+                        label = { Text(stringResource(R.string.all)) }
+                    )
+
+                    Box(
+                        Modifier
+                            .padding(start = 10.dp)
+                            .padding(end = 5.dp)) {
+                        Divider(
+                            Modifier
+                                .width(1.dp)
+                                .height(30.dp))
+                    }
+                }
+            }
+
+            items(WorkType.all) {
+                Box(Modifier.padding(start = 5.dp)) {
+                    FilterChip(
+                        selected = viewModel.filters.contains(it),
+                        onClick = { viewModel.filterHandler(it) },
+                        label = { Text(stringResource(it.titleRes)) }
+                    )
+                }
+            }
+
+            item { Box(Modifier.width(10.dp)) }
+        }
+        Divider()
+    }
 }

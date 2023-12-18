@@ -12,11 +12,12 @@
     <string name="my_series">Mes series</string>
     <string name="animes">Animés</string>
     <string name="my_animes">Mes animés</string>
-    <string name="feature_not_available">Fonctionalité bientôt disponible !</string>
+    <string name="feature_unavailable">Fonctionalité bientôt disponible !</string>
     <string name="research">Rechercher</string>
     <string name="empty_description">Aucune description.</string>
     <string name="library">Bibliothèque</string>
     <string name="empty_search">Désolé, ta recherche n\'a pas aboutie, essaie encore !</string>
     <string name="default_search_text">Saisie le nom d\'un media pour pouvoir l\'ajouter à ta librarie.</string>
     <string name="request_error_message">Une erreur est survenue. Vérifies ta connexion internet et réessaie</string>
+    <string name="all">Tout</string>
 </resources>

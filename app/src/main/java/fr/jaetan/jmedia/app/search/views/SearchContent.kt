@@ -59,15 +59,16 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SearchView.ContentView() {
-    when (viewModel.listState) {
-        ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
-        ListState.Loading -> LoadingState()
-        ListState.HasData -> WorksList()
-        ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-        else -> InfoCell(Smiley.Sad, R.string.request_error_message)
+    Column {
+        when (viewModel.listState) {
+            ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
+            ListState.Loading -> LoadingState()
+            ListState.HasData -> WorksList()
+            ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
+            else -> InfoCell(Smiley.Sad, R.string.request_error_message)
+        }
     }
 }
-
 
 @Composable
 private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
@@ -137,14 +138,23 @@ private fun SearchView.WorksListItem(work: Manga) {
                 .align(Alignment.CenterEnd)
         ) {
             Box(
-                modifier = Modifier.fillMaxHeight().weight(1f).clickable {  },
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .clickable { },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(painterResource(R.drawable.heart_plus_24px), null)
             }
-            Divider(Modifier.fillMaxHeight().width(1.dp))
+            Divider(
+                Modifier
+                    .fillMaxHeight()
+                    .width(1.dp))
             Box(
-                modifier = Modifier.fillMaxHeight().weight(1f).clickable { viewModel.addToLibrary(work) },
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .clickable { viewModel.addToLibrary(work) },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(Icons.Outlined.LibraryAdd, null)
@@ -163,7 +173,7 @@ private fun SearchView.WorksListItem(work: Manga) {
                     )
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
-                    .clickable {  }
+                    .clickable { }
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
             ) {
@@ -204,7 +214,8 @@ private fun ImageCell(work: Manga) {
             bitmap = work.image.bitmap!!.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.width(70.dp)
+            modifier = Modifier
+                .width(70.dp)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
         )
@@ -213,7 +224,8 @@ private fun ImageCell(work: Manga) {
             model = work.image.smallImageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.width(70.dp)
+            modifier = Modifier
+                .width(70.dp)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
         )
