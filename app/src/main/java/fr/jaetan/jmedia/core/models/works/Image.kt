@@ -15,6 +15,7 @@ data class Image(
 )
 
 fun Image.toBdd(): ImageEntity = ImageEntity(
+    id = id,
     imageUrl = imageUrl,
     smallImageUrl = smallImageUrl,
     largeImageUrl = largeImageUrl

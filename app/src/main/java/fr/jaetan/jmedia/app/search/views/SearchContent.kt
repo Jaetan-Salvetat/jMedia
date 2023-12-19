@@ -109,7 +109,7 @@ private fun SearchView.WorksList() {
 }
 
 @Composable
-private fun WorksListItem(work: Manga) {
+private fun SearchView.WorksListItem(work: Manga) {
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
     val actionsButtonsSize = 70.dp
@@ -154,10 +154,17 @@ private fun WorksListItem(work: Manga) {
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f)
-                    .clickable { },
+                    .clickable { viewModel.mangaLibraryHandler(work) },
                 contentAlignment = Alignment.Center
             ) {
-                Icon(painterResource(R.drawable.heart_plus_24px), null)
+                Icon(
+                    painter = if (viewModel.localWorks.find { it.title == work.title }.isNotNull()) {
+                        painterResource(R.drawable.heart_minus_24px)
+                    } else {
+                        painterResource(R.drawable.heart_plus_24px)
+                    },
+                    contentDescription = null
+                )
             }
         }
 

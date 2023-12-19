@@ -11,6 +11,7 @@ data class Author(
 
 fun List<Author>.toBdd(): List<AuthorEntity> = map {
     AuthorEntity(
+        id = it.id,
         name = it.name
     )
 }

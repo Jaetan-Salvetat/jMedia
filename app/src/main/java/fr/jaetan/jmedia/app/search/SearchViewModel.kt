@@ -6,14 +6,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.core.extensions.isNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.WorkType
 import fr.jaetan.jmedia.core.models.works.Manga
 import fr.jaetan.jmedia.core.models.works.toBdd
 import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.services.MainViewModel
+import fr.jaetan.jmedia.core.services.objectbox.toMangas
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +28,18 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
     var filters = mutableStateListOf<WorkType>()
+    var localWorks = mutableStateListOf<Manga>()
+
+    fun initializeObserver(lifecycle: LifecycleOwner) {
+        // localWorks.clear()
+        // localWorks.addAll(MainViewModel.mangaRepository.all)
+
+        MainViewModel.mangaRepository.observer.observe(lifecycle) {
+
+            localWorks.clear()
+            localWorks.addAll(it.toMangas())
+        }
+    }
 
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2
@@ -67,8 +82,14 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         return tempWorks
     }
 
-    fun addToLibrary(work: Manga) {
-        MainViewModel.mangaRepository.put(work.toBdd())
+    fun mangaLibraryHandler(manga: Manga) {
+        if (localWorks.find { it.title == manga.title }.isNull()) {
+            MainViewModel.mangaRepository.put(manga.toBdd())
+        } else {
+            localWorks.find { it.title == manga.title }?.let {
+                MainViewModel.mangaRepository.remove(it.toBdd())
+            }
+        }
     }
 
     fun filterHandler() {

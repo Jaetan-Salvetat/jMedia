@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.core.models.works.Image
 import fr.jaetan.jmedia.core.models.works.Manga
 import fr.jaetan.jmedia.core.models.works.Status
 import fr.jaetan.jmedia.core.models.works.fromString
+import io.objectbox.annotation.ConflictStrategy
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.annotation.Unique
@@ -30,13 +31,13 @@ data class AuthorEntity(
 @Entity
 data class GenreEntity(
     @Id var id: Long = 0,
-    @Unique var name: String = ""
+    @Unique(onConflict = ConflictStrategy.REPLACE) var name: String = ""
 )
 
 @Entity
 data class DemographicEntity(
     @Id var id: Long = 0,
-    @Unique var name: String = ""
+    @Unique(onConflict = ConflictStrategy.REPLACE) var name: String = ""
 )
 
 @Entity
@@ -45,13 +46,14 @@ data class MangaEntity(
     @Unique var title: String = "",
     var synopsis: String? = null,
     var volumes: Int? = null,
-    var status: String = ""
+    var status: String = Status.Unknown.name
 ) {
     lateinit var image: ToOne<ImageEntity>
     lateinit var authors: ToMany<AuthorEntity>
     lateinit var genres: ToMany<GenreEntity>
     lateinit var demographics: ToMany<DemographicEntity>
 }
+
 // Converters
 fun ImageEntity.toImage(): Image = Image(
     imageUrl = imageUrl,

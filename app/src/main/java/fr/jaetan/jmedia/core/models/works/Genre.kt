@@ -11,6 +11,7 @@ data class Genre(
 
 fun List<Genre>.toBdd(): List<GenreEntity> = map {
     GenreEntity(
+        id = it.id,
         name = it.name
     )
 }

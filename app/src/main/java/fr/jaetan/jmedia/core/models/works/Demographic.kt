@@ -11,6 +11,7 @@ data class Demographic(
 
 fun List<Demographic>.toBdd(): List<DemographicEntity> = map {
     DemographicEntity(
+        id = it.id,
         name = it.name
     )
 }
