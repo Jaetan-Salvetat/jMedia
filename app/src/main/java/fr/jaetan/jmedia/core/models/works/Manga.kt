@@ -1,10 +1,10 @@
 package fr.jaetan.jmedia.core.models.works
 
-import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.core.services.objectbox.MangaEntity
+import fr.jaetan.jmedia.core.services.realm.entities.MangaEntity
+import org.mongodb.kbson.ObjectId
 
 data class Manga(
-    val id: Long = 0,
+    val id: ObjectId = ObjectId(),
     val title: String,
     val synopsis: String?,
     val volumes: Int?,
@@ -15,20 +15,15 @@ data class Manga(
     val demographics: List<Demographic>
 )
 
-fun Manga.toBdd(): MangaEntity {
-    val manga = MangaEntity(
-        id = id,
-        title = title,
-        synopsis = synopsis,
-        volumes = volumes,
-        status = status.name
-    )
+fun Manga.toBdd(): MangaEntity = MangaEntity(
+    id = id,
+    title = title,
+    synopsis = synopsis,
+    volumes = volumes,
+    status = status.name,
+    image = image.toBdd(),
+    authors = authors.toBdd(),
+    genres = genres.toBdd(),
+    demographics = demographics.toBdd()
 
-    MainViewModel.mangaRepository.attach(manga)
-    manga.image.target = image.toBdd()
-    manga.authors.addAll(authors.toBdd())
-    manga.genres.addAll(genres.toBdd())
-    manga.demographics.addAll(demographics.toBdd())
-
-    return manga
-}
+)
