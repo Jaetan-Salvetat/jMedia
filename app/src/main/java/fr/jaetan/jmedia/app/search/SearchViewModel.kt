@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.extensions.isNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.WorkType
@@ -27,13 +28,16 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
     var filters = mutableStateListOf<WorkType>()
-    var localWorks = mutableStateListOf<Manga>()
+    private var localWorks = mutableStateListOf<Manga>()
 
-    init {
+    fun initializeMangasFlow() {
+        if (localWorks.isNotEmpty()) return
+
         viewModelScope.launch {
             MainViewModel.mangaRepository.all.collect {
                 localWorks.clear()
                 localWorks.addAll(it.list.toMangas())
+                setLibraryValueToMangas()
             }
         }
     }
@@ -45,6 +49,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         if (!searchIsEnabled) {
             return
         }
+
+        viewModelScope.launch { initializeMangasFlow() }
 
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading
@@ -58,25 +64,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
                 ListState.HasData
             }
         }
-    }
-
-    private fun urlImagesToBitmap(works: List<Manga>): List<Manga> {
-        val tempWorks = works
-
-        for(index in works.indices) {
-            try {
-                val url = URL(works[index].image.imageUrl)
-                val bitmap = BitmapFactory.decodeStream(url.openStream())
-                tempWorks[index].image.bitmap = Bitmap.createScaledBitmap(
-                    bitmap,
-                    bitmap.width / 2,
-                    bitmap.height / 2,
-                    false
-                )
-            } catch (_: Exception) {}
-        }
-
-        return tempWorks
     }
 
     fun mangaLibraryHandler(manga: Manga) {
@@ -108,5 +95,31 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         filters.add(type)
+    }
+
+    private fun urlImagesToBitmap(works: List<Manga>): List<Manga> {
+        val tempWorks = works
+
+        for(index in works.indices) {
+            try {
+                val url = URL(works[index].image.imageUrl)
+                val bitmap = BitmapFactory.decodeStream(url.openStream())
+
+                tempWorks[index].image.bitmap = Bitmap.createScaledBitmap(
+                    bitmap,
+                    bitmap.width / 2,
+                    bitmap.height / 2,
+                    false
+                )
+            } catch (_: Exception) {}
+        }
+
+        return tempWorks
+    }
+
+    private fun setLibraryValueToMangas() {
+        works.replaceAll { manga ->
+            manga.copy(isInLibrary = localWorks.find { it.title == manga.title }.isNotNull())
+        }
     }
 }

@@ -136,7 +136,8 @@ fun List<MangaEntity>.toMangas(): List<Manga> = map {
         image = it.image.toImage(),
         authors = it.authors.toAuthors(),
         genres = it.genres.toGenres(),
-        demographics = it.demographics.toDemographics()
+        demographics = it.demographics.toDemographics(),
+        isInLibrary = true
     )
 }
 

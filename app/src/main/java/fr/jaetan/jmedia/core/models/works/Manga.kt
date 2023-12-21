@@ -12,7 +12,8 @@ data class Manga(
     val image: Image,
     val authors: List<Author>,
     val genres: List<Genre>,
-    val demographics: List<Demographic>
+    val demographics: List<Demographic>,
+    var isInLibrary: Boolean = false
 )
 
 fun Manga.toBdd(): MangaEntity = MangaEntity(
