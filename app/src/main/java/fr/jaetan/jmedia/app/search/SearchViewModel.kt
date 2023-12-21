@@ -24,13 +24,15 @@ import java.net.URL
 
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
+    val implementedFilters = WorkType.all.filter { it.implemented }
+
     var searchValue by mutableStateOf("")
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
     var filters = mutableStateListOf<WorkType>()
     private var localWorks = mutableStateListOf<Manga>()
 
-    fun initializeMangasFlow() {
+    private fun initializeMangasFlow() {
         if (localWorks.isNotEmpty()) return
 
         viewModelScope.launch {
@@ -79,13 +81,13 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     }
 
     fun filterHandler() {
-        if (filters.size == WorkType.all.size) {
+        if (filters.size == implementedFilters.size) {
             filters.clear()
             return
         }
 
         filters.clear()
-        filters.addAll(WorkType.all)
+        filters.addAll(implementedFilters)
     }
 
     fun filterHandler(type: WorkType) {
