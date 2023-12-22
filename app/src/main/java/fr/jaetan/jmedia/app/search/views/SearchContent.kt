@@ -60,7 +60,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SearchView.ContentView() {
-    Column {
+     Column {
         when (viewModel.listState) {
             ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
             ListState.Loading -> LoadingState()
@@ -158,7 +158,7 @@ private fun SearchView.WorksListItem(work: Manga) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = if (viewModel.localWorks.find { it.title == work.title }.isNotNull()) {
+                    painter = if (work.isInLibrary) {
                         painterResource(R.drawable.heart_minus_24px)
                     } else {
                         painterResource(R.drawable.heart_plus_24px)

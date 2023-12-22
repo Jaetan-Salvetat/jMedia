@@ -92,10 +92,9 @@ private fun SearchView.FilterCell() {
             item {
                 Row(Modifier.padding(start = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     FilterChip(
-                        selected = viewModel.filters.size == WorkType.all.size,
+                        selected = viewModel.filters.size == viewModel.implementedFilters.size,
                         onClick = { viewModel.filterHandler() },
-                        label = { Text(stringResource(R.string.all)) },
-                        enabled = false
+                        label = { Text(stringResource(R.string.all)) }
                     )
 
                     Box(

@@ -9,13 +9,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import fr.jaetan.jmedia.core.services.objectbox.ObjectBox
 import fr.jaetan.jmedia.ui.theme.JMediaTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ObjectBox.init(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {

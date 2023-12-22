@@ -1,11 +1,12 @@
 package fr.jaetan.jmedia.core.models.works
 
-import fr.jaetan.jmedia.core.services.objectbox.GenreEntity
+import fr.jaetan.jmedia.core.services.realm.entities.GenreEntity
 import kotlinx.serialization.Serializable
+import org.mongodb.kbson.ObjectId
 
 @Serializable
 data class Genre(
-    val id: Long = 0,
+    val id: ObjectId = ObjectId(),
     val name: String
 )
 

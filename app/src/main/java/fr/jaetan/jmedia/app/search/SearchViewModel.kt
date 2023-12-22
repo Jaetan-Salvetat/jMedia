@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.extensions.isNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.WorkType
@@ -16,7 +16,7 @@ import fr.jaetan.jmedia.core.models.works.Manga
 import fr.jaetan.jmedia.core.models.works.toBdd
 import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.core.services.objectbox.toMangas
+import fr.jaetan.jmedia.core.services.realm.entities.toMangas
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,20 +24,23 @@ import java.net.URL
 
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
+    val implementedFilters = WorkType.all.filter { it.implemented }
+
     var searchValue by mutableStateOf("")
     var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
     var filters = mutableStateListOf<WorkType>()
-    var localWorks = mutableStateListOf<Manga>()
+    private var localWorks = mutableStateListOf<Manga>()
 
-    fun initializeObserver(lifecycle: LifecycleOwner) {
-        // localWorks.clear()
-        // localWorks.addAll(MainViewModel.mangaRepository.all)
+    private fun initializeMangasFlow() {
+        if (localWorks.isNotEmpty()) return
 
-        MainViewModel.mangaRepository.observer.observe(lifecycle) {
-
-            localWorks.clear()
-            localWorks.addAll(it.toMangas())
+        viewModelScope.launch {
+            MainViewModel.mangaRepository.all.collect {
+                localWorks.clear()
+                localWorks.addAll(it.list.toMangas())
+                setLibraryValueToMangas()
+            }
         }
     }
 
@@ -48,6 +51,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         if (!searchIsEnabled) {
             return
         }
+
+        viewModelScope.launch { initializeMangasFlow() }
 
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading
@@ -63,6 +68,37 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
     }
 
+    fun mangaLibraryHandler(manga: Manga) {
+        viewModelScope.launch {
+            if (localWorks.find { it.title == manga.title }.isNull()) {
+                MainViewModel.mangaRepository.add(manga.toBdd())
+            } else {
+                localWorks.find { it.title == manga.title }?.let {
+                    MainViewModel.mangaRepository.remove(it.toBdd())
+                }
+            }
+        }
+    }
+
+    fun filterHandler() {
+        if (filters.size == implementedFilters.size) {
+            filters.clear()
+            return
+        }
+
+        filters.clear()
+        filters.addAll(implementedFilters)
+    }
+
+    fun filterHandler(type: WorkType) {
+        if (filters.contains(type)) {
+            filters.remove(type)
+            return
+        }
+
+        filters.add(type)
+    }
+
     private fun urlImagesToBitmap(works: List<Manga>): List<Manga> {
         val tempWorks = works
 
@@ -70,6 +106,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             try {
                 val url = URL(works[index].image.imageUrl)
                 val bitmap = BitmapFactory.decodeStream(url.openStream())
+
                 tempWorks[index].image.bitmap = Bitmap.createScaledBitmap(
                     bitmap,
                     bitmap.width / 2,
@@ -82,32 +119,9 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         return tempWorks
     }
 
-    fun mangaLibraryHandler(manga: Manga) {
-        if (localWorks.find { it.title == manga.title }.isNull()) {
-            MainViewModel.mangaRepository.put(manga.toBdd())
-        } else {
-            localWorks.find { it.title == manga.title }?.let {
-                MainViewModel.mangaRepository.remove(it.toBdd())
-            }
+    private fun setLibraryValueToMangas() {
+        works.replaceAll { manga ->
+            manga.copy(isInLibrary = localWorks.find { it.title == manga.title }.isNotNull())
         }
-    }
-
-    fun filterHandler() {
-        if (filters.size == WorkType.all.size) {
-            filters.clear()
-            return
-        }
-
-        filters.clear()
-        filters.addAll(WorkType.all)
-    }
-
-    fun filterHandler(type: WorkType) {
-        if (filters.contains(type)) {
-            filters.remove(type)
-            return
-        }
-
-        filters.add(type)
     }
 }

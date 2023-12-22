@@ -2,8 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
-    id("io.objectbox")
+    id("io.realm.kotlin")
 }
 
 android {
@@ -59,7 +58,7 @@ android {
 
 dependencies {
     val composeVersion = "1.5.4"
-    val objectBoxVersion = "3.7.1"
+
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -82,8 +81,7 @@ dependencies {
 
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    implementation("io.objectbox:objectbox-android:$objectBoxVersion")
-    annotationProcessor("io.objectbox:objectbox-processor:$objectBoxVersion")
+    implementation("io.realm.kotlin:library-base:1.11.0")
 
     // Images!
     implementation("io.coil-kt:coil-compose:2.5.0")
@@ -98,8 +96,6 @@ dependencies {
     // Tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("io.objectbox:objectbox-macos:$objectBoxVersion")
-    testImplementation("io.objectbox:objectbox-windows:$objectBoxVersion")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
