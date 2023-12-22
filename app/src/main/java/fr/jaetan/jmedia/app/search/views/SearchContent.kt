@@ -1,8 +1,9 @@
 package fr.jaetan.jmedia.app.search.views
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,17 +24,24 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
@@ -110,51 +118,73 @@ private fun SearchView.WorksList() {
 
 @Composable
 private fun SearchView.WorksListItem(work: Manga) {
+    val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
     val actionsButtonsSize = 70.dp
-    var hasVibrate = false
 
-    val offsetX = remember { Animatable(0f, Spring.StiffnessLow) }
-    val scope = rememberCoroutineScope()
+    var hasVibrate by remember { mutableStateOf(false) }
+    val offsetX = remember { Animatable(0f, 30f /* Spring.StiffnessLow */) }
+    val actionButtonColor by animateColorAsState(
+        targetValue = if (hasVibrate) {
+            Color.Red
+        } else {
+            MaterialTheme.colorScheme.scrim
+        },
+        label = "actionButtonColor"
+    )
+    val actionButtonScale by animateFloatAsState(
+        targetValue = if (hasVibrate) {
+            1.2f
+        } else {
+            1f
+        },
+        label = "actionButtonScale"
+    )
     val state = rememberDraggableState { delta ->
         with(density) {
             val newValue = offsetX.value + delta
 
-            if (newValue.roundToInt().toDp() < -actionsButtonsSize / 2 && !hasVibrate) {
+            if (newValue.roundToInt().toDp() < -actionsButtonsSize && !hasVibrate) {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 hasVibrate = true
+            } else if (newValue.roundToInt().toDp() > -actionsButtonsSize) {
+                hasVibrate = false
             }
 
             scope.launch { offsetX.animateTo(newValue) }
         }
     }
-    val onDragStopped: CoroutineScope.(Float) -> Unit = {
-        hasVibrate = false
 
+    val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
-            if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize / 2) {
-                scope.launch { offsetX.animateTo(-actionsButtonsSize.toPx()) }
-            } else {
-                scope.launch { offsetX.animateTo(0f) }
+            if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
+                viewModel.mangaLibraryHandler(work)
             }
+
+            scope.launch {
+                offsetX.animateTo(0f)
+            }
+
+            hasVibrate = false
         }
     }
 
-    Box(Modifier.height(140.dp)) {
+    Box(
+        Modifier
+            .height(140.dp)
+            .background(actionButtonColor)) {
         // Action button
         Row(
             modifier = Modifier
                 .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.scrim)
                 .width(actionsButtonsSize)
                 .align(Alignment.CenterEnd)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f)
-                    .clickable { viewModel.mangaLibraryHandler(work) },
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -163,7 +193,9 @@ private fun SearchView.WorksListItem(work: Manga) {
                     } else {
                         painterResource(R.drawable.heart_plus_24px)
                     },
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.scale(actionButtonScale)
                 )
             }
         }
@@ -187,13 +219,21 @@ private fun SearchView.WorksListItem(work: Manga) {
                 ImageCell(work)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
-                    Text(
-                        text = work.title,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 10.dp),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    Row {
+                        Text(
+                            text = work.title,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .padding(bottom = 10.dp)
+                                .weight(1f),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        if (work.isInLibrary) {
+                            Icon(Icons.Default.Favorite, null, tint = Color.Red)
+                        }
+                    }
 
                     Text(
                         text = if (work.synopsis.isNotNull()) {
