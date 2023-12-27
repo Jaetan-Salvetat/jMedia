@@ -3,7 +3,9 @@ package fr.jaetan.jmedia.app.search.views
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -123,8 +125,9 @@ private fun SearchView.WorksListItem(work: Manga) {
     val haptic = LocalHapticFeedback.current
     val actionsButtonsSize = 70.dp
 
+    // States
     var hasVibrate by remember { mutableStateOf(false) }
-    val offsetX = remember { Animatable(0f, 30f /* Spring.StiffnessLow */) }
+    val offsetX = remember { Animatable(0f) }
     val actionButtonColor by animateColorAsState(
         targetValue = if (hasVibrate) {
             Color.Red
@@ -151,11 +154,11 @@ private fun SearchView.WorksListItem(work: Manga) {
             } else if (newValue.roundToInt().toDp() > -actionsButtonsSize) {
                 hasVibrate = false
             }
-
-            scope.launch { offsetX.animateTo(newValue) }
+            scope.launch { offsetX.animateTo(newValue, spring(stiffness =  Spring.StiffnessVeryLow, visibilityThreshold = 0f)) }
         }
     }
 
+    // Methods
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
             if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
@@ -163,13 +166,14 @@ private fun SearchView.WorksListItem(work: Manga) {
             }
 
             scope.launch {
-                offsetX.animateTo(0f)
+                offsetX.animateTo(0f, spring(stiffness =  Spring.StiffnessVeryLow))
             }
 
             hasVibrate = false
         }
     }
 
+    // UI
     Box(
         Modifier
             .height(140.dp)
