@@ -26,8 +26,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -64,6 +62,7 @@ import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.Smiley
 import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -223,19 +222,34 @@ private fun SearchView.WorksListItem(work: Manga) {
                 ImageCell(work)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
-                    Row {
+                    Row(Modifier.padding(bottom = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = work.title,
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier
-                                .padding(bottom = 10.dp)
+
                                 .weight(1f),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
 
-                        if (work.isInLibrary) {
-                            Icon(Icons.Default.Favorite, null, tint = Color.Red)
+                        JScaledContent(
+                            onPressed = { viewModel.mangaLibraryHandler(work) },
+                            modifier = Modifier.padding(horizontal = 10.dp)) {
+                            Icon(
+                                painter = if (work.isInLibrary) {
+                                    painterResource(R.drawable.heart_minus_24px)
+                                } else {
+                                    painterResource(R.drawable.heart_plus_24px)
+                                },
+                                tint = if (work.isInLibrary) {
+                                    Color.Red
+                                } else {
+                                    MaterialTheme.colorScheme.onBackground
+                                },
+                                contentDescription = null,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
                         }
                     }
 
