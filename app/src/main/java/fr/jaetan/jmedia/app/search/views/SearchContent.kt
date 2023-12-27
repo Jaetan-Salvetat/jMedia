@@ -61,7 +61,9 @@ import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.Smiley
+import fr.jaetan.jmedia.core.models.WorkType
 import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -222,12 +224,11 @@ private fun SearchView.WorksListItem(work: Manga) {
                 ImageCell(work)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
-                    Row(Modifier.padding(bottom = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = work.title,
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier
-
                                 .weight(1f),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -252,6 +253,8 @@ private fun SearchView.WorksListItem(work: Manga) {
                             )
                         }
                     }
+
+                    JTag(WorkType.Manga)
 
                     Text(
                         text = if (work.synopsis.isNotNull()) {
