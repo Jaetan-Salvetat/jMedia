@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -87,13 +88,15 @@ private fun SearchView.TopBarCell() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchView.FilterCell() {
+    val context = LocalContext.current
+
     Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {
         LazyRow {
             item {
                 Row(Modifier.padding(start = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     FilterChip(
                         selected = viewModel.filters.size == viewModel.implementedFilters.size,
-                        onClick = { viewModel.filterHandler() },
+                        onClick = { viewModel.filterHandler(context) },
                         label = { Text(stringResource(R.string.all)) }
                     )
 
@@ -113,7 +116,7 @@ private fun SearchView.FilterCell() {
                 Box(Modifier.padding(start = 5.dp)) {
                     FilterChip(
                         selected = viewModel.filters.contains(it),
-                        onClick = { viewModel.filterHandler(it) },
+                        onClick = { viewModel.filterHandler(context, it) },
                         label = { Text(stringResource(it.textRes)) },
                         enabled = it.implemented
                     )

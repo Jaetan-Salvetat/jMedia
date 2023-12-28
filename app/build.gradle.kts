@@ -81,7 +81,10 @@ dependencies {
 
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    // Storage
     implementation("io.realm.kotlin:library-base:1.11.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Images!
     implementation("io.coil-kt:coil-compose:2.5.0")

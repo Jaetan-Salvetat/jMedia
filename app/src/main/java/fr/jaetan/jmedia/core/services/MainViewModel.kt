@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.core.services
 
+import android.content.Context
 import fr.jaetan.jmedia.core.services.realm.entities.AuthorEntity
 import fr.jaetan.jmedia.core.services.realm.entities.DemographicEntity
 import fr.jaetan.jmedia.core.services.realm.entities.GenreEntity
@@ -10,7 +11,7 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
 object MainViewModel {
-    val state = StateViewModel()
+    val userSettingsModel = UserSettingsModel()
     val mangaRepository: MangaRepository
         get() = MangaRepository(realm)
 
@@ -22,4 +23,8 @@ object MainViewModel {
         DemographicEntity::class
     ))
     private val realm = Realm.open(config)
+
+    suspend fun initialize(context: Context) {
+        userSettingsModel.initialize(context)
+    }
 }
