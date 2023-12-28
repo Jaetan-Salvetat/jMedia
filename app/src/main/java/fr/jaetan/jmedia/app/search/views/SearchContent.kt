@@ -169,7 +169,7 @@ private fun SearchView.WorksListItem(work: IWork) {
             }
 
             scope.launch {
-                offsetX.animateTo(0f, spring(stiffness =  Spring.StiffnessVeryLow))
+                offsetX.animateTo(0f, spring(stiffness =  Spring.StiffnessMedium))
             }
 
             hasVibrate = false
