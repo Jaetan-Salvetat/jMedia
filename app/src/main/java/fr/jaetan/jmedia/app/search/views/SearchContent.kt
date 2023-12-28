@@ -52,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,7 +63,8 @@ import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.Smiley
 import fr.jaetan.jmedia.core.models.WorkType
-import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.core.models.works.IWork
+import fr.jaetan.jmedia.core.models.works.Image
 import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
@@ -120,7 +122,7 @@ private fun SearchView.WorksList() {
 }
 
 @Composable
-private fun SearchView.WorksListItem(work: Manga) {
+private fun SearchView.WorksListItem(work: IWork) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
@@ -163,7 +165,7 @@ private fun SearchView.WorksListItem(work: Manga) {
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
             if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
-                viewModel.mangaLibraryHandler(work)
+                viewModel.libraryHandler(work)
             }
 
             scope.launch {
@@ -180,30 +182,7 @@ private fun SearchView.WorksListItem(work: Manga) {
             .height(140.dp)
             .background(actionButtonColor)) {
         // Action button
-        Row(
-            modifier = Modifier
-                .fillMaxHeight()
-                .width(actionsButtonsSize)
-                .align(Alignment.CenterEnd)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = if (work.isInLibrary) {
-                        painterResource(R.drawable.heart_minus_24px)
-                    } else {
-                        painterResource(R.drawable.heart_plus_24px)
-                    },
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.scale(actionButtonScale)
-                )
-            }
-        }
+        ActionButton(work, actionsButtonsSize, actionButtonScale, Modifier.align(Alignment.CenterEnd))
 
         // Work details
         Column {
@@ -221,52 +200,12 @@ private fun SearchView.WorksListItem(work: Manga) {
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
             ) {
-                ImageCell(work)
+                ImageCell(work.image)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = work.title,
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier
-                                .weight(1f),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-
-                        JScaledContent(
-                            onPressed = { viewModel.mangaLibraryHandler(work) },
-                            modifier = Modifier.padding(horizontal = 10.dp)) {
-                            Icon(
-                                painter = if (work.isInLibrary) {
-                                    painterResource(R.drawable.heart_minus_24px)
-                                } else {
-                                    painterResource(R.drawable.heart_plus_24px)
-                                },
-                                tint = if (work.isInLibrary) {
-                                    Color.Red
-                                } else {
-                                    MaterialTheme.colorScheme.onBackground
-                                },
-                                contentDescription = null,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                    }
-
-                    JTag(WorkType.Manga)
-
-                    Text(
-                        text = if (work.synopsis.isNotNull()) {
-                            work.synopsis!!
-                        } else {
-                            stringResource(R.string.empty_description)
-                        },
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    WorkTitleCell(work)
+                    TagCell(work.type)
+                    SynopsisCell(work.synopsis)
                 }
             }
 
@@ -276,10 +215,37 @@ private fun SearchView.WorksListItem(work: Manga) {
 }
 
 @Composable
-private fun ImageCell(work: Manga) {
-    if (work.image.bitmap.isNotNull()) {
+private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxHeight()
+            .width(buttonSize)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = if (work.isInLibrary) {
+                    painterResource(R.drawable.heart_minus_24px)
+                } else {
+                    painterResource(R.drawable.heart_plus_24px)
+                },
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.scale(iconScale)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ImageCell(image: Image) {
+    if (image.bitmap.isNotNull()) {
         Image(
-            bitmap = work.image.bitmap!!.asImageBitmap(),
+            bitmap = image.bitmap!!.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -289,7 +255,7 @@ private fun ImageCell(work: Manga) {
         )
     } else {
         AsyncImage(
-            model = work.image.smallImageUrl,
+            model = image.smallImageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -298,4 +264,61 @@ private fun ImageCell(work: Manga) {
                 .clip(RoundedCornerShape(10.dp))
         )
     }
+}
+
+@Composable
+private fun SearchView.WorkTitleCell(work: IWork) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = work.title,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        JScaledContent(
+            onPressed = { viewModel.libraryHandler(work) },
+            modifier = Modifier.padding(horizontal = 10.dp)) {
+            Icon(
+                painter = if (work.isInLibrary) {
+                    painterResource(R.drawable.heart_minus_24px)
+                } else {
+                    painterResource(R.drawable.heart_plus_24px)
+                },
+                tint = if (work.isInLibrary) {
+                    Color.Red
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchView.TagCell(type: WorkType) {
+    Box(Modifier.padding(vertical = 5.dp)) {
+        if (viewModel.filters.size > 1) {
+            JTag(type)
+        }
+    }
+}
+
+@Composable
+private fun SynopsisCell(text: String?) {
+    Text(
+        text = if (text.isNotNull()) {
+            text!!
+        } else {
+            stringResource(R.string.empty_description)
+        },
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis,
+        fontSize = 12.sp,
+        color = MaterialTheme.colorScheme.outline
+    )
 }

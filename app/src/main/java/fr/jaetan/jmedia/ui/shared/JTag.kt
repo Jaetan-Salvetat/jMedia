@@ -19,7 +19,6 @@ import fr.jaetan.jmedia.core.models.WorkType
 fun JTag(type: WorkType) {
     Box(
         Modifier
-            .padding(vertical = 5.dp)
             .clip(CircleShape)
             .background(type.getBackgroundColor())
             .padding(vertical = 5.dp, horizontal = 10.dp)) {
