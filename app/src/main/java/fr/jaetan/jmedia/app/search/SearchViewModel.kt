@@ -1,41 +1,53 @@
 package fr.jaetan.jmedia.app.search
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.content.Context
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.app.search.controllers.MangaController
 import fr.jaetan.jmedia.core.models.ListState
+import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.core.models.works.IWork
 import fr.jaetan.jmedia.core.models.works.Manga
-import fr.jaetan.jmedia.core.models.works.toBdd
-import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.net.URL
 
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
+    // Controllers
+    private val mangaController = MangaController()
+
+    // States
     var searchValue by mutableStateOf("")
-    var works = mutableStateListOf<Manga>()
     var listState by mutableStateOf(ListState.Default)
+    var filters = MainViewModel.userSettingsModel.settings.selectedWorkTypes
+
+    // Variables
+    val implementedFilters = WorkType.all.filter { it.implemented }
+    val works: List<IWork>
+        get() = mangaController.mangas.sortedBy { it.title }
     val searchIsEnabled: Boolean
-        get() = searchValue.length >= 2
+        get() = searchValue.length >= 2 && filters.isNotEmpty()
 
     fun fetchWorks() {
         if (!searchIsEnabled) {
             return
         }
 
+        // Initialize works flow from local database
+        viewModelScope.launch(Dispatchers.IO) { mangaController.initializeFlow() }
+
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading
 
-            works.clear()
-            works.addAll(urlImagesToBitmap(MangaApi.search(searchValue)))
+            // Mangas handler
+            if (filters.contains(WorkType.Manga)) {
+                mangaController.fetch(searchValue)
+            }
 
             listState = if (works.isEmpty()) {
                 ListState.EmptyData
@@ -45,26 +57,36 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
     }
 
-    private fun urlImagesToBitmap(works: List<Manga>): List<Manga> {
-        val tempWorks = works
-
-        for(index in works.indices) {
-            try {
-                val url = URL(works[index].image.imageUrl)
-                val bitmap = BitmapFactory.decodeStream(url.openStream())
-                tempWorks[index].image.bitmap = Bitmap.createScaledBitmap(
-                    bitmap,
-                    bitmap.width / 2,
-                    bitmap.height / 2,
-                    false
-                )
-            } catch (_: Exception) {}
+    fun libraryHandler(work: IWork) {
+        viewModelScope.launch {
+            when (work) {
+                is Manga -> mangaController.libraryHandler(work)
+            }
         }
-
-        return tempWorks
     }
 
-    fun addToLibrary(work: Manga) {
-        MainViewModel.mangaRepository.put(work.toBdd())
+    fun filterHandler(context: Context) {
+        viewModelScope.launch {
+            if (filters.size == implementedFilters.size) {
+                MainViewModel.userSettingsModel.setWorkTypes(context, listOf())
+                return@launch
+            }
+
+            MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
+        }
+    }
+
+    fun filterHandler(context: Context, type: WorkType) {
+        val localFilters = filters.toMutableList()
+
+        if (filters.contains(type)) {
+            localFilters.remove(type)
+        } else {
+            localFilters.add(type)
+        }
+
+        viewModelScope.launch {
+            MainViewModel.userSettingsModel.setWorkTypes(context, localFilters)
+        }
     }
 }

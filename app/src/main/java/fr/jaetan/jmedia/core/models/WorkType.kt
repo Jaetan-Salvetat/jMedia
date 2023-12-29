@@ -2,11 +2,9 @@ package fr.jaetan.jmedia.core.models
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import fr.jaetan.jmedia.R
-import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.extensions.removeNullValues
 import fr.jaetan.jmedia.ui.theme.JColor
 
@@ -35,18 +33,10 @@ enum class WorkType(
     companion object {
         val all: List<WorkType> = WorkType.values().toList()
 
-        fun toList(values: String?): List<WorkType>? {
-            if (values?.isBlank() == true) return emptyList()
-            if (values.isNotNull()) {
-                return values!!.split(", ").map { getFromString(it) }.removeNullValues()
-            }
-            return null
-        }
+        private fun fromString(type: String): WorkType? = all.find { it.name == type }
 
-        fun getFromString(name: String?): WorkType? = all.find { it.name == name }
-
-        const val key = "work_type"
+        fun fromStringSet(types: Set<String>): List<WorkType> = types.toList().map {
+            WorkType.fromString(it)
+        }.removeNullValues()
     }
 }
-
-fun List<WorkType>.toStringList(): String = this.joinToString { it.name }

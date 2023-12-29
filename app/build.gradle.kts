@@ -2,8 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
-    id("io.objectbox")
+    id("io.realm.kotlin")
 }
 
 android {
@@ -45,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -57,8 +57,8 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.5.4"
-    val objectBoxVersion = "3.7.1"
+    val composeVersion = "1.6.0-beta03"
+
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -81,11 +81,20 @@ dependencies {
 
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    implementation("io.objectbox:objectbox-android:$objectBoxVersion")
-    annotationProcessor("io.objectbox:objectbox-processor:$objectBoxVersion")
+
+    // Storage
+    implementation("io.realm.kotlin:library-base:1.11.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Images!
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Others
+    implementation(kotlin("reflect"))
+
+    // Debug
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // Tests
     testImplementation("junit:junit:4.13.2")
@@ -95,7 +104,4 @@ dependencies {
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation(kotlin("reflect"))
 }

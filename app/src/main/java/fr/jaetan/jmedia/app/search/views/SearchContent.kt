@@ -1,7 +1,11 @@
 package fr.jaetan.jmedia.app.search.views
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,27 +26,33 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LibraryAdd
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -52,22 +62,27 @@ import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.core.extensions.isNotNull
 import fr.jaetan.jmedia.core.models.ListState
 import fr.jaetan.jmedia.core.models.Smiley
-import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.core.models.works.IWork
+import fr.jaetan.jmedia.core.models.works.Image
+import fr.jaetan.jmedia.ui.shared.JTag
+import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
 fun SearchView.ContentView() {
-    when (viewModel.listState) {
-        ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
-        ListState.Loading -> LoadingState()
-        ListState.HasData -> WorksList()
-        ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-        else -> InfoCell(Smiley.Sad, R.string.request_error_message)
+     Column {
+        when (viewModel.listState) {
+            ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
+            ListState.Loading -> LoadingState()
+            ListState.HasData -> WorksList()
+            ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
+            else -> InfoCell(Smiley.Sad, R.string.request_error_message)
+        }
     }
 }
-
 
 @Composable
 private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
@@ -107,49 +122,67 @@ private fun SearchView.WorksList() {
 }
 
 @Composable
-private fun SearchView.WorksListItem(work: Manga) {
-    val density = LocalDensity.current
-    val actionsButtonsSize = 150.dp
-
-    val offsetX = remember { Animatable(0f, 30f) }
+private fun SearchView.WorksListItem(work: IWork) {
     val scope = rememberCoroutineScope()
+    val density = LocalDensity.current
+    val haptic = LocalHapticFeedback.current
+    val actionsButtonsSize = 70.dp
+
+    // States
+    var hasVibrate by remember { mutableStateOf(false) }
+    val offsetX = remember { Animatable(0f) }
+    val actionButtonColor by animateColorAsState(
+        targetValue = if (hasVibrate) {
+            Color.Red
+        } else {
+            MaterialTheme.colorScheme.scrim
+        },
+        label = "actionButtonColor"
+    )
+    val actionButtonScale by animateFloatAsState(
+        targetValue = if (hasVibrate) {
+            1.2f
+        } else {
+            1f
+        },
+        label = "actionButtonScale"
+    )
     val state = rememberDraggableState { delta ->
-        val newValue = offsetX.value + delta
-        scope.launch { offsetX.animateTo(newValue) }
+        with(density) {
+            val newValue = offsetX.value + delta
+
+            if (newValue.roundToInt().toDp() < -actionsButtonsSize && !hasVibrate) {
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                hasVibrate = true
+            } else if (newValue.roundToInt().toDp() > -actionsButtonsSize) {
+                hasVibrate = false
+            }
+            scope.launch { offsetX.animateTo(newValue, spring(stiffness =  Spring.StiffnessVeryLow, visibilityThreshold = 0f)) }
+        }
     }
+
+    // Methods
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
-            if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize / 2) {
-                scope.launch { offsetX.animateTo(-actionsButtonsSize.toPx()) }
-            } else {
-                scope.launch { offsetX.animateTo(0f) }
+            if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
+                viewModel.libraryHandler(work)
             }
+
+            scope.launch {
+                offsetX.animateTo(0f, spring(stiffness =  Spring.StiffnessMedium))
+            }
+
+            hasVibrate = false
         }
     }
 
-    Box(Modifier.height(140.dp)) {
-        // Action buttons
-        Row(
-            modifier = Modifier
-                .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.scrim)
-                .width(actionsButtonsSize)
-                .align(Alignment.CenterEnd)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxHeight().weight(1f).clickable {  },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(painterResource(R.drawable.heart_plus_24px), null)
-            }
-            Divider(Modifier.fillMaxHeight().width(1.dp))
-            Box(
-                modifier = Modifier.fillMaxHeight().weight(1f).clickable { viewModel.addToLibrary(work) },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Outlined.LibraryAdd, null)
-            }
-        }
+    // UI
+    Box(
+        Modifier
+            .height(140.dp)
+            .background(actionButtonColor)) {
+        // Action button
+        ActionButton(work, actionsButtonsSize, actionButtonScale, Modifier.align(Alignment.CenterEnd))
 
         // Work details
         Column {
@@ -163,32 +196,16 @@ private fun SearchView.WorksListItem(work: Manga) {
                     )
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
-                    .clickable {  }
+                    .clickable { }
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
             ) {
-                ImageCell(work)
+                ImageCell(work.image)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
-                    Text(
-                        text = work.title,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 10.dp),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                    Text(
-                        text = if (work.synopsis.isNotNull()) {
-                            work.synopsis!!
-                        } else {
-                            stringResource(R.string.empty_description)
-                        },
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.outline
-                    )
+                    WorkTitleCell(work)
+                    TagCell(work.type)
+                    SynopsisCell(work.synopsis)
                 }
             }
 
@@ -198,24 +215,110 @@ private fun SearchView.WorksListItem(work: Manga) {
 }
 
 @Composable
-private fun ImageCell(work: Manga) {
-    if (work.image.bitmap.isNotNull()) {
+private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxHeight()
+            .width(buttonSize)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = if (work.isInLibrary) {
+                    painterResource(R.drawable.heart_minus_24px)
+                } else {
+                    painterResource(R.drawable.heart_plus_24px)
+                },
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.scale(iconScale)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ImageCell(image: Image) {
+    if (image.bitmap.isNotNull()) {
         Image(
-            bitmap = work.image.bitmap!!.asImageBitmap(),
+            bitmap = image.bitmap!!.asImageBitmap(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.width(70.dp)
+            modifier = Modifier
+                .width(70.dp)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
         )
     } else {
         AsyncImage(
-            model = work.image.smallImageUrl,
+            model = image.smallImageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.width(70.dp)
+            modifier = Modifier
+                .width(70.dp)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
         )
     }
+}
+
+@Composable
+private fun SearchView.WorkTitleCell(work: IWork) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = work.title,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        JScaledContent(
+            onPressed = { viewModel.libraryHandler(work) },
+            modifier = Modifier.padding(horizontal = 10.dp)) {
+            Icon(
+                painter = if (work.isInLibrary) {
+                    painterResource(R.drawable.heart_minus_24px)
+                } else {
+                    painterResource(R.drawable.heart_plus_24px)
+                },
+                tint = if (work.isInLibrary) {
+                    Color.Red
+                } else {
+                    MaterialTheme.colorScheme.onBackground
+                },
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchView.TagCell(type: WorkType) {
+    Box(Modifier.padding(vertical = 5.dp)) {
+        if (viewModel.filters.size > 1) {
+            JTag(type)
+        }
+    }
+}
+
+@Composable
+private fun SynopsisCell(text: String?) {
+    Text(
+        text = if (text.isNotNull()) {
+            text!!
+        } else {
+            stringResource(R.string.empty_description)
+        },
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis,
+        fontSize = 12.sp,
+        color = MaterialTheme.colorScheme.outline
+    )
 }
