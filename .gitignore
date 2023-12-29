@@ -8,7 +8,5 @@
 .cxx
 local.properties
 .idea
-gradle
 gradlew
 gradlew.bat
-/app/objectbox-models/

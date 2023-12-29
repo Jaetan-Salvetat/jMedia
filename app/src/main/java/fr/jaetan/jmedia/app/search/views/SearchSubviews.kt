@@ -24,8 +24,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -49,6 +52,7 @@ fun SearchView.TopBarView() {
 @Composable
 private fun SearchView.TopBarCell() {
     val focusManager = LocalFocusManager.current
+    val focusRequest = FocusRequester()
     val search = {
         viewModel.fetchWorks()
         focusManager.clearFocus()
@@ -59,7 +63,9 @@ private fun SearchView.TopBarCell() {
             TextField(
                 value = viewModel.searchValue,
                 onValueChange = { viewModel.searchValue = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequest),
                 placeholder = { Text(stringResource(R.string.research)) },
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
@@ -83,11 +89,15 @@ private fun SearchView.TopBarCell() {
         },
         scrollBehavior = scrollBehavior,
     )
+
+    LaunchedEffect(Unit) {
+        focusRequest.requestFocus()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SearchView.FilterCell() {
+fun SearchView.FilterCell() {
     val context = LocalContext.current
 
     Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {

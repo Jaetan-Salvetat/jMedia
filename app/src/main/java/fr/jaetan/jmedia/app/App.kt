@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.app
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -21,13 +22,13 @@ fun App(navController: NavHostController) {
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
-                    spring(.85f, 100f)
+                    spring(.85f, Spring.StiffnessLow)
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Right,
-                    spring(.85f, 100f)
+                    spring(.85f, Spring.StiffnessLow)
                 )
             }
         ) {

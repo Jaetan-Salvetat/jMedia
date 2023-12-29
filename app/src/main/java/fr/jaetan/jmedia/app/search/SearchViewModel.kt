@@ -39,7 +39,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         // Initialize works flow from local database
-        viewModelScope.launch { mangaController.initializeFlow() }
+        viewModelScope.launch(Dispatchers.IO) { mangaController.initializeFlow() }
 
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading

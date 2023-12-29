@@ -57,7 +57,7 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.5.4"
+    val composeVersion = "1.6.0-beta03"
 
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
