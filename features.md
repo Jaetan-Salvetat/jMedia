@@ -7,7 +7,6 @@
 - [ ] Series
 
 ### Bugfix
-- [ ] Media list bottom sheet not closing properly when scrolling down
 - [x] improve the quality of the image in the search view
 
 ### Global Features
