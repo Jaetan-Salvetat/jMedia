@@ -7,7 +7,6 @@
 - [ ] Series
 
 ### Bugfix
-- [ ] Mangas synopsis are in english (we want it in french)
 - [ ] Media list bottom sheet not closing properly when scrolling down
 - [x] improve the quality of the image in the search view
 
@@ -31,26 +30,14 @@
 ### Search
 - [x] Can search a work
 - [ ] Can open the **work detail** screen
-- [ ] Can add a work to library
-- [ ] Can add a work to wishlist
+- [x] Can add a work to library
 - [x] Show the empty/default/error states
-- [ ] display worklist tab
-- [ ] save previous search on work type change
-- [ ] display result of selected types
+- [x] display work types list tab
+- [x] save previous search on work type change
+- [x] display result of selected types
 
 ### Work detail
 - [ ] Can show all work detail
 - [ ] Can add a work to library
 - [ ] Can add a work to wishlist
 - [ ] Show an retry dialog when an error as occured
-
-### Wishlist
-- [ ] Show all works
-- [ ] Can search by name
-- [ ] Can filter
-- [ ] Can open **work detail** screen
-- [ ] Can open **search** screen
-- [ ] Can change the display mode
-- [ ] Show empty state
-- [ ] Remove one or more works from wishlist
-- [ ] if the display mode is *grid*, can change the numbers of works by row
