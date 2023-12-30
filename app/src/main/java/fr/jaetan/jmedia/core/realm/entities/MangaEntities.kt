@@ -70,6 +70,7 @@ class MangaEntity(): RealmObject {
     var synopsis: String? = null
     var volumes: Int? = null
     var status: String = Status.Unknown.name
+    var score: Double? = null
     var image: ImageEntity? = ImageEntity()
     var authors: RealmList<AuthorEntity> = realmListOf()
     var genres: RealmList<GenreEntity> = realmListOf()
@@ -81,6 +82,7 @@ class MangaEntity(): RealmObject {
         synopsis: String?,
         volumes: Int?,
         status: String,
+        score: Double?,
         image: ImageEntity,
         authors: List<AuthorEntity>,
         genres: List<GenreEntity>,
@@ -91,6 +93,7 @@ class MangaEntity(): RealmObject {
         this.synopsis = synopsis
         this.volumes = volumes
         this.status = status
+        this.score = score
         this.image = image
         this.authors = authors.toRealmList()
         this.genres = genres.toRealmList()
@@ -126,20 +129,7 @@ fun List<DemographicEntity>.toDemographics(): List<Demographic> = map {
     )
 }
 
-fun List<MangaEntity>.toMangas(): List<Manga> = map {
-    Manga(
-        id = it.id,
-        title = it.title,
-        synopsis = it.synopsis,
-        volumes = it.volumes,
-        status = Status.fromString(it.status),
-        image = it.image.toImage(),
-        authors = it.authors.toAuthors(),
-        genres = it.genres.toGenres(),
-        demographics = it.demographics.toDemographics(),
-        isInLibrary = true
-    )
-}
+fun List<MangaEntity>.toMangas(): List<Manga> = map {it.toManga() }
 
 fun MangaEntity.toManga(): Manga = Manga(
     id = id,
@@ -147,6 +137,7 @@ fun MangaEntity.toManga(): Manga = Manga(
     synopsis = synopsis,
     volumes = volumes,
     status = Status.fromString(status),
+    score = score,
     image = image!!.toImage(),
     authors = authors.toAuthors(),
     genres = genres.toGenres(),

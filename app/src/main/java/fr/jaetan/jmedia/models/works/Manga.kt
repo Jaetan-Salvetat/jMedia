@@ -1,7 +1,7 @@
 package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
+import fr.jaetan.jmedia.models.WorkType
 import org.mongodb.kbson.ObjectId
 
 data class Manga(
@@ -16,7 +16,8 @@ data class Manga(
     val status: Status,
     val authors: List<Author>,
     val genres: List<Genre>,
-    val demographics: List<Demographic>
+    val demographics: List<Demographic>,
+    val score: Double?
 ): IWork
 
 fun Manga.toBdd(): MangaEntity = MangaEntity(
@@ -25,9 +26,9 @@ fun Manga.toBdd(): MangaEntity = MangaEntity(
     synopsis = synopsis,
     volumes = volumes,
     status = status.name,
+    score = score,
     image = image.toBdd(),
     authors = authors.toBdd(),
     genres = genres.toBdd(),
     demographics = demographics.toBdd()
-
 )
