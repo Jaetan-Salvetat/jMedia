@@ -12,6 +12,9 @@
 ### Global Features
  
 # Screens
+### Onboarding
+- [ ] Show the onboarding at the first app start
+
 ### Library
 - [ ] Show all works
 - [ ] Can open **work detail** screen
