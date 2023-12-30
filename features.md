@@ -1,7 +1,7 @@
 # Sample Informations
 ### Works types
 - [x] Mangas
-- [ ] Animes
+- [x] Animes
 - [ ] Movies
 - [ ] Series
 - [ ] Series

@@ -1,7 +1,7 @@
-package fr.jaetan.jmedia.core.models.works
+package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.core.models.WorkType
-import fr.jaetan.jmedia.core.services.realm.entities.MangaEntity
+import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import org.mongodb.kbson.ObjectId
 
 data class Manga(

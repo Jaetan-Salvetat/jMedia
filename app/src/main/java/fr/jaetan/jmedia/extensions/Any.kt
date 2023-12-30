@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.extensions
+package fr.jaetan.jmedia.extensions
 
 import android.util.Log
 

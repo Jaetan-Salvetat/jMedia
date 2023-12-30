@@ -37,8 +37,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
-import fr.jaetan.jmedia.core.extensions.scrollableTopAppBarBackground
-import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.extensions.scrollableTopAppBarBackground
+import fr.jaetan.jmedia.models.WorkType
 
 @Composable
 fun SearchView.TopBarView() {

@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia
 
-import fr.jaetan.jmedia.core.extensions.printDataClassToString
+import fr.jaetan.jmedia.extensions.printDataClassToString
 import fr.jaetan.jmedia.core.networking.MangaApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue

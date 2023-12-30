@@ -1,12 +1,12 @@
-package fr.jaetan.jmedia.core.services.realm.entities
+package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.core.models.works.Author
-import fr.jaetan.jmedia.core.models.works.Demographic
-import fr.jaetan.jmedia.core.models.works.Genre
-import fr.jaetan.jmedia.core.models.works.Image
-import fr.jaetan.jmedia.core.models.works.Manga
-import fr.jaetan.jmedia.core.models.works.Status
-import fr.jaetan.jmedia.core.models.works.fromString
+import fr.jaetan.jmedia.models.works.Author
+import fr.jaetan.jmedia.models.works.Demographic
+import fr.jaetan.jmedia.models.works.Genre
+import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.works.Status
+import fr.jaetan.jmedia.models.works.fromString
 import io.realm.kotlin.ext.backlinks
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList

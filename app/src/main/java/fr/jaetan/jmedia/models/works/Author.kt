@@ -1,6 +1,6 @@
-package fr.jaetan.jmedia.core.models.works
+package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.core.services.realm.entities.AuthorEntity
+import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
 import kotlinx.serialization.Serializable
 import org.mongodb.kbson.ObjectId
 

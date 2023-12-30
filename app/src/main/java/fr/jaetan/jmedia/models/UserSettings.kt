@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.models
+package fr.jaetan.jmedia.models
 
 data class UserSettings(
     val selectedWorkTypes: List<WorkType> = listOf()

@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia.core.networking
 
-import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.core.networking.models.MangaApiModels
 import fr.jaetan.jmedia.core.networking.models.toMangas
 import io.ktor.client.HttpClient

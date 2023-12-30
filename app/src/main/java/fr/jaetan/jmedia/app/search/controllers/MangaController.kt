@@ -1,13 +1,13 @@
 package fr.jaetan.jmedia.app.search.controllers
 
 import androidx.compose.runtime.mutableStateListOf
-import fr.jaetan.jmedia.core.extensions.isNotNull
-import fr.jaetan.jmedia.core.extensions.isNull
-import fr.jaetan.jmedia.core.models.works.Manga
-import fr.jaetan.jmedia.core.models.works.toBdd
+import fr.jaetan.jmedia.extensions.isNotNull
+import fr.jaetan.jmedia.extensions.isNull
+import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.works.toBdd
 import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.core.services.realm.entities.toMangas
+import fr.jaetan.jmedia.core.realm.entities.toMangas
 
 class MangaController: IWorkController<Manga>() {
     val mangas = mutableStateListOf<Manga>()

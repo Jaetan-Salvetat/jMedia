@@ -7,10 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.app.search.controllers.MangaController
-import fr.jaetan.jmedia.core.models.ListState
-import fr.jaetan.jmedia.core.models.WorkType
-import fr.jaetan.jmedia.core.models.works.IWork
-import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.models.ListState
+import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.IWork
+import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.core.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

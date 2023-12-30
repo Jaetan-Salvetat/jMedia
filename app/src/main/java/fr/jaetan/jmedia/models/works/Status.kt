@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.models.works
+package fr.jaetan.jmedia.models.works
 
 enum class Status {
     Publishing,

@@ -1,12 +1,12 @@
 package fr.jaetan.jmedia.core.networking.models
 
-import fr.jaetan.jmedia.core.models.works.Author
-import fr.jaetan.jmedia.core.models.works.Demographic
-import fr.jaetan.jmedia.core.models.works.Genre
-import fr.jaetan.jmedia.core.models.works.Image
-import fr.jaetan.jmedia.core.models.works.Manga
-import fr.jaetan.jmedia.core.models.works.Status
-import fr.jaetan.jmedia.core.models.works.fromString
+import fr.jaetan.jmedia.models.works.Author
+import fr.jaetan.jmedia.models.works.Demographic
+import fr.jaetan.jmedia.models.works.Genre
+import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.works.Status
+import fr.jaetan.jmedia.models.works.fromString
 import kotlinx.serialization.Serializable
 
 class MangaApiModels {

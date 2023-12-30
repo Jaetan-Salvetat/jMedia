@@ -8,8 +8,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
-import fr.jaetan.jmedia.core.models.UserSettings
-import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.models.UserSettings
+import fr.jaetan.jmedia.models.WorkType
 
 class UserSettingsModel: ViewModel() {
     private val Context.userSettings by preferencesDataStore(UserSettingsKeys.SETTINGS_KEY)
