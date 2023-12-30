@@ -79,7 +79,6 @@ fun SearchView.ContentView() {
             ListState.Loading -> LoadingState()
             ListState.HasData -> WorksList()
             ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-            else -> InfoCell(Smiley.Sad, R.string.request_error_message)
         }
     }
 }

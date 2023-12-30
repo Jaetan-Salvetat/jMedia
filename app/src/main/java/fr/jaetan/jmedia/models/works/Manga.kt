@@ -8,6 +8,7 @@ data class Manga(
     override val title: String,
     override val synopsis: String?,
     override val image: Image,
+    override val rating: Double?,
     override var isInLibrary: Boolean = false,
     override val type: WorkType = WorkType.Manga,
 
@@ -17,7 +18,6 @@ data class Manga(
     val authors: List<Author>,
     val genres: List<Genre>,
     val demographics: List<Demographic>,
-    val score: Double?
 ): IWork
 
 fun Manga.toBdd(): MangaEntity = MangaEntity(
@@ -26,7 +26,7 @@ fun Manga.toBdd(): MangaEntity = MangaEntity(
     synopsis = synopsis,
     volumes = volumes,
     status = status.name,
-    score = score,
+    score = rating,
     image = image.toBdd(),
     authors = authors.toBdd(),
     genres = genres.toBdd(),

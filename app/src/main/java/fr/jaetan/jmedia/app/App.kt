@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,7 +16,7 @@ import fr.jaetan.jmedia.core.services.Navigator
 fun App(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Navigator.library.route) {
         composable(Navigator.library.route) {
-            LibraryView().GetView(navController)
+            LibraryView().GetView(navController, viewModel())
         }
         composable(
             route = Navigator.search.route,
@@ -32,7 +33,7 @@ fun App(navController: NavHostController) {
                 )
             }
         ) {
-            SearchView().GetView(navController)
+            SearchView().GetView(navController, viewModel())
         }
     }
 }

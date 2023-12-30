@@ -41,6 +41,6 @@ fun AnimeApiModels.AnimeApi.toAnimes(): List<Anime> = data.map {
         genres = it.genres,
         demographics = it.demographics,
         episodes = it.episodes,
-        score = it.score,
+        rating = it.score,
     )
 }

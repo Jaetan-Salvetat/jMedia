@@ -8,4 +8,5 @@ interface IWork {
     val type: WorkType
     var isInLibrary: Boolean
     val image: Image
+    val rating: Double?
 }

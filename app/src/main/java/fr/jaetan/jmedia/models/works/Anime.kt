@@ -7,6 +7,7 @@ data class Anime(
     override val title: String,
     override val synopsis: String?,
     override val image: Image,
+    override val rating: Double?,
     override val type: WorkType = WorkType.Anime,
     override var isInLibrary: Boolean = false,
 
@@ -15,5 +16,4 @@ data class Anime(
     val genres: List<Genre>,
     val demographics: List<Demographic>,
     val episodes: Int?,
-    val score: Double?
 ): IWork

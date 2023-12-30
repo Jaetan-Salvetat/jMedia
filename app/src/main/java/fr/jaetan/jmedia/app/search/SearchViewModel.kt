@@ -1,17 +1,19 @@
 package fr.jaetan.jmedia.app.search
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.app.search.controllers.AnimeController
 import fr.jaetan.jmedia.app.search.controllers.MangaController
+import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.Manga
-import fr.jaetan.jmedia.core.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,16 +22,19 @@ import kotlinx.coroutines.launch
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
     // Controllers
     private val mangaController = MangaController()
+    private val animeController = AnimeController()
 
     // States
     var searchValue by mutableStateOf("")
     var listState by mutableStateOf(ListState.Default)
-    var filters = MainViewModel.userSettingsModel.settings.selectedWorkTypes
+    val filters: List<WorkType>
+        get() = MainViewModel.userSettingsModel.selectedWorkTypes
 
     // Variables
     val implementedFilters = WorkType.all.filter { it.implemented }
     val works: List<IWork>
-        get() = mangaController.mangas.sortedBy { it.title }
+        get() = (mangaController.mangas
+                    + animeController.animes).sortedBy { it.title }
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
 
@@ -39,7 +44,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         // Initialize works flow from local database
-        viewModelScope.launch(Dispatchers.IO) { mangaController.initializeFlow() }
+        viewModelScope.launch(dispatcher) { mangaController.initializeFlow() }
 
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading
@@ -47,6 +52,9 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             // Mangas handler
             if (filters.contains(WorkType.Manga)) {
                 mangaController.fetch(searchValue)
+            }
+            if (filters.contains(WorkType.Anime)) {
+                animeController.fetch(searchValue)
             }
 
             listState = if (works.isEmpty()) {
@@ -73,6 +81,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             }
 
             MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
+            Log.d("testt", works.size.toString())
         }
     }
 

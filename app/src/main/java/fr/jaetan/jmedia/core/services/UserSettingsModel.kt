@@ -1,25 +1,22 @@
 package fr.jaetan.jmedia.core.services
 
 import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
-import fr.jaetan.jmedia.models.UserSettings
 import fr.jaetan.jmedia.models.WorkType
 
 class UserSettingsModel: ViewModel() {
     private val Context.userSettings by preferencesDataStore(UserSettingsKeys.SETTINGS_KEY)
-    var settings by mutableStateOf(UserSettings())
-    // var workTypes = mutableStateListOf<WorkType>()
+    var selectedWorkTypes = mutableStateListOf<WorkType>()
 
     suspend fun initialize(context: Context) {
         context.userSettings.data.collect { prefs ->
             prefs[UserSettingsKeys.workTypes]?.let {
-                settings = settings.copy(selectedWorkTypes = WorkType.fromStringSet(it))
+                selectedWorkTypes.clear()
+                selectedWorkTypes.addAll(WorkType.fromStringSet(it))
             }
         }
     }

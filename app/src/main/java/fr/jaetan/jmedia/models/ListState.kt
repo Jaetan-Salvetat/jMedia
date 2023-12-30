@@ -4,6 +4,5 @@ enum class ListState {
     Default,
     Loading,
     HasData,
-    EmptyData,
-    Error
+    EmptyData
 }
