@@ -1,7 +1,6 @@
 package fr.jaetan.jmedia.app.search
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -33,12 +32,18 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     // Variables
     val implementedFilters = WorkType.all.filter { it.implemented }
     val works: List<IWork>
-        get() = (mangaController.mangas
-                    + animeController.animes).sortedBy { it.title }
+        get() {
+            val works = mutableListOf<IWork>()
+
+            if (filters.contains(WorkType.Manga)) works.addAll(mangaController.mangas)
+            if (filters.contains(WorkType.Anime)) works.addAll(animeController.animes)
+
+            return works.sortedBy { it.title }
+        }
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
 
-    fun fetchWorks() {
+    fun fetchWorks(force: Boolean = true) {
         if (!searchIsEnabled) {
             return
         }
@@ -51,10 +56,10 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
             // Mangas handler
             if (filters.contains(WorkType.Manga)) {
-                mangaController.fetch(searchValue)
+                mangaController.fetch(searchValue, force)
             }
             if (filters.contains(WorkType.Anime)) {
-                animeController.fetch(searchValue)
+                animeController.fetch(searchValue, force)
             }
 
             listState = if (works.isEmpty()) {
@@ -81,7 +86,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             }
 
             MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
-            Log.d("testt", works.size.toString())
+            fetchWorks(false)
         }
     }
 
@@ -96,6 +101,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
         viewModelScope.launch {
             MainViewModel.userSettingsModel.setWorkTypes(context, localFilters)
+            fetchWorks(false)
         }
     }
 }

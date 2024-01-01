@@ -1,19 +1,21 @@
 package fr.jaetan.jmedia.app.search.controllers
 
 import androidx.compose.runtime.mutableStateListOf
+import fr.jaetan.jmedia.core.networking.MangaApi
+import fr.jaetan.jmedia.core.realm.entities.toMangas
+import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.toBdd
-import fr.jaetan.jmedia.core.networking.MangaApi
-import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.core.realm.entities.toMangas
 
 class MangaController: IWorkController<Manga>() {
     val mangas = mutableStateListOf<Manga>()
     private var localMangas = mutableListOf<Manga>()
 
-    override suspend fun fetch(searchValue: String) {
+    override suspend fun fetch(searchValue: String, force: Boolean) {
+        if (!force && mangas.isNotEmpty()) return
+
         mangas.clear()
         mangas.addAll(generateBitmaps(MangaApi.search(searchValue)))
 

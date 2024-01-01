@@ -4,7 +4,7 @@ import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.generateBitmap
 
 abstract class IWorkController<T: IWork> {
-    abstract suspend fun fetch(searchValue: String)
+    abstract suspend fun fetch(searchValue: String, force: Boolean)
     abstract suspend fun libraryHandler(work: T)
     abstract suspend fun initializeFlow()
     protected abstract fun setLibraryValues()

@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -111,17 +112,18 @@ private fun LoadingState() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchView.WorksList() {
     LazyColumn {
-        items(viewModel.works) {
-            WorksListItem(it)
+        items(viewModel.works, key = { "${it.title}_${it.type}" }) {
+            WorksListItem(it, Modifier.animateItemPlacement())
         }
     }
 }
 
 @Composable
-private fun SearchView.WorksListItem(work: IWork) {
+private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
@@ -177,7 +179,7 @@ private fun SearchView.WorksListItem(work: IWork) {
 
     // UI
     Box(
-        Modifier
+        modifier
             .height(140.dp)
             .background(actionButtonColor)) {
         // Action button

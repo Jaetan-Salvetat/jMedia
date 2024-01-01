@@ -7,7 +7,8 @@ import fr.jaetan.jmedia.models.works.Anime
 class AnimeController: IWorkController<Anime>() {
     val animes = mutableStateListOf<Anime>()
 
-    override suspend fun fetch(searchValue: String) {
+    override suspend fun fetch(searchValue: String, force: Boolean) {
+        if (!force && animes.isNotEmpty()) return
         animes.clear()
         animes.addAll(generateBitmaps(AnimeApi.search(searchValue)))
     }
