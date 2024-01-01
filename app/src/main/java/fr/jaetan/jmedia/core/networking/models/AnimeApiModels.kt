@@ -1,31 +1,30 @@
 package fr.jaetan.jmedia.core.networking.models
 
-import fr.jaetan.jmedia.models.works.Author
+import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.Demographic
 import fr.jaetan.jmedia.models.works.Genre
 import fr.jaetan.jmedia.models.works.Image
-import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.Status
 import fr.jaetan.jmedia.models.works.fromString
 import kotlinx.serialization.Serializable
 
-class MangaApiModels {
+class AnimeApiModels {
     @Serializable
-     data class MangasApi(
-         val data: List<MangaData>
-     )
+    data class AnimeApi(
+        val data: List<AnimeData>
+    )
+
     @Serializable
-     data class MangaData(
+    data class AnimeData(
         val title: String,
         val synopsis: String?,
-        val volumes: Int?,
+        val episodes: Int?,
         val status: String,
         val images: Images,
-        val authors: List<Author>,
         val genres: List<Genre>,
         val demographics: List<Demographic>,
         val score: Double?
-     )
+    )
 
     @Serializable
     data class Images(
@@ -33,16 +32,15 @@ class MangaApiModels {
     )
 }
 
-fun MangaApiModels.MangasApi.toMangas(): List<Manga> = data.map {
-    Manga(
+fun AnimeApiModels.AnimeApi.toAnimes(): List<Anime> = data.map {
+    Anime(
         title = it.title,
         synopsis = it.synopsis,
-        volumes = it.volumes,
-        status = Status.fromString(it.status),
-        rating = it.score,
         image = it.images.webp,
-        authors = it.authors,
+        status = Status.fromString(it.status),
         genres = it.genres,
-        demographics = it.demographics
+        demographics = it.demographics,
+        episodes = it.episodes,
+        rating = it.score,
     )
 }

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JMedia"
         tools:targetApi="34"
-        android:enableOnBackInvokedCallback="false">
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".app.MainActivity"
             android:exported="true"

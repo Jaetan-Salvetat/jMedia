@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fr.jaetan.jmedia.app.library.LibraryView
-import fr.jaetan.jmedia.core.models.WorkType
-import fr.jaetan.jmedia.core.models.works.Manga
+import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.Manga
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,7 +47,7 @@ fun LibraryView.PageContent(page: Int) {
         items(viewModel.mangaList.size, key = {it}) { index ->
             val manga = viewModel.mangaList[index]
             // Appeler votre fonction composable pour afficher un élément de la grille
-            MangaGridItem(manga = manga) { clickedManga ->
+            MangaGridItem(manga = manga) {
                 // Gérer l'événement de clic sur un manga
                 // TODO
             }
