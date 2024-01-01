@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
 
 @OptIn(ExperimentalSerializationApi::class)
-abstract class JMediaApi {
+abstract class JMediaApi(private val namingStrategy: JsonNamingStrategy? = JsonNamingStrategy.SnakeCase) {
     protected abstract val baseUrl: String
 
     protected val httpClient = HttpClient {
@@ -24,7 +24,7 @@ abstract class JMediaApi {
                 prettyPrint = true
                 isLenient = true
                 ignoreUnknownKeys = true
-                namingStrategy = JsonNamingStrategy.SnakeCase
+                namingStrategy = this@JMediaApi.namingStrategy
             })
         }
         install(Logging) {

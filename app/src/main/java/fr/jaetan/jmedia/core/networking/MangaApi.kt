@@ -7,7 +7,9 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
 import io.ktor.http.takeFrom
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@OptIn(ExperimentalSerializationApi::class)
 object MangaApi: JMediaApi() {
     override val baseUrl = "https://api.jikan.moe/v4/manga"
 
