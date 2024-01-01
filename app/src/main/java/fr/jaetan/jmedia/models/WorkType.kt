@@ -1,11 +1,11 @@
-package fr.jaetan.jmedia.core.models
+package fr.jaetan.jmedia.models
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import fr.jaetan.jmedia.R
-import fr.jaetan.jmedia.core.extensions.removeNullValues
+import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.ui.theme.JColor
 
 enum class WorkType(
@@ -15,7 +15,7 @@ enum class WorkType(
     val implemented: Boolean
 ) {
     Manga(R.string.mangas, R.string.my_mangas, JColor.Red, true),
-    Anime(R.string.animes, R.string.my_animes, JColor.VeryLightGreen, false),
+    Anime(R.string.animes, R.string.my_animes, JColor.VeryLightGreen, true),
     Book(R.string.books, R.string.my_books, JColor.Orange, false),
     Serie(R.string.series, R.string.my_series, JColor.Green, false),
     Movie(R.string.movies, R.string.my_movies, JColor.Pink, false);
@@ -36,7 +36,7 @@ enum class WorkType(
         private fun fromString(type: String): WorkType? = all.find { it.name == type }
 
         fun fromStringSet(types: Set<String>): List<WorkType> = types.toList().map {
-            WorkType.fromString(it)
+            fromString(it)
         }.removeNullValues()
     }
 }

@@ -7,8 +7,6 @@ import fr.jaetan.jmedia.app.library.views.TopBarView
 import fr.jaetan.jmedia.ui.Screen
 
 class LibraryView: Screen<LibraryViewModel>() {
-    override val viewModel = LibraryViewModel()
-
     @Composable
     override fun TopBar() {
         TopBarView()

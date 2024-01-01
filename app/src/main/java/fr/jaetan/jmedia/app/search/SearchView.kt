@@ -6,8 +6,6 @@ import fr.jaetan.jmedia.app.search.views.TopBarView
 import fr.jaetan.jmedia.ui.Screen
 
 class SearchView: Screen<SearchViewModel>() {
-    override val viewModel = SearchViewModel()
-
     @Composable
     override fun TopBar() {
         TopBarView()

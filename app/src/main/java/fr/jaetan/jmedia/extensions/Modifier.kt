@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.extensions
+package fr.jaetan.jmedia.extensions
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring

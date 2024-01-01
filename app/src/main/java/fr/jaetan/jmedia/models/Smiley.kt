@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.models
+package fr.jaetan.jmedia.models
 
 enum class Smiley(val text: String) {
     Sad("(\u2060╯\u2060︵\u2060╰\u2060,\u2060)"),

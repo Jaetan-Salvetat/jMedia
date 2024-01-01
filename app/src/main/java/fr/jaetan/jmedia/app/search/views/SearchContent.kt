@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,12 +60,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
-import fr.jaetan.jmedia.core.extensions.isNotNull
-import fr.jaetan.jmedia.core.models.ListState
-import fr.jaetan.jmedia.core.models.Smiley
-import fr.jaetan.jmedia.core.models.WorkType
-import fr.jaetan.jmedia.core.models.works.IWork
-import fr.jaetan.jmedia.core.models.works.Image
+import fr.jaetan.jmedia.extensions.isNotNull
+import fr.jaetan.jmedia.models.ListState
+import fr.jaetan.jmedia.models.Smiley
+import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.IWork
+import fr.jaetan.jmedia.models.works.Image
 import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
@@ -79,7 +80,6 @@ fun SearchView.ContentView() {
             ListState.Loading -> LoadingState()
             ListState.HasData -> WorksList()
             ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-            else -> InfoCell(Smiley.Sad, R.string.request_error_message)
         }
     }
 }
@@ -112,17 +112,18 @@ private fun LoadingState() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchView.WorksList() {
     LazyColumn {
-        items(viewModel.works) {
-            WorksListItem(it)
+        items(viewModel.works, key = { "${it.title}_${it.type}" }) {
+            WorksListItem(it, Modifier.animateItemPlacement())
         }
     }
 }
 
 @Composable
-private fun SearchView.WorksListItem(work: IWork) {
+private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
@@ -178,7 +179,7 @@ private fun SearchView.WorksListItem(work: IWork) {
 
     // UI
     Box(
-        Modifier
+        modifier
             .height(140.dp)
             .background(actionButtonColor)) {
         // Action button

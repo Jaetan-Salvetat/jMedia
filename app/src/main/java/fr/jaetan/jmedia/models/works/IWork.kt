@@ -1,6 +1,6 @@
-package fr.jaetan.jmedia.core.models.works
+package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.models.WorkType
 
 interface IWork {
     val title: String
@@ -8,4 +8,5 @@ interface IWork {
     val type: WorkType
     var isInLibrary: Boolean
     val image: Image
+    val rating: Double?
 }

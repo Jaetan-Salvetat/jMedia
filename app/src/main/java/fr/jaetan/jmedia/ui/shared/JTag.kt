@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.jaetan.jmedia.core.models.WorkType
+import fr.jaetan.jmedia.models.WorkType
 
 @Composable
 fun JTag(type: WorkType) {

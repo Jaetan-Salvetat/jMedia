@@ -14,7 +14,7 @@ import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 abstract class Screen <T: ViewModel> {
-    abstract val viewModel: T
+    lateinit var viewModel: T
     /**
      * Default value is **TopAppBarDefaults.enterAlwaysScrollBehavior()**
      */
@@ -31,8 +31,8 @@ abstract class Screen <T: ViewModel> {
     open fun BottomBar() = Unit
 
     @Composable
-    open fun GetView(nc: NavHostController? = null) {
-        Initialize(nc)
+    open fun GetView(nc: NavHostController? = null, model: T) {
+        Initialize(nc, model)
 
         Scaffold(
             topBar = { TopBar() },
@@ -58,7 +58,8 @@ abstract class Screen <T: ViewModel> {
     open fun BottomSheet() = Unit
 
     @Composable
-    open fun Initialize(nc: NavHostController?) {
+    open fun Initialize(nc: NavHostController?, model: T) {
+        this.viewModel = model
         navController = nc
         scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     }

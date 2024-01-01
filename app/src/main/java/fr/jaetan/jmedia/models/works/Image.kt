@@ -1,9 +1,9 @@
-package fr.jaetan.jmedia.core.models.works
+package fr.jaetan.jmedia.models.works
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import fr.jaetan.jmedia.core.services.realm.entities.ImageEntity
+import fr.jaetan.jmedia.core.realm.entities.ImageEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -14,9 +14,9 @@ import java.net.URL
 @Serializable
 data class Image(
     val id: ObjectId = ObjectId(),
-    val imageUrl: String,
-    val smallImageUrl: String,
-    val largeImageUrl: String,
+    val imageUrl: String = "",
+    val smallImageUrl: String = "",
+    val largeImageUrl: String = "",
     @Transient var bitmap: Bitmap? = null
 )
 

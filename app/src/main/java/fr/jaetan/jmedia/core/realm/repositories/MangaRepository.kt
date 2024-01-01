@@ -1,8 +1,6 @@
-package fr.jaetan.jmedia.core.services.realm.repositories
+package fr.jaetan.jmedia.core.realm.repositories
 
-import android.util.Log
-import fr.jaetan.jmedia.core.services.realm.entities.AuthorEntity
-import fr.jaetan.jmedia.core.services.realm.entities.MangaEntity
+import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
@@ -16,7 +14,6 @@ class MangaRepository(private val realm: Realm) {
         realm.write {
             try {
                 copyToRealm(manga)
-                Log.d("testt", realm.query<AuthorEntity>().count().find().toString())
             } catch (_: Exception) {}
         }
     }
