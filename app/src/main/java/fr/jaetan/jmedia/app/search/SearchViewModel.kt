@@ -92,8 +92,9 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             }
 
             MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
-            // TODO: Do not start the research if works are empty
-            fetchWorks(false)
+            if (listState != ListState.Default) {
+                fetchWorks(false)
+            }
         }
     }
 
@@ -108,8 +109,9 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
         viewModelScope.launch {
             MainViewModel.userSettingsModel.setWorkTypes(context, localFilters)
-            // TODO: Do not start the research if works are empty
-            fetchWorks(false)
+            if (listState != ListState.Default) {
+                fetchWorks(false)
+            }
         }
     }
 }
