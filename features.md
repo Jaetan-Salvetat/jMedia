@@ -2,8 +2,8 @@
 ### Works types
 - [x] Mangas
 - [x] Animes
+- [x] Books
 - [ ] Movies
-- [ ] Series
 - [ ] Series
 
 ### Bugfix
