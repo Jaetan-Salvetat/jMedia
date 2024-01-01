@@ -18,16 +18,12 @@
 ### Library
 - [ ] Show all works
 - [ ] Can open **work detail** screen
-- [ ] Can change the current work type
 - [ ] Can search a work by name
 - [ ] Can filter works
-- [ ] Can open the **wishlist** screen
 - [x] Can open the **search** screen
-- [ ] Can change the display mode
 - [ ] Show empty state
 - [ ] Remove one or more works from library
-- [ ] if the display mode is *grid*, can change the numbers of works by row
-- [ ] display work type tab bar
+- [x] display work type tab bar
 
 ### Search
 - [x] Can search a work
