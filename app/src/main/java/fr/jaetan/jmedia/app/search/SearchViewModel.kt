@@ -11,6 +11,7 @@ import fr.jaetan.jmedia.app.search.controllers.MangaController
 import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.Manga
 import kotlinx.coroutines.CoroutineDispatcher
@@ -43,13 +44,17 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
 
+    // Methods
     fun fetchWorks(force: Boolean = true) {
         if (!searchIsEnabled) {
             return
         }
 
         // Initialize works flow from local database
-        viewModelScope.launch(dispatcher) { mangaController.initializeFlow() }
+        if (listState == ListState.Default) {
+            viewModelScope.launch(dispatcher) { mangaController.initializeFlow() }
+            viewModelScope.launch(dispatcher) { animeController.initializeFlow() }
+        }
 
         viewModelScope.launch(dispatcher) {
             listState = ListState.Loading
@@ -74,6 +79,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         viewModelScope.launch {
             when (work) {
                 is Manga -> mangaController.libraryHandler(work)
+                is Anime -> animeController.libraryHandler(work)
             }
         }
     }
@@ -86,6 +92,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             }
 
             MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
+            // TODO: Do not start the research if works are empty
             fetchWorks(false)
         }
     }
@@ -101,6 +108,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
         viewModelScope.launch {
             MainViewModel.userSettingsModel.setWorkTypes(context, localFilters)
+            // TODO: Do not start the research if works are empty
             fetchWorks(false)
         }
     }

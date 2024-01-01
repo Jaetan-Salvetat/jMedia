@@ -14,9 +14,9 @@ import java.net.URL
 @Serializable
 data class Image(
     val id: ObjectId = ObjectId(),
-    val imageUrl: String,
-    val smallImageUrl: String,
-    val largeImageUrl: String,
+    val imageUrl: String = "",
+    val smallImageUrl: String = "",
+    val largeImageUrl: String = "",
     @Transient var bitmap: Bitmap? = null
 )
 
