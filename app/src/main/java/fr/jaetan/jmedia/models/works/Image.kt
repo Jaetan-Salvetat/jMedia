@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import fr.jaetan.jmedia.core.realm.entities.ImageEntity
+import fr.jaetan.jmedia.extensions.toHttpsPrefix
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -23,13 +24,13 @@ data class Image(
  suspend fun Image.generateBitmap() {
      bitmap = try {
          withContext(Dispatchers.IO) {
-             val url = URL(imageUrl)
+             val url = URL(imageUrl.toHttpsPrefix())
              val bitmap = BitmapFactory.decodeStream(url.openStream())
 
              Bitmap.createScaledBitmap(
                  bitmap,
-                 (bitmap.width / 2.5).toInt(),
-                 (bitmap.height / 2.5).toInt(),
+                 bitmap.width / 2,
+                 bitmap.height / 2,
                  false
              )
          }

@@ -9,3 +9,9 @@ fun String.containsList(list: List<String>): Boolean {
 
     return false
 }
+
+fun String.toHttpsPrefix(): String = when {
+    this.startsWith("http://")  -> replace("http://", "https://")
+    this.startsWith("https://")  -> this
+    else -> "https://$this"
+}

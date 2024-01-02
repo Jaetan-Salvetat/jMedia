@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.app.search.controllers.AnimeController
+import fr.jaetan.jmedia.app.search.controllers.BookController
 import fr.jaetan.jmedia.app.search.controllers.IWorkController
 import fr.jaetan.jmedia.app.search.controllers.MangaController
 import fr.jaetan.jmedia.core.services.MainViewModel
@@ -23,6 +24,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     // Controllers
     private val mangaController = MangaController()
     private val animeController = AnimeController()
+    private val bookController = BookController()
 
     // States
     var searchValue by mutableStateOf("")
@@ -32,6 +34,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
     // Variables
     val implementedFilters = WorkType.all.filter { it.implemented }
+    val searchIsEnabled: Boolean
+        get() = searchValue.length >= 2 && filters.isNotEmpty()
     val works: List<IWork>
         get() {
             val works = mutableListOf<IWork>()
@@ -46,8 +50,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
             return works.sortedBy { it.title }
         }
-    val searchIsEnabled: Boolean
-        get() = searchValue.length >= 2 && filters.isNotEmpty()
 
     // Methods
     fun fetchWorks(force: Boolean = true) {
@@ -119,7 +121,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     private fun getController(type: WorkType): IWorkController<IWork>? = when (type) {
         WorkType.Manga -> mangaController as? IWorkController<IWork>
         WorkType.Anime -> animeController as? IWorkController<IWork>
-        WorkType.Book -> TODO("Not implemented yet")
+        WorkType.Book -> bookController as? IWorkController<IWork>
         WorkType.Serie -> TODO("Not implemented yet")
         WorkType.Movie -> TODO("Not implemented yet")
     }

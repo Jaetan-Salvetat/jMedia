@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.core.networking.models
 
+import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
+import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.works.Author
 import fr.jaetan.jmedia.models.works.Book
 import fr.jaetan.jmedia.models.works.Genre
@@ -40,17 +42,21 @@ class BookApiModels {
 fun BookApiModels.BookApi.toBooks(): List<Book> = items.map { book ->
     val info = book.volumeInfo
 
-    Book(
-        title = info.title,
-        synopsis = info.description,
-        image = info.imageLinks.toImage(),
-        rating = info.averageRating,
-        genres = info.categories.map { Genre(name = it) },
-        authors = info.authors.map { Author(name = it) },
-        publisher = info.publisher,
-        ratingsCount = info.ratingsCount
-    )
-}
+    if (info.imageLinks.isNotNull()) {
+        Book(
+            title = info.title,
+            synopsis = info.description,
+            image = info.imageLinks.toImage(),
+            rating = info.averageRating,
+            genres = info.categories.map { Genre(name = it) },
+            authors = info.authors.map { Author(name = it) },
+            publisher = info.publisher,
+            ratingsCount = info.ratingsCount
+        )
+    } else {
+        null
+    }
+}.removeNullValues()
 
 private fun BookApiModels.ImageLinks?.toImage(): Image = if (this.isNull()) {
     Image()
