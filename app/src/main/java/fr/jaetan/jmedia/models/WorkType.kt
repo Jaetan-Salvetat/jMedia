@@ -16,7 +16,7 @@ enum class WorkType(
 ) {
     Manga(R.string.mangas, R.string.my_mangas, JColor.Red, true),
     Anime(R.string.animes, R.string.my_animes, JColor.VeryLightGreen, true),
-    Book(R.string.books, R.string.my_books, JColor.Orange, false),
+    Book(R.string.books, R.string.my_books, JColor.Orange, true),
     Serie(R.string.series, R.string.my_series, JColor.Green, false),
     Movie(R.string.movies, R.string.my_movies, JColor.Pink, false);
 

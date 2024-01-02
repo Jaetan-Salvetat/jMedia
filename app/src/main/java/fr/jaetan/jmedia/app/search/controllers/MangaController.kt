@@ -17,20 +17,8 @@ class MangaController: IWorkController<Manga>() {
         if (!force && works.isNotEmpty()) return
 
         works.clear()
-        works.addAll(generateBitmaps(MangaApi.search(searchValue)))
-
+        works.addAll(MangaApi.search(searchValue))
         setLibraryValues()
-    }
-
-    override suspend fun libraryHandler(work: Manga) {
-        if (localMangas.find { it.title == work.title }.isNull()) {
-            MainViewModel.mangaRepository.add(work.toBdd())
-            return
-        }
-
-        localMangas.find { it.title == work.title }?.let {
-            MainViewModel.mangaRepository.remove(it.toBdd())
-        }
     }
 
     override suspend fun initializeFlow() {
@@ -46,6 +34,17 @@ class MangaController: IWorkController<Manga>() {
     override fun setLibraryValues() {
         works.replaceAll { manga ->
             manga.copy(isInLibrary = localMangas.find { it.title == manga.title }.isNotNull())
+        }
+    }
+
+    override suspend fun libraryHandler(work: Manga) {
+        if (localMangas.find { it.title == work.title }.isNull()) {
+            MainViewModel.mangaRepository.add(work.toBdd())
+            return
+        }
+
+        localMangas.find { it.title == work.title }?.let {
+            MainViewModel.mangaRepository.remove(it.toBdd())
         }
     }
 }
