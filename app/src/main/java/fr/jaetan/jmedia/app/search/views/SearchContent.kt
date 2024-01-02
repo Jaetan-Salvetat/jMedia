@@ -1,11 +1,14 @@
 package fr.jaetan.jmedia.app.search.views
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,13 +28,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,13 +82,11 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SearchView.ContentView() {
-     Column {
-        when (viewModel.listState) {
-            ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
-            ListState.Loading -> LoadingState()
-            ListState.HasData -> WorksList()
-            ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-        }
+    when (viewModel.listState) {
+        ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
+        ListState.Loading -> LoadingState()
+        ListState.HasData -> WorksList()
+        ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
     }
 }
 
@@ -115,9 +121,28 @@ private fun LoadingState() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchView.WorksList() {
-    LazyColumn {
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val showButton by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
+
+    val scrollToTop: () -> Unit = {
+        scope.launch {
+            listState.scrollToItem(0)
+        }
+    }
+
+    LazyColumn(state = listState) {
         items(viewModel.works, key = { "${it.title}/${it.type}/${it.synopsis.orEmpty()}" }) {
             WorksListItem(it, Modifier.animateItemPlacement())
+        }
+
+    }
+
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
+        AnimatedVisibility(showButton, enter = scaleIn(), exit = scaleOut()) {
+            FloatingActionButton(onClick = scrollToTop, modifier = Modifier.padding(20.dp)) {
+                Icon(Icons.Default.ArrowUpward, null)
+            }
         }
     }
 }
