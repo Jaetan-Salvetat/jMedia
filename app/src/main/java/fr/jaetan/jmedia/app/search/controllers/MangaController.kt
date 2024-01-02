@@ -10,14 +10,14 @@ import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MangaController: IWorkController<Manga>() {
-    val mangas = mutableStateListOf<Manga>()
+    override val works = mutableStateListOf<Manga>()
     private var localMangas = mutableListOf<Manga>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && mangas.isNotEmpty()) return
+        if (!force && works.isNotEmpty()) return
 
-        mangas.clear()
-        mangas.addAll(generateBitmaps(MangaApi.search(searchValue)))
+        works.clear()
+        works.addAll(generateBitmaps(MangaApi.search(searchValue)))
 
         setLibraryValues()
     }
@@ -44,7 +44,7 @@ class MangaController: IWorkController<Manga>() {
     }
 
     override fun setLibraryValues() {
-        mangas.replaceAll { manga ->
+        works.replaceAll { manga ->
             manga.copy(isInLibrary = localMangas.find { it.title == manga.title }.isNotNull())
         }
     }
