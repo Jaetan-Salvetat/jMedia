@@ -11,11 +11,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
 object AnimeApi: JMediaApi() {
-    override val baseUrl = "https://api.jikan.moe/v4/anime"
+    override val baseUrl = "https://api.jikan.moe/v4/anime?limit=15"
 
     suspend fun search(field: String): List<Anime> {
         val url = URLBuilder().apply {
-            takeFrom("${baseUrl}?q=${field.replace(" ", "%20")}")
+            takeFrom("${baseUrl}&q=${field.replace(" ", "%20")}")
         }
         val response = httpClient.get(url.build())
         return response.body<AnimeApiModels.AnimeApi>().toAnimes()

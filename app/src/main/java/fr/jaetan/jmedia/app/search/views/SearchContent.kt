@@ -68,7 +68,6 @@ import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.UUID
 import kotlin.math.roundToInt
 
 @Composable
@@ -115,7 +114,7 @@ private fun LoadingState() {
 @Composable
 private fun SearchView.WorksList() {
     LazyColumn {
-        items(viewModel.works, key = { "${it.title}/${UUID.randomUUID()}" }) {
+        items(viewModel.works, key = { "${it.title}/${it.type}/${it.synopsis.orEmpty()}" }) {
             WorksListItem(it, Modifier.animateItemPlacement())
         }
     }

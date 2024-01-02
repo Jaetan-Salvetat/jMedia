@@ -18,7 +18,6 @@ class MangaController: IWorkController<Manga>() {
 
         works.clear()
         works.addAll(MangaApi.search(searchValue))
-
         setLibraryValues()
     }
 

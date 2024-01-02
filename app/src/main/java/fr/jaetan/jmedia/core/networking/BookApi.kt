@@ -11,7 +11,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
 object BookApi: JMediaApi(null) {
-    override val baseUrl = "https://www.googleapis.com/books/v1/volumes?maxResults=25&printType=books"
+    override val baseUrl = "https://www.googleapis.com/books/v1/volumes?maxResults=15&printType=books"
 
     suspend fun search(field: String): List<Book> {
         val url = URLBuilder().apply {

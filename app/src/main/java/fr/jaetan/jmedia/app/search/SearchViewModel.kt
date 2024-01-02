@@ -12,6 +12,7 @@ import fr.jaetan.jmedia.app.search.controllers.BookController
 import fr.jaetan.jmedia.app.search.controllers.IWorkController
 import fr.jaetan.jmedia.app.search.controllers.MangaController
 import fr.jaetan.jmedia.core.services.MainViewModel
+import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
@@ -22,9 +23,11 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
     // Controllers
-    private val mangaController = MangaController()
-    private val animeController = AnimeController()
-    private val bookController = BookController()
+    private val controllers = mapOf(
+        WorkType.Manga to MangaController(),
+        WorkType.Anime to AnimeController(),
+        WorkType.Book to BookController()
+    )
 
     // States
     var searchValue by mutableStateOf("")
@@ -37,19 +40,10 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
     val works: List<IWork>
-        get() {
-            val works = mutableListOf<IWork>()
-
-            implementedFilters.forEach {  type ->
-                if (filters.contains(type)) {
-                    getController(type)?.let {
-                        works.addAll(it.works)
-                    }
-                }
-            }
-
-            return works.sortedBy { it.title }
-        }
+        get() = controllers.toList().map {
+            if (filters.contains(it.first)) it.second.works
+            else null
+        }.removeNullValues().flatMap { list -> list.map { it } }.sortedBy { it.title }
 
     // Methods
     fun fetchWorks(force: Boolean = true) {
@@ -60,28 +54,23 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         // Initialize works flow from local database
         if (listState == ListState.Default) {
             implementedFilters.forEach {
-                viewModelScope.launch(dispatcher) { getController(it)?.initializeFlow() }
+                viewModelScope.launch(dispatcher) { getController(it).initializeFlow() }
             }
         }
 
         viewModelScope.launch(dispatcher) {
-            listState = ListState.Loading
+            if (works.isEmpty()) listState = ListState.Loading
 
-            implementedFilters.forEach {
-                if (filters.contains(it)) getController(it)?.fetch(searchValue, force)
-            }
-
-            listState = if (works.isEmpty()) {
-                ListState.EmptyData
-            } else {
-                ListState.HasData
+            filters.forEachIndexed { index, type ->
+                getController(type).fetch(searchValue, force)
+                updateListState(index == filters.size -1)
             }
         }
     }
 
     fun libraryHandler(work: IWork) {
         viewModelScope.launch {
-            getController(work.type)?.libraryHandler(work)
+            getController(work.type).libraryHandler(work)
         }
     }
 
@@ -116,13 +105,15 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
     }
 
-    // Private methods
     @Suppress("UNCHECKED_CAST")
-    private fun getController(type: WorkType): IWorkController<IWork>? = when (type) {
-        WorkType.Manga -> mangaController as? IWorkController<IWork>
-        WorkType.Anime -> animeController as? IWorkController<IWork>
-        WorkType.Book -> bookController as? IWorkController<IWork>
-        WorkType.Serie -> TODO("Not implemented yet")
-        WorkType.Movie -> TODO("Not implemented yet")
+    fun getController(type: WorkType): IWorkController<IWork> = controllers[type] as IWorkController<IWork>
+
+    // Private methods
+    private fun updateListState(isLast: Boolean) {
+        listState = when {
+            works.isEmpty() && isLast -> ListState.EmptyData
+            works.isNotEmpty() -> ListState.HasData
+            else -> listState
+        }
     }
 }

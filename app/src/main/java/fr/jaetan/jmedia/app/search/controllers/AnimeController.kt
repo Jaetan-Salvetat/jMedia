@@ -10,8 +10,8 @@ import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.toBdd
 
 class AnimeController: IWorkController<Anime>() {
-    private var localAnimes = mutableListOf<Anime>()
     override val works = mutableStateListOf<Anime>()
+    private var localAnimes = mutableListOf<Anime>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
         if (!force && works.isNotEmpty()) return
