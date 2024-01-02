@@ -36,8 +36,13 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         get() {
             val works = mutableListOf<IWork>()
 
-            if (filters.contains(WorkType.Manga)) works.addAll(mangaController.mangas)
-            if (filters.contains(WorkType.Anime)) works.addAll(animeController.animes)
+            implementedFilters.forEach {  type ->
+                if (filters.contains(type)) {
+                    getController(type)?.let {
+                        works.addAll(it.works)
+                    }
+                }
+            }
 
             return works.sortedBy { it.title }
         }
