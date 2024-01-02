@@ -33,7 +33,7 @@
 - [x] display work types list tab
 - [x] save previous search on work type change
 - [x] display result of selected types
-- [ ] can sort by:
+- [ ] can sort by (ascending and descending):
   - title
   - rating
   - default (only if just one of work type is selected)
