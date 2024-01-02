@@ -2,7 +2,6 @@ package fr.jaetan.jmedia.app.search.controllers
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import fr.jaetan.jmedia.models.works.IWork
-import fr.jaetan.jmedia.models.works.generateBitmap
 
 abstract class IWorkController<T: IWork> {
     abstract val works: SnapshotStateList<T>

@@ -63,7 +63,7 @@ private fun BookApiModels.ImageLinks?.toImage(): Image = if (this.isNull()) {
     Image()
 } else {
     Image(
-        imageUrl = this!!.thumbnail.toHttpsPrefix(),
+        imageUrl = this!!.smallThumbnail.toHttpsPrefix(),
         smallImageUrl = smallThumbnail.toHttpsPrefix(),
         largeImageUrl = thumbnail.toHttpsPrefix()
     )
