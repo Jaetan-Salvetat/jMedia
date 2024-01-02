@@ -3,7 +3,7 @@
 - [x] Mangas
 - [x] Animes
 - [x] Books
-- [ ] Movies
+- [x] Movies
 - [ ] Series
 
 ### Bugfix
