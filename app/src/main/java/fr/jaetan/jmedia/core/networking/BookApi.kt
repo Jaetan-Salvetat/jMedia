@@ -1,7 +1,8 @@
 package fr.jaetan.jmedia.core.networking
 
 import fr.jaetan.jmedia.core.networking.models.BookApiModels
-import fr.jaetan.jmedia.extensions.printDataClassToString
+import fr.jaetan.jmedia.core.networking.models.toBooks
+import fr.jaetan.jmedia.models.works.Book
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
@@ -12,11 +13,12 @@ import kotlinx.serialization.ExperimentalSerializationApi
 object BookApi: JMediaApi(null) {
     override val baseUrl = "https://www.googleapis.com/books/v1/volumes?maxResults=25&printType=books"
 
-    suspend fun search(field: String) {
+    suspend fun search(field: String): List<Book> {
         val url = URLBuilder().apply {
             takeFrom("${baseUrl}&q=${field.replace(" ", "%20")}")
         }
         val response = httpClient.get(url.build())
-        response.body<BookApiModels.Book>().printDataClassToString()
+
+        return response.body<BookApiModels.BookApi>().toBooks()
     }
 }
