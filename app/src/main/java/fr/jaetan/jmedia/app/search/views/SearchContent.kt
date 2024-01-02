@@ -61,6 +61,7 @@ import coil.compose.AsyncImage
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.isNotNull
+import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.WorkType
@@ -70,6 +71,7 @@ import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.UUID
 import kotlin.math.roundToInt
 
 @Composable
@@ -116,7 +118,7 @@ private fun LoadingState() {
 @Composable
 private fun SearchView.WorksList() {
     LazyColumn {
-        items(viewModel.works, key = { "${it.title}_${it.type}" }) {
+        items(viewModel.works, key = { "${it.title}/${UUID.randomUUID()}" }) {
             WorksListItem(it, Modifier.animateItemPlacement())
         }
     }
@@ -244,27 +246,15 @@ private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier
 
 @Composable
 private fun ImageCell(image: Image) {
-    if (image.bitmap.isNotNull()) {
-        Image(
-            bitmap = image.bitmap!!.asImageBitmap(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .width(70.dp)
-                .fillMaxHeight()
-                .clip(RoundedCornerShape(10.dp))
-        )
-    } else {
-        AsyncImage(
-            model = image.smallImageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .width(70.dp)
-                .fillMaxHeight()
-                .clip(RoundedCornerShape(10.dp))
-        )
-    }
+    AsyncImage(
+        model = image.imageUrl,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .width(70.dp)
+            .fillMaxHeight()
+            .clip(RoundedCornerShape(10.dp))
+    )
 }
 
 @Composable

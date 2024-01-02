@@ -17,7 +17,7 @@ class MangaController: IWorkController<Manga>() {
         if (!force && works.isNotEmpty()) return
 
         works.clear()
-        works.addAll(generateBitmaps(MangaApi.search(searchValue)))
+        works.addAll(MangaApi.search(searchValue))
 
         setLibraryValues()
     }

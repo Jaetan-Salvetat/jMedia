@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.core.networking.models
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.extensions.removeNullValues
+import fr.jaetan.jmedia.extensions.toHttpsPrefix
 import fr.jaetan.jmedia.models.works.Author
 import fr.jaetan.jmedia.models.works.Book
 import fr.jaetan.jmedia.models.works.Genre
@@ -62,8 +63,8 @@ private fun BookApiModels.ImageLinks?.toImage(): Image = if (this.isNull()) {
     Image()
 } else {
     Image(
-        imageUrl = this!!.thumbnail,
-        smallImageUrl = smallThumbnail,
-        largeImageUrl = thumbnail
+        imageUrl = this!!.thumbnail.toHttpsPrefix(),
+        smallImageUrl = smallThumbnail.toHttpsPrefix(),
+        largeImageUrl = thumbnail.toHttpsPrefix()
     )
 }

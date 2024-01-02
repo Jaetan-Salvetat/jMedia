@@ -11,7 +11,7 @@ class BookController: IWorkController<Book>() {
         if (!force && works.isNotEmpty()) return
 
         works.clear()
-        works.addAll(generateBitmaps(BookApi.search(searchValue)))
+        works.addAll(BookApi.search(searchValue))
         setLibraryValues()
     }
 

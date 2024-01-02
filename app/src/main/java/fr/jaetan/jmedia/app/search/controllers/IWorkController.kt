@@ -10,9 +10,4 @@ abstract class IWorkController<T: IWork> {
     abstract suspend fun libraryHandler(work: T)
     abstract suspend fun initializeFlow()
     protected abstract fun setLibraryValues()
-
-    protected suspend fun generateBitmaps(works: List<T>): List<T> {
-        works.forEach { it.image.generateBitmap() }
-        return works
-    }
 }

@@ -17,7 +17,7 @@ class AnimeController: IWorkController<Anime>() {
         if (!force && works.isNotEmpty()) return
 
         works.clear()
-        works.addAll(generateBitmaps(AnimeApi.search(searchValue)))
+        works.addAll(AnimeApi.search(searchValue))
         setLibraryValues()
     }
 
