@@ -33,6 +33,10 @@
 - [x] display work types list tab
 - [x] save previous search on work type change
 - [x] display result of selected types
+- [ ] can sort by:
+  - title
+  - rating
+  - default (only if just one of work type is selected)
 
 ### Work detail
 - [ ] Can show all work detail
