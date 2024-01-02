@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -56,6 +57,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.isNotNull
@@ -243,7 +245,10 @@ private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier
 @Composable
 private fun ImageCell(image: Image) {
     AsyncImage(
-        model = image.imageUrl,
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(image.imageUrl)
+            .crossfade(true)
+            .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier
