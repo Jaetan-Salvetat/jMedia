@@ -2,8 +2,8 @@ package fr.jaetan.jmedia.core.networking.models
 
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.extensions.removeNullValues
-import fr.jaetan.jmedia.models.works.Genre
-import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.shared.Genre
+import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.Movie
 import kotlinx.serialization.Serializable
 

@@ -1,9 +1,9 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Author
-import fr.jaetan.jmedia.models.works.Demographic
-import fr.jaetan.jmedia.models.works.Genre
-import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.shared.Author
+import fr.jaetan.jmedia.models.works.shared.Demographic
+import fr.jaetan.jmedia.models.works.shared.Genre
+import fr.jaetan.jmedia.models.works.shared.Image
 import io.realm.kotlin.ext.backlinks
 import io.realm.kotlin.query.RealmResults
 import io.realm.kotlin.types.RealmObject

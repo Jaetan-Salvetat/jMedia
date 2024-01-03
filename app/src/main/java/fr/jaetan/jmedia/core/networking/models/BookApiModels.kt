@@ -4,10 +4,10 @@ import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.extensions.toHttpsPrefix
-import fr.jaetan.jmedia.models.works.Author
+import fr.jaetan.jmedia.models.works.shared.Author
 import fr.jaetan.jmedia.models.works.Book
-import fr.jaetan.jmedia.models.works.Genre
-import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.shared.Genre
+import fr.jaetan.jmedia.models.works.shared.Image
 import kotlinx.serialization.Serializable
 
 class BookApiModels {
