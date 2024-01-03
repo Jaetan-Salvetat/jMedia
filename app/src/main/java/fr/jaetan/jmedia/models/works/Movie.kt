@@ -12,6 +12,8 @@ data class Movie(
     override val rating: Double?,
     override var isInLibrary: Boolean = false,
     override val type: WorkType = WorkType.Movie,
+    // TODO: Need to take the status
+    // TODO: Need to take the release date
 
     val genres: List<Genre>,
     val ratingCounts: Long
