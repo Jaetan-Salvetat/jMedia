@@ -75,6 +75,7 @@ import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.Image
 import fr.jaetan.jmedia.ui.shared.JTag
+import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -127,7 +128,7 @@ private fun SearchView.WorksList() {
 
     val scrollToTop: () -> Unit = {
         scope.launch {
-            listState.scrollToItem(0)
+            listState.animateScrollToItem(0)
         }
     }
 
@@ -159,7 +160,7 @@ private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
     val offsetX = remember { Animatable(0f) }
     val actionButtonColor by animateColorAsState(
         targetValue = if (hasVibrate) {
-            Color.Red
+            JColor.Red
         } else {
             MaterialTheme.colorScheme.scrim
         },
