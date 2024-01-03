@@ -127,7 +127,7 @@ private fun SearchView.WorksList() {
 
     val scrollToTop: () -> Unit = {
         scope.launch {
-            listState.scrollToItem(0)
+            listState.animateScrollToItem(0)
         }
     }
 
