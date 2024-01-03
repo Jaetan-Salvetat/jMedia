@@ -11,6 +11,7 @@ import fr.jaetan.jmedia.app.search.controllers.AnimeController
 import fr.jaetan.jmedia.app.search.controllers.BookController
 import fr.jaetan.jmedia.app.search.controllers.IWorkController
 import fr.jaetan.jmedia.app.search.controllers.MangaController
+import fr.jaetan.jmedia.app.search.controllers.MovieController
 import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
@@ -26,7 +27,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     private val controllers = mapOf(
         WorkType.Manga to MangaController(),
         WorkType.Anime to AnimeController(),
-        WorkType.Book to BookController()
+        WorkType.Book to BookController(),
+        WorkType.Movie to MovieController()
     )
 
     // States
@@ -106,7 +108,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun getController(type: WorkType): IWorkController<IWork> = controllers[type] as IWorkController<IWork>
+    private fun getController(type: WorkType): IWorkController<IWork> = controllers[type] as IWorkController<IWork>
 
     // Private methods
     private fun updateListState(isLast: Boolean) {

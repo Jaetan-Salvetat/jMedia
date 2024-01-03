@@ -10,7 +10,7 @@ import org.junit.Test
 class MovieApiTest {
     @Test
     fun search_ValidRecherche_ReturnNotEmpty() = runTest {
-        val movies = MovieApi.search("harry")
+        val movies = MovieApi.search("harry potter")
 
         movies.forEach {
             it.printDataClassToString()

@@ -2,8 +2,8 @@ package fr.jaetan.jmedia.core.networking
 
 import fr.jaetan.jmedia.core.networking.models.MovieApiModels
 import fr.jaetan.jmedia.core.networking.models.setGenres
-import fr.jaetan.jmedia.core.networking.models.toGenres
-import fr.jaetan.jmedia.models.works.Genre
+import fr.jaetan.jmedia.core.networking.models.toMovies
+import fr.jaetan.jmedia.models.works.Movie
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
@@ -15,7 +15,7 @@ object MovieApi: JMediaApi() {
     override val baseUrl = "https://api.themoviedb.org/3"
     override val authorization = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MjJlZWI3Y2YwNzkyYTk5M2JiNzA3ZDVlZjk0MGFmOCIsInN1YiI6IjY1OTNiZjVkY2U0ZGRjNmQzODdlZWJjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.cOxaS8lMWOz2u94wQ3LFL261kYEaR5hMan4FHssv0T8"
 
-    suspend fun search(field: String): List<MovieApiModels.MovieResult> {
+    suspend fun search(field: String): List<Movie> {
         val url = URLBuilder().apply {
             takeFrom("${baseUrl}/search/movie?language=fr-FR&query=${field.replace(" ", "%20")}")
         }
@@ -24,7 +24,7 @@ object MovieApi: JMediaApi() {
         val movies = response.body<MovieApiModels.MovieApi>()
         movies.setGenres(getGenres())
 
-        return movies.results
+        return movies.toMovies()
     }
 
     private suspend fun getGenres(): List<MovieApiModels.GenresData> {
