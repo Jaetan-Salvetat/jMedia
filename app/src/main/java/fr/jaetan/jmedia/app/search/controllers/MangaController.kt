@@ -10,27 +10,15 @@ import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MangaController: IWorkController<Manga>() {
-    val mangas = mutableStateListOf<Manga>()
+    override val works = mutableStateListOf<Manga>()
     private var localMangas = mutableListOf<Manga>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && mangas.isNotEmpty()) return
+        if (!force && works.isNotEmpty()) return
 
-        mangas.clear()
-        mangas.addAll(generateBitmaps(MangaApi.search(searchValue)))
-
+        works.clear()
+        works.addAll(MangaApi.search(searchValue))
         setLibraryValues()
-    }
-
-    override suspend fun libraryHandler(work: Manga) {
-        if (localMangas.find { it.title == work.title }.isNull()) {
-            MainViewModel.mangaRepository.add(work.toBdd())
-            return
-        }
-
-        localMangas.find { it.title == work.title }?.let {
-            MainViewModel.mangaRepository.remove(it.toBdd())
-        }
     }
 
     override suspend fun initializeFlow() {
@@ -44,8 +32,19 @@ class MangaController: IWorkController<Manga>() {
     }
 
     override fun setLibraryValues() {
-        mangas.replaceAll { manga ->
+        works.replaceAll { manga ->
             manga.copy(isInLibrary = localMangas.find { it.title == manga.title }.isNotNull())
+        }
+    }
+
+    override suspend fun libraryHandler(work: Manga) {
+        if (localMangas.find { it.title == work.title }.isNull()) {
+            MainViewModel.mangaRepository.add(work.toBdd())
+            return
+        }
+
+        localMangas.find { it.title == work.title }?.let {
+            MainViewModel.mangaRepository.remove(it.toBdd())
         }
     }
 }

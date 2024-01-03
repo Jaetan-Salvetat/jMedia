@@ -14,10 +14,10 @@ import org.mongodb.kbson.ObjectId
 class AnimeEntity(): RealmObject {
     var id: ObjectId = BsonObjectId()
     var title: String = ""
+    var status: String = Status.Unknown.name
     var synopsis: String? = null
     var episodes: Int? = null
-    var status: String = Status.Unknown.name
-    var score: Double? = null
+    var rating: Double? = null
     var image: ImageEntity? = ImageEntity()
     var genres: RealmList<GenreEntity> = realmListOf()
     var demographics: RealmList<DemographicEntity> = realmListOf()
@@ -25,10 +25,10 @@ class AnimeEntity(): RealmObject {
     constructor(
         id: ObjectId,
         title: String,
+        status: String,
         synopsis: String?,
         episodes: Int?,
-        status: String,
-        score: Double?,
+        rating: Double?,
         image: ImageEntity,
         genres: List<GenreEntity>,
         demographics: List<DemographicEntity>
@@ -38,7 +38,7 @@ class AnimeEntity(): RealmObject {
         this.synopsis = synopsis
         this.episodes = episodes
         this.status = status
-        this.score = score
+        this.rating = rating
         this.image = image
         this.genres = genres.toRealmList()
         this.demographics = demographics.toRealmList()
@@ -54,7 +54,7 @@ fun AnimeEntity.toAnime(): Anime = Anime(
     synopsis = synopsis,
     episodes = episodes,
     status = Status.fromString(status),
-    rating = score,
+    rating = rating,
     image = image?.toImage() ?: Image(),
     genres = genres.toGenres(),
     demographics = demographics.toDemographics()

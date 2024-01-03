@@ -1,65 +1,57 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Image
-import fr.jaetan.jmedia.models.works.Manga
-import fr.jaetan.jmedia.models.works.Status
-import fr.jaetan.jmedia.models.works.fromString
+import fr.jaetan.jmedia.models.works.Book
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
+import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
 
-class MangaEntity(): RealmObject {
-    var id: ObjectId = ObjectId()
+class BookEntity(): RealmObject {
+    var id: ObjectId = BsonObjectId()
     var title: String = ""
+    var ratingsCount: Int = 0
     var synopsis: String? = null
-    var volumes: Int? = null
-    var status: String = Status.Unknown.name
     var rating: Double? = null
+    var publisher: String? = null
     var image: ImageEntity? = ImageEntity()
     var authors: RealmList<AuthorEntity> = realmListOf()
     var genres: RealmList<GenreEntity> = realmListOf()
-    var demographics: RealmList<DemographicEntity> = realmListOf()
 
     constructor(
         id: ObjectId,
         title: String,
+        ratingsCount: Int,
         synopsis: String?,
-        volumes: Int?,
-        status: String,
         rating: Double?,
+        publisher: String?,
         image: ImageEntity,
         authors: List<AuthorEntity>,
         genres: List<GenreEntity>,
-        demographics: List<DemographicEntity>
     ): this() {
         this.id = id
         this.title = title
+        this.ratingsCount = ratingsCount
         this.synopsis = synopsis
-        this.volumes = volumes
-        this.status = status
         this.rating = rating
+        this.publisher = publisher
         this.image = image
         this.authors = authors.toRealmList()
         this.genres = genres.toRealmList()
-        this.demographics = demographics.toRealmList()
     }
 }
 
-// Converters
-fun List<MangaEntity>.toMangas(): List<Manga> = map {it.toManga() }
+fun List<BookEntity>.toBooks(): List<Book> = map { it.toBook() }
 
-fun MangaEntity.toManga(): Manga = Manga(
+fun BookEntity.toBook(): Book = Book(
     id = id,
     title = title,
+    ratingsCount = ratingsCount,
     synopsis = synopsis,
-    volumes = volumes,
-    status = Status.fromString(status),
     rating = rating,
-    image = image?.toImage() ?: Image(),
+    publisher = publisher,
+    image = image.toImage(),
     authors = authors.toAuthors(),
-    genres = genres.toGenres(),
-    demographics = demographics.toDemographics()
+    genres = genres.toGenres()
 )
-

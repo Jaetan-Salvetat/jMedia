@@ -1,32 +1,28 @@
 package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
+import fr.jaetan.jmedia.core.realm.entities.MovieEntity
 import fr.jaetan.jmedia.models.WorkType
 import org.mongodb.kbson.ObjectId
 
-data class Anime(
+data class Movie(
+    val id: ObjectId = ObjectId(),
     override val title: String,
     override val synopsis: String?,
     override val image: Image,
     override val rating: Double?,
-    override val type: WorkType = WorkType.Anime,
     override var isInLibrary: Boolean = false,
+    override val type: WorkType = WorkType.Movie,
 
-    val id: ObjectId = ObjectId(),
-    val status: Status,
     val genres: List<Genre>,
-    val demographics: List<Demographic>,
-    val episodes: Int?,
+    val ratingCounts: Long
 ): IWork
 
-fun Anime.toBdd(): AnimeEntity = AnimeEntity(
+fun Movie.toBdd(): MovieEntity = MovieEntity(
     id = id,
     title = title,
     synopsis = synopsis,
-    episodes = episodes,
-    status = status.name,
-    rating = rating,
     image = image.toBdd(),
+    rating = rating,
     genres = genres.toBdd(),
-    demographics = demographics.toBdd()
+    ratingCounts = ratingCounts
 )

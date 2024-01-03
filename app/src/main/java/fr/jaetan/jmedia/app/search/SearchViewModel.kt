@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.app.search
 
+
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,13 +8,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.app.search.controllers.AnimeController
+import fr.jaetan.jmedia.app.search.controllers.BookController
+import fr.jaetan.jmedia.app.search.controllers.IWorkController
 import fr.jaetan.jmedia.app.search.controllers.MangaController
+import fr.jaetan.jmedia.app.search.controllers.MovieController
 import fr.jaetan.jmedia.core.services.MainViewModel
+import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.WorkType
-import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.IWork
-import fr.jaetan.jmedia.models.works.Manga
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,8 +24,12 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
     // Controllers
-    private val mangaController = MangaController()
-    private val animeController = AnimeController()
+    private val controllers = mapOf(
+        WorkType.Manga to MangaController(),
+        WorkType.Anime to AnimeController(),
+        WorkType.Book to BookController(),
+        WorkType.Movie to MovieController()
+    )
 
     // States
     var searchValue by mutableStateOf("")
@@ -32,17 +39,13 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
     // Variables
     val implementedFilters = WorkType.all.filter { it.implemented }
-    val works: List<IWork>
-        get() {
-            val works = mutableListOf<IWork>()
-
-            if (filters.contains(WorkType.Manga)) works.addAll(mangaController.mangas)
-            if (filters.contains(WorkType.Anime)) works.addAll(animeController.animes)
-
-            return works.sortedBy { it.title }
-        }
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
+    val works: List<IWork>
+        get() = controllers.toList().map {
+            if (filters.contains(it.first)) it.second.works
+            else null
+        }.removeNullValues().flatMap { list -> list.map { it } }.sortedBy { it.title }
 
     // Methods
     fun fetchWorks(force: Boolean = true) {
@@ -52,35 +55,24 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
         // Initialize works flow from local database
         if (listState == ListState.Default) {
-            viewModelScope.launch(dispatcher) { mangaController.initializeFlow() }
-            viewModelScope.launch(dispatcher) { animeController.initializeFlow() }
+            implementedFilters.forEach {
+                viewModelScope.launch(dispatcher) { getController(it).initializeFlow() }
+            }
         }
 
         viewModelScope.launch(dispatcher) {
-            listState = ListState.Loading
+            if (works.isEmpty()) listState = ListState.Loading
 
-            // Mangas handler
-            if (filters.contains(WorkType.Manga)) {
-                mangaController.fetch(searchValue, force)
-            }
-            if (filters.contains(WorkType.Anime)) {
-                animeController.fetch(searchValue, force)
-            }
-
-            listState = if (works.isEmpty()) {
-                ListState.EmptyData
-            } else {
-                ListState.HasData
+            filters.forEachIndexed { index, type ->
+                getController(type).fetch(searchValue, force)
+                updateListState(index == filters.size -1)
             }
         }
     }
 
     fun libraryHandler(work: IWork) {
         viewModelScope.launch {
-            when (work) {
-                is Manga -> mangaController.libraryHandler(work)
-                is Anime -> animeController.libraryHandler(work)
-            }
+            getController(work.type).libraryHandler(work)
         }
     }
 
@@ -112,6 +104,18 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             if (listState != ListState.Default) {
                 fetchWorks(false)
             }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getController(type: WorkType): IWorkController<IWork> = controllers[type] as IWorkController<IWork>
+
+    // Private methods
+    private fun updateListState(isLast: Boolean) {
+        listState = when {
+            works.isEmpty() && isLast -> ListState.EmptyData
+            works.isNotEmpty() -> ListState.HasData
+            else -> listState
         }
     }
 }
