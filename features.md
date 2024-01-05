@@ -12,6 +12,7 @@
 
 ### Global Features
 - [x] Create an build config object
+- [ ] Implement an analytics and a crashlytics
  
 # Screens
 ### Onboarding
