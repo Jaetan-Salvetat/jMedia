@@ -2,7 +2,6 @@ package fr.jaetan.jmedia.core.services
 
 import android.annotation.SuppressLint
 import android.content.Context
-import fr.jaetan.jmedia.BuildConfig
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
@@ -15,6 +14,7 @@ import fr.jaetan.jmedia.core.realm.repositories.AnimeRepository
 import fr.jaetan.jmedia.core.realm.repositories.BookRepository
 import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
+import fr.jaetan.jmedia.models.GlobalSettings
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
@@ -43,7 +43,7 @@ object MainViewModel {
 
     @SuppressLint("RedundantIfStatement")
     suspend fun initialize(context: Context) {
-        if (BuildConfig.BUILD_TYPE != "release") { config.deleteRealmIfMigrationNeeded() }
+        if (!GlobalSettings.isInRelease) { config.deleteRealmIfMigrationNeeded() }
 
         config.schemaVersion(0)
         realm = Realm.open(config.build())
