@@ -21,11 +21,13 @@ class MovieApiTest {
 
     @Test
     fun getDetail() = runTest {
-        val movie = MovieApi.getDetail(671)
+        MovieApi.search("har").forEach {
+            val movie = MovieApi.getDetail(it.apiId)
 
-        movie.printDataClassToString()
+            movie.printDataClassToString()
 
-        assertTrue(movie.genres.isNotEmpty())
-        assertTrue(movie.releaseDate.isNotNull())
+            assertTrue(movie.genres.isNotEmpty())
+            assertTrue(movie.releaseDate.isNotNull())
+        }
     }
 }
