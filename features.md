@@ -43,5 +43,3 @@
 ### Work detail
 - [ ] Can show all work detail
 - [ ] Can add a work to library
-- [ ] Can add a work to wishlist
-- [ ] Show an retry dialog when an error as occured
