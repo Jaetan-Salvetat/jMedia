@@ -133,7 +133,7 @@ private fun SearchView.WorksList() {
     }
 
     LazyColumn(state = listState) {
-        items(viewModel.works, key = { "${it.title}/${it.type}/${it.synopsis.orEmpty()}" }) {
+        items(viewModel.works, key = { "${it.title}/${it.type}/${it.synopsis.orEmpty().ifEmpty { it.title }}" }) {
             WorksListItem(it, Modifier.animateItemPlacement())
         }
 
@@ -274,6 +274,7 @@ private fun ImageCell(image: Image) {
         model = ImageRequest.Builder(LocalContext.current)
             .data(image.imageUrl)
             .crossfade(true)
+            .error(R.drawable.image_placeholder)
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
