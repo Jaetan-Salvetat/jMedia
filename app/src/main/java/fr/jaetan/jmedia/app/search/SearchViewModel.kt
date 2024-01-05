@@ -16,6 +16,8 @@ import fr.jaetan.jmedia.app.search.controllers.SerieController
 import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
+import fr.jaetan.jmedia.models.Sort
+import fr.jaetan.jmedia.models.SortDirection
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,22 +34,28 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         WorkType.Movie to MovieController(),
         WorkType.Serie to SerieController()
     )
+    private var _sort by mutableStateOf(Sort.Default)
 
     // States
     var searchValue by mutableStateOf("")
     var listState by mutableStateOf(ListState.Default)
+    var sortDirection by mutableStateOf(SortDirection.Ascending)
+    var showSortMenu by mutableStateOf(false)
     val filters: List<WorkType>
         get() = MainViewModel.userSettingsModel.selectedWorkTypes
+    var sort: Sort
+        get() = when {
+            filters.size < 2 && _sort == Sort.Default -> Sort.Name
+            else -> _sort
+        }
+        set(value) { _sort = value }
 
     // Variables
     val implementedFilters = WorkType.all.filter { it.implemented }
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
     val works: List<IWork>
-        get() = controllers.toList().map {
-            if (filters.contains(it.first)) it.second.works
-            else null
-        }.removeNullValues().flatMap { list -> list.map { it } }.sortedBy { it.title }
+        get() = sortWorks()
 
     // Methods
     fun fetchWorks(force: Boolean = true) {
@@ -118,6 +126,27 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             works.isEmpty() && isLast -> ListState.EmptyData
             works.isNotEmpty() -> ListState.HasData
             else -> listState
+        }
+    }
+
+    private fun sortWorks(): List<IWork> {
+        val works = controllers.toList().map {
+            if (filters.contains(it.first)) it.second.works
+            else null
+        }.removeNullValues().flatMap { list -> list.map { it } }
+
+        return if (sortDirection == SortDirection.Ascending) {
+            when(sort) {
+                Sort.Name -> works.sortedBy { it.title }
+                Sort.Rating -> works.sortedBy { it.rating }
+                Sort.Default -> works
+            }
+        } else {
+            when(sort) {
+                Sort.Name -> works.sortedByDescending { it.title }
+                Sort.Rating -> works.sortedByDescending { it.rating }
+                Sort.Default -> works
+            }
         }
     }
 }

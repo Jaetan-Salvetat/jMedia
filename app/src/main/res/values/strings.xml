@@ -20,4 +20,9 @@
     <string name="default_search_text">Saisie le nom d\'un media pour pouvoir l\'ajouter à ta librarie.</string>
     <string name="request_error_message">Une erreur est survenue. Vérifies ta connexion internet et réessaie</string>
     <string name="all">Tout</string>
+    <string name="sort_by_name">Par nom</string>
+    <string name="sort_by_rating">Par score</string>
+    <string name="sort_by_default">Par défaut</string>
+    <string name="ascending">Ordre croissant</string>
+    <string name="descending">Ordre décroissant</string>
 </resources>
