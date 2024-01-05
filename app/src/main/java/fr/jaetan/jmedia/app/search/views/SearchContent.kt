@@ -274,6 +274,7 @@ private fun ImageCell(image: Image) {
         model = ImageRequest.Builder(LocalContext.current)
             .data(image.imageUrl)
             .crossfade(true)
+            .error(R.drawable.image_placeholder)
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
