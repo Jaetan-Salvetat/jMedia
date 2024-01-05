@@ -11,8 +11,11 @@
 - [x] improve the quality of the image in the search view
 - [x] Need to add a placeholder when we can't display the image
 
-### Global Features
+### Tech
 - [x] Create an build config object
+- [ ] Create an interface for ream repositories
+
+### Global Features
 - [ ] Implement an analytics and a crashlytics
 - [ ] Need to save images locally
  
@@ -23,8 +26,9 @@
 ### Library
 - [ ] Show all works
 - [ ] Can open **work detail** screen
-- [ ] Can search a work by name
+- [ ] Can search a work by
 - [ ] Can filter works
+- [ ] Can sort works
 - [x] Can open the **search** screen
 - [ ] Show empty state
 - [ ] Remove one or more works from library
@@ -45,4 +49,4 @@
 
 ### Work detail
 - [ ] Can show all work detail
-- [ ] Can add a work to library
+- [ ] Can add or remove a work from library
