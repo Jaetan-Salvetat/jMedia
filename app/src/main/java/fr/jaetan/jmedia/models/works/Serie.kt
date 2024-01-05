@@ -1,10 +1,12 @@
 package fr.jaetan.jmedia.models.works
 
+import fr.jaetan.jmedia.core.realm.entities.SerieEntity
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Season
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.toBdd
 import org.mongodb.kbson.ObjectId
 
 data class Serie(
@@ -22,3 +24,16 @@ data class Serie(
     val genres: List<Genre> = emptyList(),
     val seasons: List<Season> = emptyList()
 ): IWork
+
+fun Serie.toBdd(): SerieEntity = SerieEntity(
+    id = id,
+    title = title,
+    synopsis = synopsis,
+    rating = rating,
+    apiId = apiId,
+    ratingCount = ratingCount,
+    status = status,
+    image = image.toBdd(),
+    genres = genres.toBdd(),
+    seasons = seasons.toBdd()
+)

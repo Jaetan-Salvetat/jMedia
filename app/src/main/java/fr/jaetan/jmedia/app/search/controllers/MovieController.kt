@@ -32,8 +32,8 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override fun setLibraryValues() {
-        works.replaceAll { manga ->
-            manga.copy(isInLibrary = localMovies.find { it.title == manga.title }.isNotNull())
+        works.replaceAll { movie ->
+            movie.copy(isInLibrary = localMovies.find { it.title == movie.title }.isNotNull())
         }
     }
 

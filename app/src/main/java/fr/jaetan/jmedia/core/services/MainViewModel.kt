@@ -10,10 +10,13 @@ import fr.jaetan.jmedia.core.realm.entities.GenreEntity
 import fr.jaetan.jmedia.core.realm.entities.ImageEntity
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import fr.jaetan.jmedia.core.realm.entities.MovieEntity
+import fr.jaetan.jmedia.core.realm.entities.SeasonEntity
+import fr.jaetan.jmedia.core.realm.entities.SerieEntity
 import fr.jaetan.jmedia.core.realm.repositories.AnimeRepository
 import fr.jaetan.jmedia.core.realm.repositories.BookRepository
 import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
+import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
 import fr.jaetan.jmedia.models.GlobalSettings
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
@@ -24,6 +27,7 @@ object MainViewModel {
     val animeRepository by lazy { AnimeRepository(realm) }
     val bookRepository by lazy { BookRepository(realm) }
     val movieRepository by lazy { MovieRepository(realm) }
+    val serieRepository by lazy { SerieRepository(realm) }
 
     private val config = RealmConfiguration.Builder(schema = setOf(
         // region Models
@@ -31,12 +35,14 @@ object MainViewModel {
         AnimeEntity::class,
         BookEntity::class,
         MovieEntity::class,
+        SerieEntity::class,
         // endregion
         // region Sub models
         ImageEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
-        DemographicEntity::class
+        DemographicEntity::class,
+        SeasonEntity::class
         // endregion
     ))
     private lateinit var realm: Realm
