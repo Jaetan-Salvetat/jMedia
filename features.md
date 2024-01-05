@@ -10,6 +10,7 @@
 ### Bugfix
 - [x] improve the quality of the image in the search view
 - [x] Need to add a placeholder when we can't display the image
+- [ ] Save sorts settings in local settings
 
 ### Tech
 - [x] Create an build config object
