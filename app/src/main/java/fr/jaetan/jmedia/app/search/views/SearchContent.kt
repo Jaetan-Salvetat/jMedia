@@ -73,7 +73,7 @@ import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
-import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent

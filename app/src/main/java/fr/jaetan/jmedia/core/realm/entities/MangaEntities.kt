@@ -1,16 +1,18 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Image
+import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.Manga
-import fr.jaetan.jmedia.models.works.Status
-import fr.jaetan.jmedia.models.works.fromString
+import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
 class MangaEntity(): RealmObject {
+    @PrimaryKey
     var id: ObjectId = ObjectId()
     var title: String = ""
     var synopsis: String? = null

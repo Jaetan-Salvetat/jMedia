@@ -1,11 +1,10 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Author
-import fr.jaetan.jmedia.models.works.Demographic
-import fr.jaetan.jmedia.models.works.Genre
-import fr.jaetan.jmedia.models.works.Image
-import io.realm.kotlin.ext.backlinks
-import io.realm.kotlin.query.RealmResults
+import fr.jaetan.jmedia.models.works.shared.Author
+import fr.jaetan.jmedia.models.works.shared.Demographic
+import fr.jaetan.jmedia.models.works.shared.Genre
+import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.Season
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.BsonObjectId
@@ -17,7 +16,6 @@ class ImageEntity(): RealmObject {
     var imageUrl: String = ""
     var smallImageUrl: String = ""
     var largeImageUrl: String = ""
-    val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::image)
 
     constructor(id: ObjectId, imageUrl: String, smallImageUrl: String, largeImageUrl: String) : this() {
         this.id = id
@@ -28,9 +26,8 @@ class ImageEntity(): RealmObject {
 }
 
 class AuthorEntity(): RealmObject {
-    var id: ObjectId = BsonObjectId()
+    @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
-    val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::authors)
 
     constructor(id: ObjectId, name: String): this() {
         this.id = id
@@ -39,9 +36,8 @@ class AuthorEntity(): RealmObject {
 }
 
 class GenreEntity(): RealmObject {
-    var id: ObjectId = BsonObjectId()
+    @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
-    val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::genres)
 
     constructor(id: ObjectId, name: String): this() {
         this.id = id
@@ -49,10 +45,34 @@ class GenreEntity(): RealmObject {
     }
 }
 
-class DemographicEntity(): RealmObject {
-    var id: ObjectId = BsonObjectId()
+class SeasonEntity(): RealmObject {
+    @PrimaryKey var id: ObjectId = BsonObjectId()
+    var episodeCount: Int = 0
+    var seasonNumber: Int = 0
     var name: String = ""
-    val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::demographics)
+    var rating: Double = .0
+    var synopsis: String = ""
+
+    constructor(
+        id: ObjectId,
+        name: String,
+        episodeCount: Int,
+        seasonNumber: Int,
+        rating: Double,
+        synopsis: String
+    ): this() {
+        this.id = id
+        this.name = name
+        this.episodeCount = episodeCount
+        this.seasonNumber = seasonNumber
+        this.rating = rating
+        this.synopsis = synopsis
+    }
+}
+
+class DemographicEntity(): RealmObject {
+    @PrimaryKey var id: ObjectId = BsonObjectId()
+    var name: String = ""
 
     constructor(id: ObjectId, name: String): this() {
         this.id = id
@@ -78,6 +98,17 @@ fun List<GenreEntity>.toGenres(): List<Genre> = map {
     Genre(
         id = it.id,
         name = it.name
+    )
+}
+
+fun List<SeasonEntity>.toSeasons(): List<Season> = map {
+    Season(
+        id = it.id,
+        name = it.name,
+        episodeCount = it.episodeCount,
+        seasonNumber = it.seasonNumber,
+        rating = it.rating,
+        synopsis = it.synopsis
     )
 }
 

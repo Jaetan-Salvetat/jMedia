@@ -18,7 +18,7 @@ enum class WorkType(
     Anime(R.string.animes, R.string.my_animes, JColor.VeryLightGreen, true),
     Book(R.string.books, R.string.my_books, JColor.Orange, true),
     Movie(R.string.movies, R.string.my_movies, JColor.Pink, true),
-    Serie(R.string.series, R.string.my_series, JColor.Green, false);
+    Serie(R.string.series, R.string.my_series, JColor.Green, true);
 
     @Composable
     fun getBackgroundColor(): Color {

@@ -1,40 +1,39 @@
 package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.core.realm.entities.MangaEntity
+import fr.jaetan.jmedia.core.realm.entities.SerieEntity
 import fr.jaetan.jmedia.models.WorkType
-import fr.jaetan.jmedia.models.works.shared.Author
-import fr.jaetan.jmedia.models.works.shared.Demographic
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.Season
 import fr.jaetan.jmedia.models.works.shared.Status
 import fr.jaetan.jmedia.models.works.shared.toBdd
 import org.mongodb.kbson.ObjectId
 
-data class Manga(
+data class Serie(
+    val id: ObjectId = ObjectId(),
     override val title: String,
     override val synopsis: String?,
     override val image: Image,
     override val rating: Double?,
     override var isInLibrary: Boolean = false,
-    override val type: WorkType = WorkType.Manga,
+    override val type: WorkType = WorkType.Serie,
 
-    val id: ObjectId = ObjectId(),
-    val volumes: Int?,
-    val status: Status,
-    val authors: List<Author>,
-    val genres: List<Genre>,
-    val demographics: List<Demographic>,
+    val apiId: Long,
+    val ratingCount: Long,
+    val status: Status = Status.Unknown,
+    val genres: List<Genre> = emptyList(),
+    val seasons: List<Season> = emptyList()
 ): IWork
 
-fun Manga.toBdd(): MangaEntity = MangaEntity(
+fun Serie.toBdd(): SerieEntity = SerieEntity(
     id = id,
     title = title,
     synopsis = synopsis,
-    volumes = volumes,
-    status = status.name,
     rating = rating,
+    apiId = apiId,
+    ratingCount = ratingCount,
+    status = status,
     image = image.toBdd(),
-    authors = authors.toBdd(),
     genres = genres.toBdd(),
-    demographics = demographics.toBdd()
+    seasons = seasons.toBdd()
 )

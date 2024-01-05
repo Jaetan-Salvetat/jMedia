@@ -4,12 +4,14 @@
 - [x] Animes
 - [x] Books
 - [x] Movies
-- [ ] Series
+- [x] Series
 
 ### Bugfix
 - [x] improve the quality of the image in the search view
+- [ ] Need to add a placeholder when we can't display the image
 
 ### Global Features
+- [ ] Create an build config object
  
 # Screens
 ### Onboarding

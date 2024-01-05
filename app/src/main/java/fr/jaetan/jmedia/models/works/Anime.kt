@@ -2,6 +2,11 @@ package fr.jaetan.jmedia.models.works
 
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.shared.Demographic
+import fr.jaetan.jmedia.models.works.shared.Genre
+import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.toBdd
 import org.mongodb.kbson.ObjectId
 
 data class Anime(

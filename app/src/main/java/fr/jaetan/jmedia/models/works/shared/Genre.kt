@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models.works
+package fr.jaetan.jmedia.models.works.shared
 
 import fr.jaetan.jmedia.core.realm.entities.GenreEntity
 import kotlinx.serialization.Serializable
