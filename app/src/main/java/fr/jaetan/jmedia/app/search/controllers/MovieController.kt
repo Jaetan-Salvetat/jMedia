@@ -32,18 +32,20 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override fun setLibraryValues() {
-        works.replaceAll { manga ->
-            manga.copy(isInLibrary = localMovies.find { it.title == manga.title }.isNotNull())
+        works.replaceAll { movie ->
+            movie.copy(isInLibrary = localMovies.find { it.title == movie.title }.isNotNull())
         }
     }
 
     override suspend fun libraryHandler(work: Movie) {
-        if (localMovies.find { it.title == work.title }.isNull()) {
-            MainViewModel.movieRepository.add(work.toBdd())
+        val movie = MovieApi.getDetail(work.apiId)
+
+        if (localMovies.find { it.title == movie.title }.isNull()) {
+            MainViewModel.movieRepository.add(movie.toBdd())
             return
         }
 
-        localMovies.find { it.title == work.title }?.let {
+        localMovies.find { it.title == movie.title }?.let {
             MainViewModel.movieRepository.remove(it.toBdd())
         }
     }

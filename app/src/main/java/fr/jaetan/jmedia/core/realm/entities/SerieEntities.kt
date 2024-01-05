@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Movie
+import fr.jaetan.jmedia.models.works.Serie
 import fr.jaetan.jmedia.models.works.shared.Status
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
@@ -8,18 +8,17 @@ import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import org.mongodb.kbson.ObjectId
-import java.time.LocalDate
 
-class MovieEntity(): RealmObject {
+class SerieEntity(): RealmObject {
     var id: ObjectId = ObjectId()
     var title: String = ""
     var synopsis: String? = null
     var rating: Double? = null
-    var ratingCounts: Long = 0
+    var ratingCount: Long = 0
     var image: ImageEntity? = null
     var apiId: Long = 0
     var status: String = Status.Unknown.name
-    var releaseDate: String? = null
+    var seasons: RealmList<SeasonEntity> = realmListOf()
     var genres: RealmList<GenreEntity> = realmListOf()
 
     constructor(
@@ -27,38 +26,37 @@ class MovieEntity(): RealmObject {
         title: String,
         synopsis: String?,
         rating: Double?,
-        ratingCounts: Long,
+        ratingCount: Long,
         apiId: Long,
         image: ImageEntity,
         genres: List<GenreEntity>,
         status: Status,
-        releaseDate: LocalDate?
+        seasons: List<SeasonEntity>
     ): this() {
         this.id = id
         this.title = title
         this.synopsis = synopsis
         this.rating = rating
-        this.ratingCounts = ratingCounts
+        this.ratingCount = ratingCount
         this.apiId = apiId
         this.image = image
         this.genres = genres.toRealmList()
         this.status = status.name
-        this.releaseDate = releaseDate.toString()
-
+        this.seasons = seasons.toRealmList()
     }
 }
 
-fun List<MovieEntity>.toMovies(): List<Movie> = map { it.toMovie() }
+fun List<SerieEntity>.toSeries(): List<Serie> = map { it.toSerie() }
 
-fun MovieEntity.toMovie(): Movie = Movie(
+fun SerieEntity.toSerie(): Serie = Serie(
     id = id,
     title = title,
     synopsis = synopsis,
     rating = rating,
-    ratingCounts = ratingCounts,
     apiId = apiId,
     image = image.toImage(),
     genres = genres.toGenres(),
     status = Status.fromString(status),
-    releaseDate = LocalDate.parse(releaseDate)
+    ratingCount = ratingCount,
+    seasons = seasons.toSeasons()
 )

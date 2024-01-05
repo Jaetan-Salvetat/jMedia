@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.models.works
 
 import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.shared.Image
 
 interface IWork {
     val title: String
