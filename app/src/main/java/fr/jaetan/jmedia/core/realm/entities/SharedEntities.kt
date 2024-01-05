@@ -28,7 +28,7 @@ class ImageEntity(): RealmObject {
 }
 
 class AuthorEntity(): RealmObject {
-    var id: ObjectId = BsonObjectId()
+    @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
     val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::authors)
 
@@ -39,7 +39,7 @@ class AuthorEntity(): RealmObject {
 }
 
 class GenreEntity(): RealmObject {
-    var id: ObjectId = BsonObjectId()
+    @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
     val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::genres)
 
@@ -50,7 +50,7 @@ class GenreEntity(): RealmObject {
 }
 
 class DemographicEntity(): RealmObject {
-    var id: ObjectId = BsonObjectId()
+    @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
     val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::demographics)
 

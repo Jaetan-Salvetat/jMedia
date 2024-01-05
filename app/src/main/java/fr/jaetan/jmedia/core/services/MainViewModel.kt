@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.core.services
 
+import android.annotation.SuppressLint
 import android.content.Context
 import fr.jaetan.jmedia.BuildConfig
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
@@ -40,10 +41,9 @@ object MainViewModel {
     ))
     private lateinit var realm: Realm
 
+    @SuppressLint("RedundantIfStatement")
     suspend fun initialize(context: Context) {
-        if (BuildConfig.DEBUG) {
-            config.deleteRealmIfMigrationNeeded()
-        }
+        if (BuildConfig.BUILD_TYPE != "release") { config.deleteRealmIfMigrationNeeded() }
 
         config.schemaVersion(0)
         realm = Realm.open(config.build())

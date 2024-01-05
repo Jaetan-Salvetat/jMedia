@@ -38,14 +38,14 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override suspend fun libraryHandler(work: Movie) {
-        // TODO: Need to take movie details before save it
+        val movie = MovieApi.getDetail(work.apiId)
 
-        if (localMovies.find { it.title == work.title }.isNull()) {
-            MainViewModel.movieRepository.add(work.toBdd())
+        if (localMovies.find { it.title == movie.title }.isNull()) {
+            MainViewModel.movieRepository.add(movie.toBdd())
             return
         }
 
-        localMovies.find { it.title == work.title }?.let {
+        localMovies.find { it.title == movie.title }?.let {
             MainViewModel.movieRepository.remove(it.toBdd())
         }
     }

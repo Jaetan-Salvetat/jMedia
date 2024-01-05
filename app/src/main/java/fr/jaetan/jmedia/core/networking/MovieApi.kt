@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.core.networking
 
-import fr.jaetan.jmedia.core.networking.models.MovieApiModels
+import fr.jaetan.jmedia.core.networking.models.MovieApiEntities
+import fr.jaetan.jmedia.core.networking.models.toMovie
 import fr.jaetan.jmedia.core.networking.models.toMovies
 import fr.jaetan.jmedia.models.works.Movie
 import io.ktor.client.call.body
@@ -20,6 +21,15 @@ object MovieApi: JMediaApi() {
         }
 
         val response = httpClient.get(url.build())
-        return response.body<MovieApiModels.MovieApi>().toMovies()
+        return response.body<MovieApiEntities.MovieList>().toMovies()
+    }
+
+    suspend fun getDetail(id: Long): Movie {
+        val url = URLBuilder().apply {
+            takeFrom("${baseUrl}/movie/$id?language=fr-FR")
+        }
+        val response = httpClient.get(url.build())
+
+        return response.body<MovieApiEntities.MovieDetail>().toMovie()
     }
 }
