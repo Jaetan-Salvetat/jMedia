@@ -5,6 +5,7 @@
 - [x] Books
 - [x] Movies
 - [x] Series
+- [ ] Video games
 
 ### Bugfix
 - [x] improve the quality of the image in the search view
