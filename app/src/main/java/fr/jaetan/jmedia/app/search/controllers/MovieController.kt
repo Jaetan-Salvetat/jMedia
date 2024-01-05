@@ -38,6 +38,8 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override suspend fun libraryHandler(work: Movie) {
+        // TODO: Need to take movie details before save it
+
         if (localMovies.find { it.title == work.title }.isNull()) {
             MainViewModel.movieRepository.add(work.toBdd())
             return

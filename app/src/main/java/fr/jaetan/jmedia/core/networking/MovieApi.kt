@@ -1,7 +1,6 @@
 package fr.jaetan.jmedia.core.networking
 
 import fr.jaetan.jmedia.core.networking.models.MovieApiModels
-import fr.jaetan.jmedia.core.networking.models.setGenres
 import fr.jaetan.jmedia.core.networking.models.toMovies
 import fr.jaetan.jmedia.models.works.Movie
 import io.ktor.client.call.body
@@ -21,17 +20,6 @@ object MovieApi: JMediaApi() {
         }
 
         val response = httpClient.get(url.build())
-        val movies = response.body<MovieApiModels.MovieApi>()
-        movies.setGenres(getGenres())
-
-        return movies.toMovies()
-    }
-
-    private suspend fun getGenres(): List<MovieApiModels.GenresData> {
-        val url = URLBuilder().apply {
-            takeFrom("$baseUrl/genre/movie/list?language=fr")
-        }
-        val response = httpClient.get(url.build())
-        return response.body<MovieApiModels.GenreApi>().genres
+        return response.body<MovieApiModels.MovieApi>().toMovies()
     }
 }

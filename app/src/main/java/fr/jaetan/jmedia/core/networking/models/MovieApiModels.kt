@@ -23,28 +23,8 @@ class MovieApiModels {
         val backdropPath: String?,
         val genres: MutableList<Genre> = mutableListOf()
     )
-
-    @Serializable
-    data class GenreApi(
-        val genres: List<GenresData>
-    )
-
-    @Serializable
-    data class GenresData(
-        val id: Int,
-        val name: String
-    )
 }
 
-fun MovieApiModels.MovieApi.setGenres(genres: List<MovieApiModels.GenresData>) {
-    for (movieIndex in results.indices) {
-        for (genreId in results[movieIndex].genreIds) {
-            genres.find { it.id == genreId }?.let {
-                results[movieIndex].genres.add(Genre(name = it.name))
-            }
-        }
-    }
-}
 
 fun MovieApiModels.MovieApi.toMovies(): List<Movie> = results.map {
     if (it.backdropPath.isNull()) return@map null
@@ -57,7 +37,6 @@ fun MovieApiModels.MovieApi.toMovies(): List<Movie> = results.map {
             imageUrl = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/${it.backdropPath}",
             largeImageUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/${it.backdropPath}"
         ),
-        genres = it.genres,
         rating = it.voteAverage,
         ratingCounts = it.voteCount
     )
