@@ -3,6 +3,8 @@ package fr.jaetan.jmedia.models.works
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.Season
+import fr.jaetan.jmedia.models.works.shared.Status
 import org.mongodb.kbson.ObjectId
 
 data class Serie(
@@ -14,7 +16,9 @@ data class Serie(
     override var isInLibrary: Boolean = false,
     override val type: WorkType = WorkType.Serie,
 
+    val apiId: Long,
     val ratingCount: Long,
+    val status: Status = Status.Unknown,
     val genres: List<Genre> = emptyList(),
-    val seasons: Int? = null
+    val seasons: List<Season> = emptyList()
 ): IWork

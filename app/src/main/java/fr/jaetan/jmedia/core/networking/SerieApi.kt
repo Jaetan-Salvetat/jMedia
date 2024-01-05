@@ -2,6 +2,7 @@ package fr.jaetan.jmedia.core.networking
 
 import fr.jaetan.jmedia.core.networking.models.SerieApiModels
 import fr.jaetan.jmedia.core.networking.models.toSerie
+import fr.jaetan.jmedia.core.networking.models.toSeries
 import fr.jaetan.jmedia.models.works.Serie
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -20,6 +21,15 @@ object SerieApi: JMediaApi() {
         }
 
         val response = httpClient.get(url.build())
-        return response.body<SerieApiModels.SerieList>().toSerie()
+        return response.body<SerieApiModels.SerieList>().toSeries()
+    }
+
+    suspend fun getDetails(id: Long): Serie {
+        val url = URLBuilder().apply {
+            takeFrom("${baseUrl}/tv/$id?language=fr-FR")
+        }
+
+        val response = httpClient.get(url.build())
+        return response.body<SerieApiModels.SerieDetails>().toSerie()
     }
 }

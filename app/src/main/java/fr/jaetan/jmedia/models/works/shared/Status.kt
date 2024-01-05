@@ -1,5 +1,7 @@
 package fr.jaetan.jmedia.models.works.shared
 
+import android.util.Log
+
 enum class Status {
     InProgress,
     Released,
@@ -24,7 +26,15 @@ fun Status.Companion.fromString(field: String): Status = when {
     field == "Post Production" -> Status.Upcoming
     field == "Released" -> Status.Released
 
+    // Series only
+    field == "Ended" -> Status.Released
+    field == "Returning Series" -> Status.InProgress
+
     // Generic
     field.contains("Finished") -> Status.Released
-    else -> Status.Unknown
+    else -> {
+        try { Log.d("testt::status_unknown", field) }
+        catch (_: Exception) {}
+        Status.Unknown
+    }
 }
