@@ -5,13 +5,16 @@
 - [x] Books
 - [x] Movies
 - [x] Series
+- [ ] Video games
 
 ### Bugfix
 - [x] improve the quality of the image in the search view
-- [ ] Need to add a placeholder when we can't display the image
+- [x] Need to add a placeholder when we can't display the image
 
 ### Global Features
-- [ ] Create an build config object
+- [x] Create an build config object
+- [ ] Implement an analytics and a crashlytics
+- [ ] Need to save images locally
  
 # Screens
 ### Onboarding
@@ -35,7 +38,7 @@
 - [x] display work types list tab
 - [x] save previous search on work type change
 - [x] display result of selected types
-- [ ] can sort by (ascending and descending):
+- [x] can sort by (ascending and descending):
   - title
   - rating
   - default (only if just one of work type is selected)
@@ -43,5 +46,3 @@
 ### Work detail
 - [ ] Can show all work detail
 - [ ] Can add a work to library
-- [ ] Can add a work to wishlist
-- [ ] Show an retry dialog when an error as occured
