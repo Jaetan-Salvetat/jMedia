@@ -1,5 +1,8 @@
 package fr.jaetan.jmedia.app.search.views
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +16,17 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -35,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.scrollableTopAppBarBackground
+import fr.jaetan.jmedia.models.Sort
+import fr.jaetan.jmedia.models.SortDirection
 
 @Composable
 fun SearchView.TopBarView() {
@@ -90,13 +101,15 @@ private fun SearchView.TopBarCell() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun SearchView.FilterCell() {
     val context = LocalContext.current
 
     Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {
         LazyRow {
+            stickyHeader { SortCell() }
+
             item {
                 Row(Modifier.padding(start = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     FilterChip(
@@ -130,5 +143,66 @@ fun SearchView.FilterCell() {
             item { Box(Modifier.width(10.dp)) }
         }
         Divider()
+    }
+}
+
+@Composable
+private fun SearchView.SortCell() {
+    val hideMenu: () -> Unit = {
+        viewModel.showSortMenu = false
+    }
+
+    Column {
+        Box(
+            Modifier.background(
+                brush = Brush.horizontalGradient(
+                    0f to MaterialTheme.colorScheme.background,
+                    .7f to MaterialTheme.colorScheme.background.copy(alpha = .8f),
+                    1f to Color.Transparent
+                )
+            )
+        ) {
+            IconButton(onClick = { viewModel.showSortMenu = true }) {
+                Icon(Icons.Default.FilterList, null)
+            }
+        }
+
+        DropdownMenu(expanded = viewModel.showSortMenu, onDismissRequest = hideMenu) {
+            Sort.all.forEach {
+                DropdownMenuItem(
+                    leadingIcon = {
+                        DoneIconAnimated(viewModel.sort == it)
+                    },
+                    enabled = !(viewModel.filters.size < 2 && it == Sort.Default),
+                    text = { Text(stringResource(it.textRes)) },
+                    onClick = {
+                        hideMenu()
+                        viewModel.sort = it
+                    }
+                )
+            }
+
+            Divider()
+
+            SortDirection.all.forEach {
+                DropdownMenuItem(
+                    leadingIcon = {
+                        DoneIconAnimated(viewModel.sortDirection == it)
+                    },
+                    text = { Text(stringResource(it.textRes)) },
+                    onClick = {
+                        hideMenu()
+                        viewModel.sortDirection = it
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun DoneIconAnimated(visible: Boolean) {
+    AnimatedVisibility(visible) {
+        Icon(Icons.Default.Done, null)
     }
 }
