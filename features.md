@@ -11,6 +11,7 @@
 - [ ] Need to add a placeholder when we can't display the image
 
 ### Global Features
+- [ ] Create an build config object
  
 # Screens
 ### Onboarding
