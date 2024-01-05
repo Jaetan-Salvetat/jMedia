@@ -12,6 +12,7 @@ import fr.jaetan.jmedia.app.search.controllers.BookController
 import fr.jaetan.jmedia.app.search.controllers.IWorkController
 import fr.jaetan.jmedia.app.search.controllers.MangaController
 import fr.jaetan.jmedia.app.search.controllers.MovieController
+import fr.jaetan.jmedia.app.search.controllers.SerieController
 import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
@@ -28,7 +29,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         WorkType.Manga to MangaController(),
         WorkType.Anime to AnimeController(),
         WorkType.Book to BookController(),
-        WorkType.Movie to MovieController()
+        WorkType.Movie to MovieController(),
+        WorkType.Serie to SerieController()
     )
 
     // States

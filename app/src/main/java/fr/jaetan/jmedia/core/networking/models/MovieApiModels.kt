@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.core.networking.models
 
-import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
@@ -27,8 +26,6 @@ class MovieApiModels {
 
 
 fun MovieApiModels.MovieApi.toMovies(): List<Movie> = results.map {
-    if (it.backdropPath.isNull()) return@map null
-
     Movie(
         title = it.title,
         synopsis = it.overview,

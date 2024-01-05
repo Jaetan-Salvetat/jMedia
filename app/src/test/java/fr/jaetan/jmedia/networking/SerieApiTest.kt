@@ -9,13 +9,12 @@ import org.junit.Test
 class SerieApiTest {
     @Test
     fun search_ValidRecherche_ReturnNotEmpty() = runTest {
-        val series = SerieApi.search("lucifer")
+        val series = SerieApi.search("harry")
 
-        series.results.forEach {
+        series.forEach {
             it.printDataClassToString()
         }
 
-        // true because, the test just crash if the request not working
-        Assert.assertTrue(series.results.isNotEmpty())
+        Assert.assertTrue(series.isNotEmpty())
     }
 }
