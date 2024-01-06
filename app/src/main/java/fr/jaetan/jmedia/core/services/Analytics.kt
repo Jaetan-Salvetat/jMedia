@@ -15,10 +15,10 @@ object Analytics {
         }
     }
 
-    fun tagEvent(event: AnalyticsEvent, params: Map<String, String>) {
+    fun tagEvent(event: AnalyticsEvent, vararg params: Pair<String, String>) {
         analytics.logEvent(event.name) {
             params.forEach {
-                param(it.key, it.value)
+                param(it.first, it.second)
             }
         }
     }
