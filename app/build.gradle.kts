@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.realm.kotlin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -98,8 +99,11 @@ dependencies {
     implementation("io.realm.kotlin:library-base:1.11.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    // Images!
+    // Images
     implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Analytics / Crashlytics
+    implementation("com.google.firebase:firebase-analytics:21.5.0")
 
     // Others
     implementation(kotlin("reflect"))

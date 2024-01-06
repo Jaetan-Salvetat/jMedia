@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.app.search.controllers
+package fr.jaetan.jmedia.controllers
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import fr.jaetan.jmedia.models.works.IWork
