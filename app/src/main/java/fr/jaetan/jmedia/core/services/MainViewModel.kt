@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.core.services
 
-import android.annotation.SuppressLint
 import android.content.Context
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
@@ -29,7 +28,7 @@ object MainViewModel {
     val movieRepository by lazy { MovieRepository(realm) }
     val serieRepository by lazy { SerieRepository(realm) }
 
-    private val config = RealmConfiguration.Builder(schema = setOf(
+    private val realmConfig = RealmConfiguration.Builder(schema = setOf(
         // region Models
         MangaEntity::class,
         AnimeEntity::class,
@@ -47,13 +46,18 @@ object MainViewModel {
     ))
     private lateinit var realm: Realm
 
-    @SuppressLint("RedundantIfStatement")
+
     suspend fun initialize(context: Context) {
-        if (!GlobalSettings.isInRelease) { config.deleteRealmIfMigrationNeeded() }
-
-        config.schemaVersion(0)
-        realm = Realm.open(config.build())
-
+        initializeSettings()
         userSettingsModel.initialize(context)
+    }
+
+    private fun initializeSettings() {
+        if (!GlobalSettings.isInRelease) { realmConfig.deleteRealmIfMigrationNeeded() }
+
+        realmConfig.schemaVersion(0)
+        realm = Realm.open(realmConfig.build())
+
+
     }
 }

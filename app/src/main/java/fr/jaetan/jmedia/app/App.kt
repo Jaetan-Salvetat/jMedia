@@ -10,10 +10,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.app.search.SearchView
+import fr.jaetan.jmedia.core.services.Analytics
 import fr.jaetan.jmedia.core.services.Navigator
 
 @Composable
 fun App(navController: NavHostController) {
+    navController.addOnDestinationChangedListener { _, navDestination, _ ->
+        navDestination.route?.let {
+            Analytics.tagScreen(it)
+        }
+    }
+
     NavHost(navController = navController, startDestination = Navigator.library.route) {
         composable(Navigator.library.route) {
             LibraryView().GetView(navController, viewModel())
