@@ -34,7 +34,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         WorkType.Movie to MovieController(),
         WorkType.Serie to SerieController()
     )
-    private var _sort by mutableStateOf(Sort.Default)
+    private var _sort by mutableStateOf(Sort.Name)
 
     // States
     var searchValue by mutableStateOf("")
