@@ -45,7 +45,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         get() = MainViewModel.userSettingsModel.selectedWorkTypes
     var sort: Sort
         get() = when {
-            filters.size < 2 && _sort == Sort.Default -> Sort.Name
+            filters.size > 1 && _sort == Sort.Default -> Sort.Name
             else -> _sort
         }
         set(value) { _sort = value }

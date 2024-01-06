@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.app.search.views
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -148,10 +150,6 @@ fun SearchView.FilterCell() {
 
 @Composable
 private fun SearchView.SortCell() {
-    val hideMenu: () -> Unit = {
-        viewModel.showSortMenu = false
-    }
-
     Column {
         Box(
             Modifier.background(
@@ -167,18 +165,15 @@ private fun SearchView.SortCell() {
             }
         }
 
-        DropdownMenu(expanded = viewModel.showSortMenu, onDismissRequest = hideMenu) {
+        DropdownMenu(expanded = viewModel.showSortMenu, onDismissRequest = { viewModel.showSortMenu = false }) {
             Sort.all.forEach {
                 DropdownMenuItem(
                     leadingIcon = {
                         DoneIconAnimated(viewModel.sort == it)
                     },
-                    enabled = !(viewModel.filters.size < 2 && it == Sort.Default),
+                    enabled = !(viewModel.filters.size > 1 && it == Sort.Default),
                     text = { Text(stringResource(it.textRes)) },
-                    onClick = {
-                        hideMenu()
-                        viewModel.sort = it
-                    }
+                    onClick = { viewModel.sort = it }
                 )
             }
 
@@ -190,10 +185,7 @@ private fun SearchView.SortCell() {
                         DoneIconAnimated(viewModel.sortDirection == it)
                     },
                     text = { Text(stringResource(it.textRes)) },
-                    onClick = {
-                        hideMenu()
-                        viewModel.sortDirection = it
-                    }
+                    onClick = { viewModel.sortDirection = it }
                 )
             }
         }
@@ -202,7 +194,11 @@ private fun SearchView.SortCell() {
 
 @Composable
 private fun DoneIconAnimated(visible: Boolean) {
-    AnimatedVisibility(visible) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = scaleIn(),
+        exit = scaleOut()
+    ) {
         Icon(Icons.Default.Done, null)
     }
 }
