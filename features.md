@@ -17,7 +17,8 @@
 - [ ] Create an interface for ream repositories
 
 ### Global Features
-- [ ] Implement an analytics and a crashlytics
+- [x] Implement an analytics and a crashlytics
+- [ ] Determinate what we've need to track with analytics
 - [ ] Need to save images locally
  
 # Screens

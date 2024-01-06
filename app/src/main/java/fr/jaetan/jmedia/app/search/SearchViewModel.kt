@@ -7,12 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.jaetan.jmedia.app.search.controllers.AnimeController
-import fr.jaetan.jmedia.app.search.controllers.BookController
-import fr.jaetan.jmedia.app.search.controllers.IWorkController
-import fr.jaetan.jmedia.app.search.controllers.MangaController
-import fr.jaetan.jmedia.app.search.controllers.MovieController
-import fr.jaetan.jmedia.app.search.controllers.SerieController
+import fr.jaetan.jmedia.controllers.AnimeController
+import fr.jaetan.jmedia.controllers.BookController
+import fr.jaetan.jmedia.controllers.IWorkController
+import fr.jaetan.jmedia.controllers.MangaController
+import fr.jaetan.jmedia.controllers.MovieController
+import fr.jaetan.jmedia.controllers.SerieController
 import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
@@ -34,7 +34,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         WorkType.Movie to MovieController(),
         WorkType.Serie to SerieController()
     )
-    private var _sort by mutableStateOf(Sort.Default)
+    private var _sort by mutableStateOf(Sort.Name)
 
     // States
     var searchValue by mutableStateOf("")
@@ -45,7 +45,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         get() = MainViewModel.userSettingsModel.selectedWorkTypes
     var sort: Sort
         get() = when {
-            filters.size < 2 && _sort == Sort.Default -> Sort.Name
+            filters.size > 1 && _sort == Sort.Default -> Sort.Name
             else -> _sort
         }
         set(value) { _sort = value }
