@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.app.search.controllers
+package fr.jaetan.jmedia.controllers
 
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.BookApi
