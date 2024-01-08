@@ -46,7 +46,7 @@ fun SerieApiModels.SerieList.toSeries(): List<Serie> = results.map { it.toSerie(
 
 fun SerieApiModels.SerieDetails.toSerie(): Serie = Serie(
     title = name,
-    synopsis = overview,
+    synopsis = overview.ifEmpty { null },
     image = Image(
         smallImageUrl = "https://image.tmdb.org/t/p/w150_and_h225_bestv2/${backdropPath}",
         imageUrl = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/${backdropPath}",
