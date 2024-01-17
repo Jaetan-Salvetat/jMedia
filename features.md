@@ -14,7 +14,7 @@
 
 ### Tech
 - [x] Create an build config object
-- [ ] Create an interface for ream repositories
+- [x] Create an interface for ream repositories
 
 ### Global Features
 - [x] Implement an analytics
