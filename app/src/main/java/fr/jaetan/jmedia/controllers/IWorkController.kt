@@ -10,4 +10,8 @@ abstract class IWorkController<T: IWork> {
     abstract suspend fun libraryHandler(work: T)
     abstract suspend fun initializeFlow()
     protected abstract fun setLibraryValues()
+
+    fun resetWorks() {
+        works.clear()
+    }
 }
