@@ -59,9 +59,13 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         viewModelScope.launch(dispatcher) {
             if (works.isEmpty()) listState = ListState.Loading
 
-            filters.forEachIndexed { index, type ->
+            filters.forEach { type ->
                 MainViewModel.getController(type).fetch(searchValue, force)
-                updateListState(index == filters.size -1)
+            }
+
+            listState = when {
+                works.isNotEmpty() -> ListState.HasData
+                else -> ListState.EmptyData
             }
         }
     }
@@ -100,15 +104,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             if (listState != ListState.Default) {
                 fetchWorks(false)
             }
-        }
-    }
-
-    // Private methods
-    private fun updateListState(isLast: Boolean) {
-        listState = when {
-            works.isEmpty() && isLast -> ListState.EmptyData
-            works.isNotEmpty() -> ListState.HasData
-            else -> listState
         }
     }
 

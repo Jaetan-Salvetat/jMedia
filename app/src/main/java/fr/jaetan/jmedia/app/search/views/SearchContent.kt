@@ -32,7 +32,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -85,7 +84,7 @@ import kotlin.math.roundToInt
 fun SearchView.ContentView() {
     when (viewModel.listState) {
         ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
-        ListState.Loading -> LoadingState()
+        ListState.Loading -> WorksList()
         ListState.HasData -> WorksList()
         ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
     }
@@ -109,13 +108,6 @@ private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 20.dp)
         )
-    }
-}
-
-@Composable
-private fun LoadingState() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }
 

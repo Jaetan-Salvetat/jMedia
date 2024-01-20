@@ -3,7 +3,6 @@ package fr.jaetan.jmedia.app.search.views
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.scrollableTopAppBarBackground
+import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
 
@@ -51,6 +52,13 @@ fun SearchView.TopBarView() {
     Column {
         TopBarCell()
         FilterCell()
+
+        if (viewModel.listState == ListState.Loading) {
+            LinearProgressIndicator(Modifier.fillMaxWidth())
+        } else {
+            Box(Modifier.fillMaxWidth().height(3.dp))
+            Divider()
+        }
     }
 }
 
@@ -90,7 +98,7 @@ private fun SearchView.TopBarCell() {
             IconButton(
                 onClick = {
                     focusManager.clearFocus()
-                    navController?.popBackStack()
+                    popBackStack()
                 }
             ) {
                 Icon(Icons.Default.ArrowBack, null)
@@ -100,7 +108,7 @@ private fun SearchView.TopBarCell() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView.FilterCell() {
     val context = LocalContext.current
@@ -141,7 +149,6 @@ fun SearchView.FilterCell() {
 
             item { Box(Modifier.width(10.dp)) }
         }
-        Divider()
     }
 }
 

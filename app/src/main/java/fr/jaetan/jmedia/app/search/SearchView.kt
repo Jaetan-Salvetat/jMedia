@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.app.search
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.search.views.ContentView
@@ -18,12 +19,20 @@ class SearchView: Screen<SearchViewModel>() {
         ContentView()
     }
 
+    fun popBackStack() {
+        navController?.popBackStack()
+
+        MainViewModel.controllers.forEach {
+            it.resetWorks()
+        }
+    }
+
     @Composable
     override fun Initialize(nc: NavHostController?, model: SearchViewModel) {
         super.Initialize(nc, model)
 
-        MainViewModel.controllers.forEach {
-            it.resetWorks()
+        BackHandler {
+            popBackStack()
         }
     }
 }
