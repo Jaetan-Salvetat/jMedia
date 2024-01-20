@@ -11,7 +11,7 @@ import fr.jaetan.jmedia.models.works.toBdd
 
 class BookController: IWorkController<Book>() {
     override val works = mutableStateListOf<Book>()
-    private val localBooks = mutableListOf<Book>()
+    override var localWorks = mutableStateListOf<Book>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
         if (!force && works.isNotEmpty()) return
@@ -22,28 +22,28 @@ class BookController: IWorkController<Book>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localBooks.isNotEmpty()) return
+        if (localWorks.isNotEmpty()) return
 
         MainViewModel.bookRepository.all.collect {
-            localBooks.clear()
-            localBooks.addAll(it.list.toBooks())
+            localWorks.clear()
+            localWorks.addAll(it.list.toBooks())
             setLibraryValues()
         }
     }
 
     override fun setLibraryValues() {
         works.replaceAll { manga ->
-            manga.copy(isInLibrary = localBooks.find { it.title == manga.title }.isNotNull())
+            manga.copy(isInLibrary = localWorks.find { it.title == manga.title }.isNotNull())
         }
     }
 
     override suspend fun libraryHandler(work: Book) {
-        if (localBooks.find { it.title == work.title }.isNull()) {
+        if (localWorks.find { it.title == work.title }.isNull()) {
             MainViewModel.bookRepository.add(work.toBdd())
             return
         }
 
-        localBooks.find { it.title == work.title }?.let {
+        localWorks.find { it.title == work.title }?.let {
             MainViewModel.bookRepository.remove(it.toBdd())
         }
     }
