@@ -10,11 +10,11 @@
 ### Bugfix
 - [x] improve the quality of the image in the search view
 - [x] Need to add a placeholder when we can't display the image
-- [ ] Save sorts settings in local settings
+- [x] Film and series synopsis are empty in some cases
 
 ### Tech
 - [x] Create an build config object
-- [ ] Create an interface for ream repositories
+- [x] Create an interface for ream repositories
 
 ### Global Features
 - [x] Implement an analytics

@@ -11,7 +11,7 @@ import fr.jaetan.jmedia.models.works.toBdd
 
 class SerieController: IWorkController<Serie>() {
     override val works = mutableStateListOf<Serie>()
-    private val localSeries = mutableListOf<Serie>()
+    override var localWorks = mutableStateListOf<Serie>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
         if (!force && works.isNotEmpty()) return
@@ -22,30 +22,30 @@ class SerieController: IWorkController<Serie>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localSeries.isNotEmpty()) return
+        if (localWorks.isNotEmpty()) return
 
         MainViewModel.serieRepository.all.collect {
-            localSeries.clear()
-            localSeries.addAll(it.list.toSeries())
+            localWorks.clear()
+            localWorks.addAll(it.list.toSeries())
             setLibraryValues()
         }
     }
 
     override fun setLibraryValues() {
         works.replaceAll { serie ->
-            serie.copy(isInLibrary = localSeries.find { it.title == serie.title }.isNotNull())
+            serie.copy(isInLibrary = localWorks.find { it.title == serie.title }.isNotNull())
         }
     }
 
     override suspend fun libraryHandler(work: Serie) {
         val serie = SerieApi.getDetails(work.apiId)
 
-        if (localSeries.find { it.title == serie.title }.isNull()) {
+        if (localWorks.find { it.title == serie.title }.isNull()) {
             MainViewModel.serieRepository.add(serie.toBdd())
             return
         }
 
-        localSeries.find { it.title == serie.title }?.let {
+        localWorks.find { it.title == serie.title }?.let {
             MainViewModel.serieRepository.remove(it.toBdd())
         }
     }

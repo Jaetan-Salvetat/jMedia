@@ -11,7 +11,7 @@ import fr.jaetan.jmedia.models.works.toBdd
 
 class MovieController: IWorkController<Movie>() {
     override val works = mutableStateListOf<Movie>()
-    private val localMovies = mutableListOf<Movie>()
+    override var localWorks = mutableStateListOf<Movie>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
         if (!force && works.isNotEmpty()) return
@@ -22,30 +22,30 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localMovies.isNotEmpty()) return
+        if (localWorks.isNotEmpty()) return
 
         MainViewModel.movieRepository.all.collect {
-            localMovies.clear()
-            localMovies.addAll(it.list.toMovies())
+            localWorks.clear()
+            localWorks.addAll(it.list.toMovies())
             setLibraryValues()
         }
     }
 
     override fun setLibraryValues() {
         works.replaceAll { movie ->
-            movie.copy(isInLibrary = localMovies.find { it.title == movie.title }.isNotNull())
+            movie.copy(isInLibrary = localWorks.find { it.title == movie.title }.isNotNull())
         }
     }
 
     override suspend fun libraryHandler(work: Movie) {
         val movie = MovieApi.getDetail(work.apiId)
 
-        if (localMovies.find { it.title == movie.title }.isNull()) {
+        if (localWorks.find { it.title == movie.title }.isNull()) {
             MainViewModel.movieRepository.add(movie.toBdd())
             return
         }
 
-        localMovies.find { it.title == movie.title }?.let {
+        localWorks.find { it.title == movie.title }?.let {
             MainViewModel.movieRepository.remove(it.toBdd())
         }
     }

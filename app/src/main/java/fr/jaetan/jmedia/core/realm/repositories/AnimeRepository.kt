@@ -7,23 +7,23 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.Flow
 
-class AnimeRepository(private val realm: Realm) {
-    val all: Flow<ResultsChange<AnimeEntity>>
+class AnimeRepository(private val realm: Realm): IRepository<AnimeEntity>() {
+    override val all: Flow<ResultsChange<AnimeEntity>>
         get() = realm.query<AnimeEntity>().find().asFlow()
 
-    suspend fun add(manga: AnimeEntity) {
+    override suspend fun add(work: AnimeEntity) {
         realm.write {
             try {
-                copyToRealm(manga)
+                copyToRealm(work)
             } catch (e: Exception) {
                 Log.d("testt::AnimeRepository::error", e.message ?: "null")
             }
         }
     }
 
-    suspend fun remove(manga: AnimeEntity) {
+    override suspend fun remove(work: AnimeEntity) {
         realm.write {
-            realm.query<AnimeEntity>("id == $0", manga.id).find().firstOrNull()?.let { entity ->
+            realm.query<AnimeEntity>("id == $0", work.id).find().firstOrNull()?.let { entity ->
                 findLatest(entity)?.let {
                     delete(it)
                 }

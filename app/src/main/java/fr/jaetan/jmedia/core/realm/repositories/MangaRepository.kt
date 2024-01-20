@@ -1,26 +1,29 @@
 package fr.jaetan.jmedia.core.realm.repositories
 
+import android.util.Log
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.Flow
 
-class MangaRepository(private val realm: Realm) {
-    val all: Flow<ResultsChange<MangaEntity>>
+class MangaRepository(private val realm: Realm): IRepository<MangaEntity>() {
+    override val all: Flow<ResultsChange<MangaEntity>>
         get() = realm.query<MangaEntity>().find().asFlow()
 
-    suspend fun add(manga: MangaEntity) {
+    override suspend fun add(work: MangaEntity) {
         realm.write {
             try {
-                copyToRealm(manga)
-            } catch (_: Exception) {}
+                copyToRealm(work)
+            } catch (e: Exception) {
+                Log.d("testt::MangaRepository::error", e.message ?: "null")
+            }
         }
     }
 
-    suspend fun remove(manga: MangaEntity) {
+    override suspend fun remove(work: MangaEntity) {
         realm.write {
-            realm.query<MangaEntity>("id == $0", manga.id).find().firstOrNull()?.let { entity ->
+            realm.query<MangaEntity>("id == $0", work.id).find().firstOrNull()?.let { entity ->
                 findLatest(entity)?.let {
                     delete(it)
                 }

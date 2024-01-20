@@ -5,8 +5,13 @@ import fr.jaetan.jmedia.models.works.IWork
 
 abstract class IWorkController<T: IWork> {
     abstract val works: SnapshotStateList<T>
+    abstract val localWorks: SnapshotStateList<T>
     abstract suspend fun fetch(searchValue: String, force: Boolean)
     abstract suspend fun libraryHandler(work: T)
     abstract suspend fun initializeFlow()
     protected abstract fun setLibraryValues()
+
+    fun resetWorks() {
+        works.clear()
+    }
 }
