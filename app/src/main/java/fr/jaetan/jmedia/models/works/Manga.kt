@@ -15,10 +15,10 @@ data class Manga(
     override val synopsis: String?,
     override val image: Image,
     override val rating: Double?,
+    override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
     override val type: WorkType = WorkType.Manga,
 
-    val id: ObjectId = ObjectId(),
     val volumes: Int?,
     val status: Status,
     val authors: List<Author>,

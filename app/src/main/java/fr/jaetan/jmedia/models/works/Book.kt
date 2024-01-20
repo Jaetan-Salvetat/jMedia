@@ -13,10 +13,10 @@ data class Book(
     override val synopsis: String?,
     override val image: Image,
     override val rating: Double?,
+    override val id: ObjectId = ObjectId(),
     override val type: WorkType = WorkType.Book,
     override var isInLibrary: Boolean = false,
 
-    val id: ObjectId = ObjectId(),
     val genres: List<Genre>,
     val authors: List<Author>,
     val publisher: String?,

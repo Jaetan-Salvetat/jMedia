@@ -133,7 +133,7 @@ private fun SearchView.WorksList() {
     }
 
     LazyColumn(state = listState) {
-        items(viewModel.works, key = { "${it.title}/${it.type}/${it.synopsis.orEmpty().ifEmpty { it.title }}" }) {
+        items(viewModel.works, key = { it.id.toHexString() }) {
             WorksListItem(it, Modifier.animateItemPlacement())
         }
 

@@ -10,11 +10,11 @@ import fr.jaetan.jmedia.models.works.shared.toBdd
 import org.mongodb.kbson.ObjectId
 
 data class Serie(
-    val id: ObjectId = ObjectId(),
     override val title: String,
     override val synopsis: String?,
     override val image: Image,
     override val rating: Double?,
+    override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
     override val type: WorkType = WorkType.Serie,
 
