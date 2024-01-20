@@ -11,7 +11,7 @@ import fr.jaetan.jmedia.models.works.toBdd
 
 class AnimeController: IWorkController<Anime>() {
     override val works = mutableStateListOf<Anime>()
-    private var localAnimes = mutableListOf<Anime>()
+    override var localWorks = mutableStateListOf<Anime>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
         if (!force && works.isNotEmpty()) return
@@ -22,28 +22,28 @@ class AnimeController: IWorkController<Anime>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localAnimes.isNotEmpty()) return
+        if (localWorks.isNotEmpty()) return
 
         MainViewModel.animeRepository.all.collect {
-            localAnimes.clear()
-            localAnimes.addAll(it.list.toAnimes())
+            localWorks.clear()
+            localWorks.addAll(it.list.toAnimes())
             setLibraryValues()
         }
     }
 
     override fun setLibraryValues() {
         works.replaceAll { anime ->
-            anime.copy(isInLibrary = localAnimes.find { it.title == anime.title }.isNotNull())
+            anime.copy(isInLibrary = localWorks.find { it.title == anime.title }.isNotNull())
         }
     }
 
     override suspend fun libraryHandler(work: Anime) {
-        if (localAnimes.find { it.title == work.title }.isNull()) {
+        if (localWorks.find { it.title == work.title }.isNull()) {
             MainViewModel.animeRepository.add(work.toBdd())
             return
         }
 
-        localAnimes.find { it.title == work.title }?.let {
+        localWorks.find { it.title == work.title }?.let {
             MainViewModel.animeRepository.remove(it.toBdd())
         }
     }

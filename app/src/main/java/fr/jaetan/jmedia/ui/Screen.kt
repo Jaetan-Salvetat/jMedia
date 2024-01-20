@@ -61,6 +61,6 @@ abstract class Screen <T: ViewModel> {
     open fun Initialize(nc: NavHostController?, model: T) {
         this.viewModel = model
         navController = nc
-        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     }
 }

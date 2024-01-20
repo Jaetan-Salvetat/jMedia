@@ -14,10 +14,10 @@ data class Anime(
     override val synopsis: String?,
     override val image: Image,
     override val rating: Double?,
+    override val id: ObjectId = ObjectId(),
     override val type: WorkType = WorkType.Anime,
     override var isInLibrary: Boolean = false,
 
-    val id: ObjectId = ObjectId(),
     val status: Status,
     val genres: List<Genre>,
     val demographics: List<Demographic>,
