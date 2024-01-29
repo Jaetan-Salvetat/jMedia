@@ -23,8 +23,15 @@
  
 # Screens
 ### Onboarding
-- [ ] Show the onboarding at the first app start
-
+- [ ] Show the onboarding at the first app start 
+- [ ] Make onboarding button in the settings view
+- List of content:
+  - [ ] Application purpose explanation
+  - [ ] View Customization
+  - [ ] Theming Customization
+  - [ ] Data storage explanation
+  - [ ] Thank for reading: "contact for feature idea, bug, and stuff in settings view"
+ 
 ### Library
 - [ ] Show all works
 - [ ] Can open **work detail** screen
@@ -52,3 +59,11 @@
 ### Work detail
 - [ ] Can show all work detail
 - [ ] Can add or remove a work from library
+
+### Settings
+- [ ] Delete data
+- [ ] Contact
+- [ ] View Customization
+- [ ] Theming
+- [ ] Display OnBoarding
+- [ ] Display Version and build
