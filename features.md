@@ -11,6 +11,7 @@
 - [x] improve the quality of the image in the search view
 - [x] Need to add a placeholder when we can't display the image
 - [x] Film and series synopsis are empty in some cases
+- [ ] Release Date isn't in all medias, crash on null value in, movies/series
 
 ### Tech
 - [x] Create an build config object

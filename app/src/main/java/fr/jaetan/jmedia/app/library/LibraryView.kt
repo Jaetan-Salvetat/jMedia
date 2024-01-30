@@ -9,11 +9,6 @@ import fr.jaetan.jmedia.ui.Screen
 
 class LibraryView: Screen<LibraryViewModel>() {
     @Composable
-    override fun TopBar() {
-        TopBarView()
-    }
-
-    @Composable
     override fun Content() {
         ContentView()
     }

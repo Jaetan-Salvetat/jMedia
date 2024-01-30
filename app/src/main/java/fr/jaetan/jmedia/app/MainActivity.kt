@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch {
-            MainViewModel.initialize(this@MainActivity)
+            MainViewModel.initialize(this@MainActivity, lifecycleScope)
         }
 
         setContent {

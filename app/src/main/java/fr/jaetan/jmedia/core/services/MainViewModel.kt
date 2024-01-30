@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.core.services
 
 import android.content.Context
+import androidx.lifecycle.LifecycleCoroutineScope
 import fr.jaetan.jmedia.controllers.AnimeController
 import fr.jaetan.jmedia.controllers.BookController
 import fr.jaetan.jmedia.controllers.IWorkController
@@ -27,6 +28,7 @@ import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
+import kotlinx.coroutines.launch
 
 object MainViewModel {
     val userSettingsModel = UserSettingsModel()
@@ -65,9 +67,18 @@ object MainViewModel {
     @Suppress("UNCHECKED_CAST")
     fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
 
-    suspend fun initialize(context: Context) {
+    suspend fun initialize(context: Context, lifeCycle: LifecycleCoroutineScope) {
         initializeSettings()
+        initializeControllers(lifeCycle)
         userSettingsModel.initialize(context)
+    }
+
+    fun initializeControllers(lifeCycle: LifecycleCoroutineScope) {
+        controllers.forEach {
+            lifeCycle.launch {
+                it.initializeFlow()
+            }
+        }
     }
 
     private fun initializeSettings() {
