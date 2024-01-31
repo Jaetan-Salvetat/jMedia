@@ -25,4 +25,6 @@
     <string name="sort_by_default">Par défaut</string>
     <string name="ascending">Ordre croissant</string>
     <string name="descending">Ordre décroissant</string>
+    <string name="settings">Paramètres</string>
+
 </resources>
