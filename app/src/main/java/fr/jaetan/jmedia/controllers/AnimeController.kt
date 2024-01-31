@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Anime
+import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class AnimeController: IWorkController<Anime>() {
@@ -33,7 +34,7 @@ class AnimeController: IWorkController<Anime>() {
 
     override fun setLibraryValues() {
         works.replaceAll { anime ->
-            anime.copy(isInLibrary = localWorks.find { it.title == anime.title }.isNotNull())
+            anime.copy(isInLibrary = localWorks.find { anime.equalTo(it) }.isNotNull())
         }
     }
 

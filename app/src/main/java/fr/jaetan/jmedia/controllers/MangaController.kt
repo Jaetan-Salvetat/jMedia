@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MangaController: IWorkController<Manga>() {
@@ -33,7 +34,7 @@ class MangaController: IWorkController<Manga>() {
 
     override fun setLibraryValues() {
         works.replaceAll { manga ->
-            manga.copy(isInLibrary = localWorks.find { it.title == manga.title }.isNotNull())
+            manga.copy(isInLibrary = localWorks.find { manga.equalTo(it) }.isNotNull())
         }
     }
 

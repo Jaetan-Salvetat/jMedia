@@ -2,9 +2,9 @@ package fr.jaetan.jmedia.app.home
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.LibraryBooks
-import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
+import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.LibraryBooks
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +18,6 @@ class HomeViewModel: ViewModel() {
 }
 
 enum class HomeBottomBarItems(@StringRes val titleRes: Int, val icon: ImageVector, val selectedIcon: ImageVector) {
-    Library(R.string.library, Icons.AutoMirrored.Outlined.LibraryBooks, Icons.AutoMirrored.Filled.LibraryBooks),
+    Library(R.string.library, Icons.Outlined.LibraryBooks, Icons.Filled.LibraryBooks),
     Settings(R.string.settings, Icons.Outlined.Settings, Icons.Filled.Settings)
 }

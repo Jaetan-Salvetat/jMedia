@@ -15,7 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
@@ -56,7 +56,10 @@ fun SearchView.TopBarView() {
         if (viewModel.listState == ListState.Loading) {
             LinearProgressIndicator(Modifier.fillMaxWidth())
         } else {
-            Box(Modifier.fillMaxWidth().height(3.dp))
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(3.dp))
             Divider()
         }
     }
@@ -101,7 +104,7 @@ private fun SearchView.TopBarCell() {
                     popBackStack()
                 }
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                Icon(Icons.Default.ArrowBack, null)
             }
         },
         scrollBehavior = scrollBehavior,

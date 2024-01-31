@@ -13,3 +13,9 @@ interface IWork {
     val image: Image
     val rating: Double?
 }
+
+fun <T: IWork> IWork.equalTo(work: T): Boolean = title == work.title
+        && synopsis == work.synopsis
+        && type == work.type
+        && image == image
+        && rating == rating

@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Serie
+import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class SerieController: IWorkController<Serie>() {
@@ -33,7 +34,7 @@ class SerieController: IWorkController<Serie>() {
 
     override fun setLibraryValues() {
         works.replaceAll { serie ->
-            serie.copy(isInLibrary = localWorks.find { it.title == serie.title }.isNotNull())
+            serie.copy(isInLibrary = localWorks.find { serie.equalTo(it) }.isNotNull())
         }
     }
 

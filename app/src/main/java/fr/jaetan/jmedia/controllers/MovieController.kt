@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Movie
+import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MovieController: IWorkController<Movie>() {
@@ -33,7 +34,7 @@ class MovieController: IWorkController<Movie>() {
 
     override fun setLibraryValues() {
         works.replaceAll { movie ->
-            movie.copy(isInLibrary = localWorks.find { it.title == movie.title }.isNotNull())
+            movie.copy(isInLibrary = localWorks.find { movie.equalTo(it) }.isNotNull())
         }
     }
 
