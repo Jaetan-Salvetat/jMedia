@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.app.search.views
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Box
@@ -15,7 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
@@ -88,24 +90,21 @@ private fun SearchView.TopBarCell() {
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
-                trailingIcon = {
+                leadingIcon = {
                     IconButton(onClick = search, enabled = viewModel.searchIsEnabled) {
                         Icon(Icons.Default.Search, null)
+                    }
+                },
+                trailingIcon = {
+                    AnimatedVisibility(viewModel.searchValue.isNotEmpty(), enter = fadeIn(), exit = fadeOut()) {
+                        IconButton(onClick = { viewModel.searchValue = "" }) {
+                            Icon(Icons.Default.Clear, null)
+                        }
                     }
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { search() })
             )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    focusManager.clearFocus()
-                    popBackStack()
-                }
-            ) {
-                Icon(Icons.Default.ArrowBack, null)
-            }
         },
         scrollBehavior = scrollBehavior,
     )

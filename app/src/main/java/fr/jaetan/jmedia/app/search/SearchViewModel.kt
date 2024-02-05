@@ -109,7 +109,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
     private fun sortWorks(): List<IWork> {
         val works = MainViewModel.controllersMap.toList().map {
-            if (filters.contains(it.first)) it.second.works
+            if (filters.contains(it.first)) it.second.fetchedWorks
             else null
         }.removeNullValues().flatMap { list -> list.map { it } }
 

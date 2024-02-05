@@ -11,14 +11,14 @@ import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MangaController: IWorkController<Manga>() {
-    override val works = mutableStateListOf<Manga>()
+    override val fetchedWorks = mutableStateListOf<Manga>()
     override var localWorks = mutableStateListOf<Manga>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && works.isNotEmpty()) return
+        if (!force && fetchedWorks.isNotEmpty()) return
 
-        works.clear()
-        works.addAll(MangaApi.search(searchValue))
+        fetchedWorks.clear()
+        fetchedWorks.addAll(MangaApi.search(searchValue))
         setLibraryValues()
     }
 
@@ -33,7 +33,7 @@ class MangaController: IWorkController<Manga>() {
     }
 
     override fun setLibraryValues() {
-        works.replaceAll { manga ->
+        fetchedWorks.replaceAll { manga ->
             manga.copy(isInLibrary = localWorks.find { manga.equalTo(it) }.isNotNull())
         }
     }

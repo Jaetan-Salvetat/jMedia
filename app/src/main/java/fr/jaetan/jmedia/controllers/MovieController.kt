@@ -11,14 +11,14 @@ import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MovieController: IWorkController<Movie>() {
-    override val works = mutableStateListOf<Movie>()
+    override val fetchedWorks = mutableStateListOf<Movie>()
     override var localWorks = mutableStateListOf<Movie>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && works.isNotEmpty()) return
+        if (!force && fetchedWorks.isNotEmpty()) return
 
-        works.clear()
-        works.addAll(MovieApi.search(searchValue))
+        fetchedWorks.clear()
+        fetchedWorks.addAll(MovieApi.search(searchValue))
         setLibraryValues()
     }
 
@@ -33,7 +33,7 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override fun setLibraryValues() {
-        works.replaceAll { movie ->
+        fetchedWorks.replaceAll { movie ->
             movie.copy(isInLibrary = localWorks.find { movie.equalTo(it) }.isNotNull())
         }
     }
