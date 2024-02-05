@@ -1,7 +1,6 @@
 package fr.jaetan.jmedia.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -12,8 +11,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 
+/**
+ * Call GetView() for take a full view with a Scaffold, else call Content()
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 abstract class Screen <T: ViewModel> {
+    private var isInitialized = false
     lateinit var viewModel: T
     /**
      * Default value is **TopAppBarDefaults.enterAlwaysScrollBehavior()**
@@ -25,14 +28,14 @@ abstract class Screen <T: ViewModel> {
     open fun TopBar() = Unit
 
     @Composable
-    abstract fun Content()
+    abstract fun Content(padding: PaddingValues)
 
     @Composable
     open fun BottomBar() = Unit
 
     @Composable
     open fun GetView(nc: NavHostController? = null, model: T) {
-        Initialize(nc, model)
+        if (!isInitialized) Initialize(nc, model)
 
         Scaffold(
             topBar = { TopBar() },
@@ -41,7 +44,7 @@ abstract class Screen <T: ViewModel> {
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
-            Box(Modifier.padding(it)) { Content() }
+            Content(it)
         }
 
         Dialogs()
@@ -59,7 +62,8 @@ abstract class Screen <T: ViewModel> {
 
     @Composable
     open fun Initialize(nc: NavHostController?, model: T) {
-        this.viewModel = model
+        isInitialized = false
+        viewModel = model
         navController = nc
         scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     }
