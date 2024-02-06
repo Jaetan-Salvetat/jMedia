@@ -17,15 +17,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -33,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,11 +60,8 @@ fun SearchView.TopBarView() {
         if (viewModel.listState == ListState.Loading) {
             LinearProgressIndicator(Modifier.fillMaxWidth())
         } else {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(3.dp))
-            Divider()
+            Box(Modifier.fillMaxWidth().height(3.dp))
+            HorizontalDivider()
         }
     }
 }
@@ -131,10 +130,7 @@ fun SearchView.FilterCell() {
                         Modifier
                             .padding(start = 10.dp)
                             .padding(end = 5.dp)) {
-                        Divider(
-                            Modifier
-                                .width(1.dp)
-                                .height(30.dp))
+                        VerticalDivider(Modifier.height(30.dp))
                     }
                 }
             }
@@ -173,7 +169,7 @@ private fun SearchView.SortCell() {
                 )
             }
 
-            Divider()
+            HorizontalDivider()
 
             SortDirection.all.forEach {
                 DropdownMenuItem(
