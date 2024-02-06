@@ -4,10 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.AnimeApi
 import fr.jaetan.jmedia.core.realm.entities.toAnimes
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.extensions.isNotNull
-import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Anime
-import fr.jaetan.jmedia.models.works.equalTo
+import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class AnimeController: IWorkController<Anime>() {
@@ -34,17 +32,17 @@ class AnimeController: IWorkController<Anime>() {
 
     override fun setLibraryValues() {
         fetchedWorks.replaceAll { anime ->
-            anime.copy(isInLibrary = localWorks.find { anime.equalTo(it) }.isNotNull())
+            anime.copy(isInLibrary = isInLibrary(anime))
         }
     }
 
     override suspend fun libraryHandler(work: Anime) {
-        if (localWorks.find { it.title == work.title }.isNull()) {
+        if (!work.isInLibrary) {
             MainViewModel.animeRepository.add(work.toBdd())
             return
         }
 
-        localWorks.find { it.title == work.title }?.let {
+        localWorks.takeWhereEqualTo(work)?.let {
             MainViewModel.animeRepository.remove(it.toBdd())
         }
     }

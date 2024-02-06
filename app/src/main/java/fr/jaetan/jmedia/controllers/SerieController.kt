@@ -4,10 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.core.realm.entities.toSeries
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.extensions.isNotNull
-import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Serie
-import fr.jaetan.jmedia.models.works.equalTo
+import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class SerieController: IWorkController<Serie>() {
@@ -34,19 +32,19 @@ class SerieController: IWorkController<Serie>() {
 
     override fun setLibraryValues() {
         fetchedWorks.replaceAll { serie ->
-            serie.copy(isInLibrary = localWorks.find { serie.equalTo(it) }.isNotNull())
+            serie.copy(isInLibrary = isInLibrary(serie))
         }
     }
 
     override suspend fun libraryHandler(work: Serie) {
         val serie = SerieApi.getDetails(work.apiId)
 
-        if (localWorks.find { it.title == serie.title }.isNull()) {
+        if (!work.isInLibrary) {
             MainViewModel.serieRepository.add(serie.toBdd())
             return
         }
 
-        localWorks.find { it.title == serie.title }?.let {
+        localWorks.takeWhereEqualTo(serie)?.let {
             MainViewModel.serieRepository.remove(it.toBdd())
         }
     }

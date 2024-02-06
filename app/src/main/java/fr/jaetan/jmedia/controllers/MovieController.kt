@@ -4,10 +4,9 @@ import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MovieApi
 import fr.jaetan.jmedia.core.realm.entities.toMovies
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.extensions.isNotNull
-import fr.jaetan.jmedia.extensions.isNull
+import fr.jaetan.jmedia.extensions.printDataClassToString
 import fr.jaetan.jmedia.models.works.Movie
-import fr.jaetan.jmedia.models.works.equalTo
+import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MovieController: IWorkController<Movie>() {
@@ -34,19 +33,21 @@ class MovieController: IWorkController<Movie>() {
 
     override fun setLibraryValues() {
         fetchedWorks.replaceAll { movie ->
-            movie.copy(isInLibrary = localWorks.find { movie.equalTo(it) }.isNotNull())
+            movie.copy(isInLibrary = isInLibrary(movie))
         }
     }
 
     override suspend fun libraryHandler(work: Movie) {
         val movie = MovieApi.getDetail(work.apiId)
 
-        if (localWorks.find { it.title == movie.title }.isNull()) {
+        if (!work.isInLibrary) {
+            work.printDataClassToString("testt:work")
+            movie.printDataClassToString("testt:movie")
             MainViewModel.movieRepository.add(movie.toBdd())
             return
         }
 
-        localWorks.find { it.title == movie.title }?.let {
+        localWorks.takeWhereEqualTo(movie)?.let {
             MainViewModel.movieRepository.remove(it.toBdd())
         }
     }

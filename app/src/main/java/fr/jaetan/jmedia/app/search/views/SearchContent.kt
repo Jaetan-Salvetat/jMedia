@@ -125,7 +125,7 @@ private fun SearchView.WorksList() {
     }
 
     LazyColumn(state = listState) {
-        items(viewModel.works, key = { it.id.toHexString() }) {
+        items(viewModel.sortedWorks, key = { it.id.toHexString() }) {
             WorksListItem(it, Modifier.animateItemPlacement())
         }
 

@@ -19,3 +19,5 @@ fun <T: IWork> IWork.equalTo(work: T): Boolean = title == work.title
         && type == work.type
         && image == image
         && rating == rating
+
+fun <T: IWork> List<IWork>.takeWhereEqualTo(work: T): T? = takeWhile { it.equalTo(work) }.firstOrNull() as T?
