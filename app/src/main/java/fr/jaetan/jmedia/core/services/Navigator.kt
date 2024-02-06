@@ -1,8 +1,8 @@
 package fr.jaetan.jmedia.core.services
 
 object Navigator {
-    val library = object: ISampleScreen {
-        override val route = "library"
+    val home = object: ISampleScreen {
+        override val route = "home"
     }
 
     val search = object: ISampleScreen {

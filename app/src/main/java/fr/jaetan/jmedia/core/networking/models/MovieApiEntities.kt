@@ -1,8 +1,8 @@
 package fr.jaetan.jmedia.core.networking.models
 
+import fr.jaetan.jmedia.models.works.Movie
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.Movie
 import fr.jaetan.jmedia.models.works.shared.Status
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
@@ -49,7 +49,7 @@ fun MovieApiEntities.MovieDetail.toMovie(): Movie = Movie(
     ratingCounts = voteCount,
     apiId = id,
     genres = genres.toGenres(),
-    releaseDate = LocalDate.parse(releaseDate),
+    releaseDate = if (releaseDate.isEmpty()) null else LocalDate.parse(releaseDate),
     status = Status.fromString(status),
 
 )

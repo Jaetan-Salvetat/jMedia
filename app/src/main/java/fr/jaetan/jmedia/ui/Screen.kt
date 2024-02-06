@@ -1,7 +1,6 @@
 package fr.jaetan.jmedia.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -12,26 +11,32 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 
+/**
+ * Call GetView() for take a full view with a Scaffold, else call Content()
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 abstract class Screen <T: ViewModel> {
+    private var isInitialized = false
     lateinit var viewModel: T
+    /**
+     * Default value is **TopAppBarDefaults.enterAlwaysScrollBehavior()**
+     */
     lateinit var scrollBehavior: TopAppBarScrollBehavior
-
-    open val useScrollBehavior = false
     var navController: NavHostController? = null
+    open val useScrollBehavior = false
 
     @Composable
     open fun TopBar() = Unit
 
     @Composable
-    abstract fun Content()
+    abstract fun Content(padding: PaddingValues)
 
     @Composable
     open fun BottomBar() = Unit
 
     @Composable
     open fun GetView(nc: NavHostController? = null, viewModel: T) {
-        Initialize(nc, viewModel)
+        if (!isInitialized) Initialize(nc, viewModel)
 
         val modifier = if (useScrollBehavior) {
             Modifier
@@ -46,7 +51,7 @@ abstract class Screen <T: ViewModel> {
             floatingActionButton = { Fab() },
             modifier = modifier
         ) {
-            Box(Modifier.padding(it)) { Content() }
+            Content(it)
         }
 
         Dialogs()
@@ -64,8 +69,9 @@ abstract class Screen <T: ViewModel> {
 
     @Composable
     open fun Initialize(nc: NavHostController?, viewModel: T) {
+        isInitialized = false
         this.viewModel = viewModel
         navController = nc
-        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     }
 }

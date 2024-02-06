@@ -32,8 +32,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -125,7 +125,7 @@ private fun SearchView.WorksList() {
     }
 
     LazyColumn(state = listState) {
-        items(viewModel.works, key = { it.id.toHexString() }) {
+        items(viewModel.sortedWorks, key = { it.id.toHexString() }) {
             WorksListItem(it, Modifier.animateItemPlacement())
         }
 
@@ -228,7 +228,7 @@ private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
                 }
             }
 
-            Divider()
+            HorizontalDivider()
         }
     }
 }
@@ -266,7 +266,7 @@ private fun ImageCell(image: Image) {
         model = ImageRequest.Builder(LocalContext.current)
             .data(image.imageUrl)
             .crossfade(true)
-            .error(R.drawable.image_placeholder)
+            .error(R.drawable.placeholder)
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -274,6 +274,7 @@ private fun ImageCell(image: Image) {
             .width(70.dp)
             .fillMaxHeight()
             .clip(RoundedCornerShape(10.dp))
+            .background(MaterialTheme.colorScheme.secondaryContainer)
     )
 }
 

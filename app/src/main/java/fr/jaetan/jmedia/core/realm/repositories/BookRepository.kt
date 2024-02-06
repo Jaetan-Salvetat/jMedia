@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.core.realm.repositories
 
 import android.util.Log
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -17,6 +19,7 @@ class BookRepository(private val realm: Realm): IRepository<BookEntity>() {
                 copyToRealm(work)
             } catch (e: Exception) {
                 Log.d("testt::BookRepository::error", e.message ?: "null")
+                Firebase.crashlytics.recordException(e)
             }
         }
     }

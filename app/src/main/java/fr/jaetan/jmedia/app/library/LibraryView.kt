@@ -1,25 +1,12 @@
 package fr.jaetan.jmedia.app.library
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.library.views.ContentView
-import fr.jaetan.jmedia.app.library.views.FabView
-import fr.jaetan.jmedia.app.library.views.TopBarView
-import fr.jaetan.jmedia.ui.Screen
+import fr.jaetan.jmedia.ui.SubScreen
 
-class LibraryView: Screen<LibraryViewModel>() {
+class LibraryView: SubScreen<LibraryViewModel>() {
     @Composable
     override fun Content() {
         ContentView()
-    }
-
-    @Composable
-    override fun Fab() {
-        FabView()
-    }
-
-    @Composable
-    override fun Initialize(nc: NavHostController?, viewModel: LibraryViewModel) {
-        super.Initialize(nc, viewModel)
     }
 }

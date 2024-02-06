@@ -47,7 +47,7 @@ import fr.jaetan.jmedia.models.works.shared.Image
 @Composable
 fun ContentView() {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(top = 20.dp),
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         WorkType.all.forEach { workType ->
@@ -129,7 +129,7 @@ private fun ImageCell(image: Image) {
         model = ImageRequest.Builder(LocalContext.current)
             .data(image.imageUrl)
             .crossfade(true)
-            .error(R.drawable.image_placeholder)
+            .error(R.drawable.placeholder)
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
@@ -137,5 +137,6 @@ private fun ImageCell(image: Image) {
             .fillMaxWidth()
             .fillMaxHeight()
             .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.secondaryContainer)
     )
 }

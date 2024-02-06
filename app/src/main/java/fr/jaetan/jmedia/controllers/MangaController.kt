@@ -4,20 +4,19 @@ import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.realm.entities.toMangas
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.extensions.isNotNull
-import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MangaController: IWorkController<Manga>() {
-    override val works = mutableStateListOf<Manga>()
+    override val fetchedWorks = mutableStateListOf<Manga>()
     override var localWorks = mutableStateListOf<Manga>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && works.isNotEmpty()) return
+        if (!force && fetchedWorks.isNotEmpty()) return
 
-        works.clear()
-        works.addAll(MangaApi.search(searchValue))
+        fetchedWorks.clear()
+        fetchedWorks.addAll(MangaApi.search(searchValue))
         setLibraryValues()
     }
 
@@ -32,18 +31,18 @@ class MangaController: IWorkController<Manga>() {
     }
 
     override fun setLibraryValues() {
-        works.replaceAll { manga ->
-            manga.copy(isInLibrary = localWorks.find { it.title == manga.title }.isNotNull())
+        fetchedWorks.replaceAll { manga ->
+            manga.copy(isInLibrary = isInLibrary(manga))
         }
     }
 
     override suspend fun libraryHandler(work: Manga) {
-        if (localWorks.find { it.title == work.title }.isNull()) {
+        if (!work.isInLibrary) {
             MainViewModel.mangaRepository.add(work.toBdd())
             return
         }
 
-        localWorks.find { it.title == work.title }?.let {
+        localWorks.takeWhereEqualTo(work)?.let {
             MainViewModel.mangaRepository.remove(it.toBdd())
         }
     }
