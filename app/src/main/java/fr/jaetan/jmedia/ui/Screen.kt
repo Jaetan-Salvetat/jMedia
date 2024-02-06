@@ -15,10 +15,9 @@ import androidx.navigation.NavHostController
 @OptIn(ExperimentalMaterial3Api::class)
 abstract class Screen <T: ViewModel> {
     lateinit var viewModel: T
-    /**
-     * Default value is **TopAppBarDefaults.enterAlwaysScrollBehavior()**
-     */
     lateinit var scrollBehavior: TopAppBarScrollBehavior
+
+    open val useScrollBehavior = false
     var navController: NavHostController? = null
 
     @Composable
@@ -34,12 +33,18 @@ abstract class Screen <T: ViewModel> {
     open fun GetView(nc: NavHostController? = null, viewModel: T) {
         Initialize(nc, viewModel)
 
+        val modifier = if (useScrollBehavior) {
+            Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+        } else {
+            Modifier
+        }
+
         Scaffold(
             topBar = { TopBar() },
             bottomBar = { BottomBar() },
             floatingActionButton = { Fab() },
-            modifier = Modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
+            modifier = modifier
         ) {
             Box(Modifier.padding(it)) { Content() }
         }
@@ -61,6 +66,6 @@ abstract class Screen <T: ViewModel> {
     open fun Initialize(nc: NavHostController?, viewModel: T) {
         this.viewModel = viewModel
         navController = nc
-        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     }
 }
