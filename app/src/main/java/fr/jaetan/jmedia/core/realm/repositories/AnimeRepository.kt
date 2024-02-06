@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.core.realm.repositories
 
 import android.util.Log
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -17,6 +19,7 @@ class AnimeRepository(private val realm: Realm): IRepository<AnimeEntity>() {
                 copyToRealm(work)
             } catch (e: Exception) {
                 Log.d("testt::AnimeRepository::error", e.message ?: "null")
+                Firebase.crashlytics.recordException(e)
             }
         }
     }
