@@ -4,20 +4,19 @@ import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.BookApi
 import fr.jaetan.jmedia.core.realm.entities.toBooks
 import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.extensions.isNotNull
-import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.works.Book
+import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class BookController: IWorkController<Book>() {
-    override val works = mutableStateListOf<Book>()
+    override val fetchedWorks = mutableStateListOf<Book>()
     override var localWorks = mutableStateListOf<Book>()
 
     override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && works.isNotEmpty()) return
+        if (!force && fetchedWorks.isNotEmpty()) return
 
-        works.clear()
-        works.addAll(BookApi.search(searchValue))
+        fetchedWorks.clear()
+        fetchedWorks.addAll(BookApi.search(searchValue))
         setLibraryValues()
     }
 
@@ -32,18 +31,18 @@ class BookController: IWorkController<Book>() {
     }
 
     override fun setLibraryValues() {
-        works.replaceAll { manga ->
-            manga.copy(isInLibrary = localWorks.find { it.title == manga.title }.isNotNull())
+        fetchedWorks.replaceAll { book ->
+            book.copy(isInLibrary = isInLibrary(book))
         }
     }
 
     override suspend fun libraryHandler(work: Book) {
-        if (localWorks.find { it.title == work.title }.isNull()) {
+        if (!work.isInLibrary) {
             MainViewModel.bookRepository.add(work.toBdd())
             return
         }
 
-        localWorks.find { it.title == work.title }?.let {
+        localWorks.takeWhereEqualTo(work)?.let {
             MainViewModel.bookRepository.remove(it.toBdd())
         }
     }

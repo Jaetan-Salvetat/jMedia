@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.app.search
 
 import android.content.Context
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import fr.jaetan.jmedia.models.works.IWork
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
@@ -40,8 +42,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     val implementedFilters = WorkType.all.filter { it.implemented }
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
-    val works: List<IWork>
-        get() = sortWorks()
+    val sortedWorks = mutableStateListOf<IWork>()
 
     // Methods
     fun fetchWorks(force: Boolean = true) {
@@ -57,14 +58,15 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         viewModelScope.launch(dispatcher) {
-            if (works.isEmpty()) listState = ListState.Loading
+            if (sortedWorks.isEmpty()) listState = ListState.Loading
 
             filters.forEach { type ->
                 MainViewModel.getController(type).fetch(searchValue, force)
+                sortWorks()
             }
 
             listState = when {
-                works.isNotEmpty() -> ListState.HasData
+                sortedWorks.isNotEmpty() -> ListState.HasData
                 else -> ListState.EmptyData
             }
         }
@@ -107,24 +109,27 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
     }
 
-    private fun sortWorks(): List<IWork> {
+    private suspend fun sortWorks() = withContext(Dispatchers.IO) {
         val works = MainViewModel.controllersMap.toList().map {
-            if (filters.contains(it.first)) it.second.works
+            if (filters.contains(it.first)) it.second.fetchedWorks
             else null
         }.removeNullValues().flatMap { list -> list.map { it } }
 
-        return if (sortDirection == SortDirection.Ascending) {
-            when(sort) {
-                Sort.Name -> works.sortedBy { it.title }
-                Sort.Rating -> works.sortedBy { it.rating }
-                Sort.Default -> works
+        sortedWorks.clear()
+        sortedWorks.addAll(
+            if (sortDirection == SortDirection.Ascending) {
+                when(sort) {
+                    Sort.Name -> works.sortedBy { it.title }
+                    Sort.Rating -> works.sortedBy { it.rating }
+                    Sort.Default -> works
+                }
+            } else {
+                when(sort) {
+                    Sort.Name -> works.sortedByDescending { it.title }
+                    Sort.Rating -> works.sortedByDescending { it.rating }
+                    Sort.Default -> works
+                }
             }
-        } else {
-            when(sort) {
-                Sort.Name -> works.sortedByDescending { it.title }
-                Sort.Rating -> works.sortedByDescending { it.rating }
-                Sort.Default -> works
-            }
-        }
+        )
     }
 }
