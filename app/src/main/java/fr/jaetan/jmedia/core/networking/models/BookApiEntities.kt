@@ -2,15 +2,16 @@ package fr.jaetan.jmedia.core.networking.models
 
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.isNull
+import fr.jaetan.jmedia.extensions.removeDuplicate
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.extensions.toHttpsPrefix
-import fr.jaetan.jmedia.models.works.shared.Author
 import fr.jaetan.jmedia.models.works.Book
+import fr.jaetan.jmedia.models.works.shared.Author
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import kotlinx.serialization.Serializable
 
-class BookApiModels {
+class BookApiEntities {
     @Serializable
     data class BookApi(
         val items: List<BookData>
@@ -40,13 +41,13 @@ class BookApiModels {
     )
 }
 
-fun BookApiModels.BookApi.toBooks(): List<Book> = items.map { book ->
+fun BookApiEntities.BookApi.toBooks(): List<Book> = items.removeDuplicate().map { book ->
     val info = book.volumeInfo
 
     if (info.imageLinks.isNotNull()) {
         Book(
-            title = info.title,
-            synopsis = info.description,
+            title = info.title.trim(),
+            synopsis = info.description?.trim(),
             image = info.imageLinks.toImage(),
             rating = info.averageRating,
             genres = info.categories.map { Genre(name = it) },
@@ -59,7 +60,7 @@ fun BookApiModels.BookApi.toBooks(): List<Book> = items.map { book ->
     }
 }.removeNullValues()
 
-private fun BookApiModels.ImageLinks?.toImage(): Image = if (this.isNull()) {
+private fun BookApiEntities.ImageLinks?.toImage(): Image = if (this.isNull()) {
     Image()
 } else {
     Image(

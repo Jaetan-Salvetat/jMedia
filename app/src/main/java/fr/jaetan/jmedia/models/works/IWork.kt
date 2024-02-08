@@ -17,7 +17,5 @@ interface IWork {
 fun <T: IWork> IWork.equalTo(work: T): Boolean = title == work.title
         && synopsis == work.synopsis
         && type == work.type
-        && image?.largeImageUrl == work.image?.largeImageUrl
-        && rating == work.rating
 
 fun <T: IWork> List<IWork>.takeWhereEqualTo(work: T): T? = takeWhile { it.equalTo(work) }.firstOrNull() as T?

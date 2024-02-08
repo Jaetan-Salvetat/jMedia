@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia.core.networking
 
-import fr.jaetan.jmedia.core.networking.models.BookApiModels
+import fr.jaetan.jmedia.core.networking.models.BookApiEntities
 import fr.jaetan.jmedia.core.networking.models.toBooks
 import fr.jaetan.jmedia.models.works.Book
 import io.ktor.client.call.body
@@ -19,6 +19,6 @@ object BookApi: JMediaApi(null) {
         }
         val response = httpClient.get(url.build())
 
-        return response.body<BookApiModels.BookApi>().toBooks()
+        return response.body<BookApiEntities.BookApi>().toBooks()
     }
 }

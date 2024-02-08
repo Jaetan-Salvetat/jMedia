@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.core.networking.models
 
+import fr.jaetan.jmedia.extensions.removeDuplicate
 import fr.jaetan.jmedia.models.works.Serie
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
@@ -8,7 +9,7 @@ import fr.jaetan.jmedia.models.works.shared.Status
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 
-class SerieApiModels {
+class SerieApiEntities {
     @Serializable
     data class SerieList(
         val results: List<SerieDetails>
@@ -42,11 +43,11 @@ class SerieApiModels {
     )
 }
 
-fun SerieApiModels.SerieList.toSeries(): List<Serie> = results.map { it.toSerie() }
+fun SerieApiEntities.SerieList.toSeries(): List<Serie> = results.removeDuplicate().map { it.toSerie() }
 
-fun SerieApiModels.SerieDetails.toSerie(): Serie = Serie(
-    title = name,
-    synopsis = overview.ifEmpty { null },
+fun SerieApiEntities.SerieDetails.toSerie(): Serie = Serie(
+    title = name.trim(),
+    synopsis = overview.trim().ifEmpty { null },
     image = Image(
         smallImageUrl = "https://image.tmdb.org/t/p/w150_and_h225_bestv2/${backdropPath}",
         imageUrl = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/${backdropPath}",
@@ -60,8 +61,8 @@ fun SerieApiModels.SerieDetails.toSerie(): Serie = Serie(
     seasons = seasons.toSeasons()
 )
 
-private fun List<SerieApiModels.GenreData>.toGenres(): List<Genre> = map { Genre(name = it.name) }
-private fun List<SerieApiModels.SeasonData>.toSeasons(): List<Season> = map {
+private fun List<SerieApiEntities.GenreData>.toGenres(): List<Genre> = map { Genre(name = it.name) }
+private fun List<SerieApiEntities.SeasonData>.toSeasons(): List<Season> = map {
     Season(
         name = it.name,
         episodeCount = it.episodeCount,

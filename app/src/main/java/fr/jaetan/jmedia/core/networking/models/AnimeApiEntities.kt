@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.core.networking.models
 
+import fr.jaetan.jmedia.extensions.removeDuplicate
 import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.shared.Demographic
 import fr.jaetan.jmedia.models.works.shared.Genre
@@ -8,7 +9,7 @@ import fr.jaetan.jmedia.models.works.shared.Status
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 
-class AnimeApiModels {
+sealed class AnimeApiEntities {
     @Serializable
     data class AnimeApi(
         val data: List<AnimeData>
@@ -32,10 +33,10 @@ class AnimeApiModels {
     )
 }
 
-fun AnimeApiModels.AnimeApi.toAnimes(): List<Anime> = data.map {
+fun AnimeApiEntities.AnimeApi.toAnimes(): List<Anime> = data.removeDuplicate().map {
     Anime(
-        title = it.title,
-        synopsis = it.synopsis,
+        title = it.title.trim(),
+        synopsis = it.synopsis?.trim(),
         image = it.images.webp,
         status = Status.fromString(it.status),
         genres = it.genres,

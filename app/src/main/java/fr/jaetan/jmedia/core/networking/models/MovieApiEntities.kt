@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.core.networking.models
 
+import fr.jaetan.jmedia.extensions.removeDuplicate
 import fr.jaetan.jmedia.models.works.Movie
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
@@ -35,11 +36,11 @@ class MovieApiEntities {
 }
 
 
-fun MovieApiEntities.MovieList.toMovies(): List<Movie> = results.map { it.toMovie() }
+fun MovieApiEntities.MovieList.toMovies(): List<Movie> = results.removeDuplicate().map { it.toMovie() }
 
 fun MovieApiEntities.MovieDetail.toMovie(): Movie = Movie(
-    title = title,
-    synopsis = overview.ifEmpty { null },
+    title = title.trim(),
+    synopsis = overview.trim().ifEmpty { null },
     image = Image(
         smallImageUrl = "https://image.tmdb.org/t/p/w150_and_h225_bestv2/${backdropPath}",
         imageUrl = "https://image.tmdb.org/t/p/w300_and_h450_bestv2/${backdropPath}",
