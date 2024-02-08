@@ -64,7 +64,6 @@ object MainViewModel {
         // endregion
     ))
     private lateinit var realm: Realm
-    private val controllers by lazy { controllersMap.values }
 
     @Suppress("UNCHECKED_CAST")
     fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
@@ -86,8 +85,8 @@ object MainViewModel {
 
     private suspend fun initializeControllers() {
         CoroutineScope(Dispatchers.IO).launch {
-            controllers.forEach {
-                it.initializeFlow()
+            controllersMap.forEach {
+                it.value.initializeFlow()
             }
         }
     }

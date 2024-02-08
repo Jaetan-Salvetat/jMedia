@@ -24,9 +24,8 @@ class MangaController: IWorkController<Manga>() {
 
     override suspend fun initializeFlow() {
         if (localWorks.isNotEmpty()) return
-
         MainViewModel.mangaRepository.all.collect {
-            Log.d("testt", "ok")
+            Log.d("testt", "Controller")
             localWorks.clear()
             localWorks.addAll(it.list.toMangas())
         }
@@ -39,13 +38,14 @@ class MangaController: IWorkController<Manga>() {
     }
 
     override suspend fun libraryHandler(work: Manga) {
-        if (!work.isInLibrary) {
+        if (work.isInLibrary) {
+            localWorks.find { it.title == work.title }?.let {
+                MainViewModel.mangaRepository.remove(it.toBdd())
+            }
+        } else {
             MainViewModel.mangaRepository.add(work.toBdd())
-            return
         }
 
-        localWorks.find { it.title == work.title }?.let {
-            MainViewModel.mangaRepository.remove(it.toBdd())
-        }
+        setLibraryValues()
     }
 }

@@ -2,6 +2,7 @@ package fr.jaetan.jmedia.app.search
 
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -107,6 +108,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             if (filters.contains(it.first)) it.second.fetchedWorks
             else null
         }.removeNullValues().flatMap { list -> list.map { it } }
+
+        Log.d("testt", "sortWorks")
 
         sortedWorks.clear()
         sortedWorks.addAll(
