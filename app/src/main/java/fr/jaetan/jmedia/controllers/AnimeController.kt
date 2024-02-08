@@ -3,10 +3,13 @@ package fr.jaetan.jmedia.controllers
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.AnimeApi
 import fr.jaetan.jmedia.core.realm.entities.toAnimes
-import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.services.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AnimeController: IWorkController<Anime>() {
     override val fetchedWorks = mutableStateListOf<Anime>()
@@ -21,10 +24,12 @@ class AnimeController: IWorkController<Anime>() {
     }
 
     override suspend fun initializeFlow() {
-        MainViewModel.animeRepository.all.collect {
-            localWorks.clear()
-            localWorks.addAll(it.list.toAnimes())
-            setLibraryValues()
+        CoroutineScope(Dispatchers.IO).launch {
+            MainViewModel.animeRepository.all.collect {
+                localWorks.clear()
+                localWorks.addAll(it.list.toAnimes())
+                setLibraryValues()
+            }
         }
     }
 

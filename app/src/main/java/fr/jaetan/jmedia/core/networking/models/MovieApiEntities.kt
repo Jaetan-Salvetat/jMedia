@@ -49,9 +49,8 @@ fun MovieApiEntities.MovieDetail.toMovie(): Movie = Movie(
     ratingCounts = voteCount,
     apiId = id,
     genres = genres.toGenres(),
-    releaseDate = if (releaseDate.isEmpty()) null else LocalDate.parse(releaseDate),
+    releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null },
     status = Status.fromString(status),
-
 )
 
 private fun List<MovieApiEntities.GenreData>.toGenres(): List<Genre> = map { Genre(name = it.name) }

@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.services
+package fr.jaetan.jmedia.services
 
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics

@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.app.library.LibraryView
-import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)

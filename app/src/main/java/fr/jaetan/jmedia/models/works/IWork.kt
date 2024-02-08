@@ -1,7 +1,7 @@
 package fr.jaetan.jmedia.models.works
 
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import org.mongodb.kbson.ObjectId
 
 interface IWork {
@@ -17,7 +17,7 @@ interface IWork {
 fun <T: IWork> IWork.equalTo(work: T): Boolean = title == work.title
         && synopsis == work.synopsis
         && type == work.type
-        && image == image
-        && rating == rating
+        && image?.largeImageUrl == work.image?.largeImageUrl
+        && rating == work.rating
 
 fun <T: IWork> List<IWork>.takeWhereEqualTo(work: T): T? = takeWhile { it.equalTo(work) }.firstOrNull() as T?

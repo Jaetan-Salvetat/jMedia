@@ -3,10 +3,13 @@ package fr.jaetan.jmedia.controllers
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.realm.entities.toMangas
-import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.services.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MangaController: IWorkController<Manga>() {
     override val fetchedWorks = mutableStateListOf<Manga>()
@@ -21,10 +24,12 @@ class MangaController: IWorkController<Manga>() {
     }
 
     override suspend fun initializeFlow() {
-        MainViewModel.mangaRepository.all.collect {
-            localWorks.clear()
-            localWorks.addAll(it.list.toMangas())
-            setLibraryValues()
+        CoroutineScope(Dispatchers.IO).launch {
+            MainViewModel.mangaRepository.all.collect {
+                localWorks.clear()
+                localWorks.addAll(it.list.toMangas())
+                setLibraryValues()
+            }
         }
     }
 

@@ -18,7 +18,7 @@ class MovieRepository(private val realm: Realm): IRepository<MovieEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Log.d("testt::MovieRepository::error", e.message ?: "null")
+                Log.e("testt", "MovieRepository().add", e)
                 Firebase.crashlytics.recordException(e)
             }
         }

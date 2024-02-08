@@ -18,7 +18,7 @@ class AnimeRepository(private val realm: Realm): IRepository<AnimeEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Log.d("testt::AnimeRepository::error", e.message ?: "null")
+                Log.e("testt", "AnimeRepository().add", e)
                 Firebase.crashlytics.recordException(e)
             }
         }

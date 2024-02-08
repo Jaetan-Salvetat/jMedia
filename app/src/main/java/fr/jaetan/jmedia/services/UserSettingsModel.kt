@@ -1,11 +1,11 @@
-package fr.jaetan.jmedia.core.services
+package fr.jaetan.jmedia.services
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

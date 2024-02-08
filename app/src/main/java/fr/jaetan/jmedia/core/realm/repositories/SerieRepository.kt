@@ -18,7 +18,7 @@ class SerieRepository(private val realm: Realm): IRepository<SerieEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Log.d("testt::SerieRepository::error", e.message ?: "null")
+                Log.e("testt", "SerieRepository().add", e)
                 Firebase.crashlytics.recordException(e)
             }
         }

@@ -67,5 +67,5 @@ fun MovieEntity.toMovie(): Movie = Movie(
     },
     genres = genres.toGenres(),
     status = Status.fromString(status),
-    releaseDate = LocalDate.parse(releaseDate)
+    releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null }
 )

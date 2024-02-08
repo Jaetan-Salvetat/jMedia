@@ -7,13 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
+import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

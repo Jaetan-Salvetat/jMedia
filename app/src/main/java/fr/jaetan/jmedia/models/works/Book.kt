@@ -1,10 +1,10 @@
 package fr.jaetan.jmedia.models.works
 
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.shared.Author
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.toBdd
 import org.mongodb.kbson.ObjectId
 

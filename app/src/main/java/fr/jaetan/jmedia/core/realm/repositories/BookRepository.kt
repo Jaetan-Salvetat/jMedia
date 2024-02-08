@@ -18,7 +18,7 @@ class BookRepository(private val realm: Realm): IRepository<BookEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Log.d("testt::BookRepository::error", e.message ?: "null")
+                Log.e("testt", "BookRepository().add", e)
                 Firebase.crashlytics.recordException(e)
             }
         }

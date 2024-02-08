@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.services
+package fr.jaetan.jmedia.services
 
 import android.content.Context
 import fr.jaetan.jmedia.controllers.AnimeController
@@ -22,13 +22,10 @@ import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
 import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
 import fr.jaetan.jmedia.models.GlobalSettings
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 object MainViewModel {
     val userSettingsModel = UserSettingsModel()
@@ -82,10 +79,8 @@ object MainViewModel {
     }
 
     private suspend fun initializeControllers() {
-        CoroutineScope(Dispatchers.IO).launch {
-            controllersMap.forEach {
-                it.value.initializeFlow()
-            }
+        controllersMap.forEach {
+            it.value.initializeFlow()
         }
     }
 }
