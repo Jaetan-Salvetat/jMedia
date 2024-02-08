@@ -21,8 +21,6 @@ class AnimeController: IWorkController<Anime>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localWorks.isNotEmpty()) return
-
         MainViewModel.animeRepository.all.collect {
             localWorks.clear()
             localWorks.addAll(it.list.toAnimes())
@@ -31,19 +29,19 @@ class AnimeController: IWorkController<Anime>() {
     }
 
     override fun setLibraryValues() {
-        fetchedWorks.replaceAll { anime ->
-            anime.copy(isInLibrary = isInLibrary(anime))
+        fetchedWorks.replaceAll { manga ->
+            manga.copy(isInLibrary = isInLibrary(manga))
         }
     }
 
     override suspend fun libraryHandler(work: Anime) {
-        if (!work.isInLibrary) {
-            MainViewModel.animeRepository.add(work.toBdd())
+        if (work.isInLibrary) {
+            localWorks.takeWhereEqualTo(work)?.let {
+                MainViewModel.animeRepository.remove(it.toBdd())
+            }
             return
         }
 
-        localWorks.takeWhereEqualTo(work)?.let {
-            MainViewModel.animeRepository.remove(it.toBdd())
-        }
+        MainViewModel.animeRepository.add(work.toBdd())
     }
 }

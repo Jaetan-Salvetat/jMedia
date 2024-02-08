@@ -21,8 +21,6 @@ class SerieController: IWorkController<Serie>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localWorks.isNotEmpty()) return
-
         MainViewModel.serieRepository.all.collect {
             localWorks.clear()
             localWorks.addAll(it.list.toSeries())

@@ -21,8 +21,6 @@ class BookController: IWorkController<Book>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localWorks.isNotEmpty()) return
-
         MainViewModel.bookRepository.all.collect {
             localWorks.clear()
             localWorks.addAll(it.list.toBooks())

@@ -6,9 +6,12 @@ import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.ResultsChange
+import kotlinx.coroutines.flow.Flow
 
 class MangaRepository(private val realm: Realm): IRepository<MangaEntity>() {
-    override val all = realm.query<MangaEntity>().find().asFlow()
+    override val all: Flow<ResultsChange<MangaEntity>>
+        get() = realm.query<MangaEntity>().find().asFlow()
 
     override suspend fun add(work: MangaEntity) {
         realm.write {
