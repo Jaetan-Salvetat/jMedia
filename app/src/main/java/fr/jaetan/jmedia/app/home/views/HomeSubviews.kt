@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import fr.jaetan.jmedia.app.home.HomeBottomBarItems
 import fr.jaetan.jmedia.app.home.HomeView
-import fr.jaetan.jmedia.app.home.localized
+import fr.jaetan.jmedia.extensions.localized
 
 @Composable
 fun HomeView.BottomBarView() {

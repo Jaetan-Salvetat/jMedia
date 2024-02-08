@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.home.views.BottomBarView
@@ -58,6 +57,3 @@ class HomeView: Screen<HomeViewModel>() {
         settingsView.Initialize(navController, viewModel(), scrollBehavior)
     }
 }
-
-@Composable
-fun Int.localized(): String = stringResource(this)
