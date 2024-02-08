@@ -1,11 +1,13 @@
 package fr.jaetan.jmedia.controllers
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.realm.entities.toMangas
 import fr.jaetan.jmedia.core.services.MainViewModel
+import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.models.works.Manga
-import fr.jaetan.jmedia.models.works.takeWhereEqualTo
+import fr.jaetan.jmedia.models.works.equalTo
 import fr.jaetan.jmedia.models.works.toBdd
 
 class MangaController: IWorkController<Manga>() {
@@ -24,15 +26,15 @@ class MangaController: IWorkController<Manga>() {
         if (localWorks.isNotEmpty()) return
 
         MainViewModel.mangaRepository.all.collect {
+            Log.d("testt", "ok")
             localWorks.clear()
             localWorks.addAll(it.list.toMangas())
-            setLibraryValues()
         }
     }
 
     override fun setLibraryValues() {
         fetchedWorks.replaceAll { manga ->
-            manga.copy(isInLibrary = isInLibrary(manga))
+            manga.copy(isInLibrary = localWorks.find { manga.equalTo(it) }.isNotNull())
         }
     }
 
@@ -42,7 +44,7 @@ class MangaController: IWorkController<Manga>() {
             return
         }
 
-        localWorks.takeWhereEqualTo(work)?.let {
+        localWorks.find { it.title == work.title }?.let {
             MainViewModel.mangaRepository.remove(it.toBdd())
         }
     }

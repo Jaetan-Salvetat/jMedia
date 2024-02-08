@@ -50,13 +50,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             return
         }
 
-        // Initialize works flow from local database
-        if (listState == ListState.Default) {
-            implementedFilters.forEach {
-                viewModelScope.launch(dispatcher) { MainViewModel.getController(it).initializeFlow() }
-            }
-        }
-
         viewModelScope.launch(dispatcher) {
             if (sortedWorks.isEmpty()) listState = ListState.Loading
 

@@ -27,6 +27,9 @@ import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object MainViewModel {
     val userSettingsModel = UserSettingsModel()
@@ -35,7 +38,6 @@ object MainViewModel {
     val bookRepository by lazy { BookRepository(realm) }
     val movieRepository by lazy { MovieRepository(realm) }
     val serieRepository by lazy { SerieRepository(realm) }
-    val controllers by lazy { controllersMap.values }
 
     val controllersMap = mapOf(
         WorkType.Manga to MangaController(),
@@ -44,6 +46,7 @@ object MainViewModel {
         WorkType.Movie to MovieController(),
         WorkType.Serie to SerieController()
     )
+
     private val realmConfig = RealmConfiguration.Builder(schema = setOf(
         // region Models
         MangaEntity::class,
@@ -61,12 +64,16 @@ object MainViewModel {
         // endregion
     ))
     private lateinit var realm: Realm
+    private val controllers by lazy { controllersMap.values }
 
     @Suppress("UNCHECKED_CAST")
     fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
 
     suspend fun initialize(context: Context) {
+        // Let it at first
         initializeSettings()
+
+        initializeControllers()
         userSettingsModel.initialize(context)
     }
 
@@ -75,7 +82,13 @@ object MainViewModel {
 
         realmConfig.schemaVersion(0)
         realm = Realm.open(realmConfig.build())
+    }
 
-
+    private suspend fun initializeControllers() {
+        CoroutineScope(Dispatchers.IO).launch {
+            controllers.forEach {
+                it.initializeFlow()
+            }
+        }
     }
 }

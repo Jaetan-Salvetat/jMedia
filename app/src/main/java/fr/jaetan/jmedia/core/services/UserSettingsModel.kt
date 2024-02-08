@@ -5,18 +5,22 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModel
 import fr.jaetan.jmedia.models.WorkType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class UserSettingsModel: ViewModel() {
+class UserSettingsModel {
     private val Context.userSettings by preferencesDataStore(UserSettingsKeys.SETTINGS_KEY)
     var selectedWorkTypes = mutableStateListOf<WorkType>()
 
     suspend fun initialize(context: Context) {
-        context.userSettings.data.collect { prefs ->
-            prefs[UserSettingsKeys.workTypes]?.let {
-                selectedWorkTypes.clear()
-                selectedWorkTypes.addAll(WorkType.fromStringSet(it))
+        CoroutineScope(Dispatchers.IO).launch {
+            context.userSettings.data.collect { prefs ->
+                prefs[UserSettingsKeys.workTypes]?.let {
+                    selectedWorkTypes.clear()
+                    selectedWorkTypes.addAll(WorkType.fromStringSet(it))
+                }
             }
         }
     }
