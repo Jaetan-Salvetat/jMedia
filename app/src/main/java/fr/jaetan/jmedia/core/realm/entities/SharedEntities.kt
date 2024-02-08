@@ -3,35 +3,11 @@ package fr.jaetan.jmedia.core.realm.entities
 import fr.jaetan.jmedia.models.works.shared.Author
 import fr.jaetan.jmedia.models.works.shared.Demographic
 import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Season
-import io.realm.kotlin.ext.backlinks
-import io.realm.kotlin.query.RealmResults
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
-
-class ImageEntity(): RealmObject {
-    @PrimaryKey
-    var id: ObjectId = BsonObjectId()
-    var imageUrl: String = ""
-    var smallImageUrl: String = ""
-    var largeImageUrl: String = ""
-
-    val manga: RealmResults<MangaEntity> by backlinks(MangaEntity::image)
-    val anime: RealmResults<AnimeEntity> by backlinks(AnimeEntity::image)
-    val book: RealmResults<BookEntity> by backlinks(BookEntity::image)
-    val movie: RealmResults<MovieEntity> by backlinks(MovieEntity::image)
-    val serie: RealmResults<SerieEntity> by backlinks(SerieEntity::image)
-
-    constructor(id: ObjectId, imageUrl: String, smallImageUrl: String, largeImageUrl: String) : this() {
-        this.id = id
-        this.imageUrl = imageUrl
-        this.smallImageUrl = smallImageUrl
-        this.largeImageUrl = largeImageUrl
-    }
-}
 
 class AuthorEntity(): RealmObject {
     @PrimaryKey var id: ObjectId = BsonObjectId()
@@ -89,12 +65,6 @@ class DemographicEntity(): RealmObject {
 }
 
 // Converters
-fun ImageEntity?.toImage(): Image = Image(
-    imageUrl = this?.imageUrl ?: "",
-    smallImageUrl = this?.smallImageUrl ?: "",
-    largeImageUrl = this?.largeImageUrl ?: ""
-)
-
 fun List<AuthorEntity>.toAuthors(): List<Author> = map {
     Author(
         id = it.id,

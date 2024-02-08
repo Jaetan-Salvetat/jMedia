@@ -20,7 +20,7 @@ class AnimeEntity(): RealmObject {
     var synopsis: String? = null
     var episodes: Int? = null
     var rating: Double? = null
-    var image: ImageEntity? = ImageEntity()
+    var image: String? = null
     var genres: RealmList<GenreEntity> = realmListOf()
     var demographics: RealmList<DemographicEntity> = realmListOf()
 
@@ -31,7 +31,7 @@ class AnimeEntity(): RealmObject {
         synopsis: String?,
         episodes: Int?,
         rating: Double?,
-        image: ImageEntity,
+        image: String?,
         genres: List<GenreEntity>,
         demographics: List<DemographicEntity>
     ): this() {
@@ -57,7 +57,13 @@ fun AnimeEntity.toAnime(): Anime = Anime(
     episodes = episodes,
     status = Status.fromString(status),
     rating = rating,
-    image = image?.toImage() ?: Image(),
+    image = image?.let {
+       Image(
+           imageUrl = it,
+           smallImageUrl = it,
+           largeImageUrl = it
+       )
+    },
     genres = genres.toGenres(),
     demographics = demographics.toDemographics()
 )

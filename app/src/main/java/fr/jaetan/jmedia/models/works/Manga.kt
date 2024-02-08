@@ -13,7 +13,7 @@ import org.mongodb.kbson.ObjectId
 data class Manga(
     override val title: String,
     override val synopsis: String?,
-    override val image: Image,
+    override val image: Image?,
     override val rating: Double?,
     override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
@@ -33,7 +33,7 @@ fun Manga.toBdd(): MangaEntity = MangaEntity(
     volumes = volumes,
     status = status.name,
     rating = rating,
-    image = image.toBdd(),
+    image = image?.largeImageUrl,
     authors = authors.toBdd(),
     genres = genres.toBdd(),
     demographics = demographics.toBdd()

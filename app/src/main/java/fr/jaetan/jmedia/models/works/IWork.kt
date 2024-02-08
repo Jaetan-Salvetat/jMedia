@@ -10,7 +10,7 @@ interface IWork {
     val synopsis: String?
     val type: WorkType
     var isInLibrary: Boolean
-    val image: Image
+    val image: Image?
     val rating: Double?
 }
 

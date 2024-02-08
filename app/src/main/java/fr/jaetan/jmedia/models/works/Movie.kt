@@ -12,7 +12,7 @@ import java.time.LocalDate
 data class Movie(
     override val title: String,
     override val synopsis: String?,
-    override val image: Image,
+    override val image: Image?,
     override val rating: Double? = null,
     override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
@@ -29,7 +29,7 @@ fun Movie.toBdd(): MovieEntity = MovieEntity(
     id = id,
     title = title,
     synopsis = synopsis,
-    image = image.toBdd(),
+    image = image?.largeImageUrl,
     rating = rating,
     apiId = apiId,
     genres = genres.toBdd(),

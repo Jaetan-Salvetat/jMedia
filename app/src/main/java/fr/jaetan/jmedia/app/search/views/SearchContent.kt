@@ -261,10 +261,10 @@ private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier
 }
 
 @Composable
-private fun ImageCell(image: Image) {
+private fun ImageCell(image: Image?) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(image.imageUrl)
+            .data(image?.imageUrl)
             .crossfade(true)
             .error(R.drawable.placeholder)
             .build(),

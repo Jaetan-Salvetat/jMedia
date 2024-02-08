@@ -12,7 +12,6 @@ import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
 import fr.jaetan.jmedia.core.realm.entities.DemographicEntity
 import fr.jaetan.jmedia.core.realm.entities.GenreEntity
-import fr.jaetan.jmedia.core.realm.entities.ImageEntity
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import fr.jaetan.jmedia.core.realm.entities.MovieEntity
 import fr.jaetan.jmedia.core.realm.entities.SeasonEntity
@@ -56,7 +55,6 @@ object MainViewModel {
         SerieEntity::class,
         // endregion
         // region Sub models
-        ImageEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
         DemographicEntity::class,

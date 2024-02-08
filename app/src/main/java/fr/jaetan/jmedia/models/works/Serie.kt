@@ -12,7 +12,7 @@ import org.mongodb.kbson.ObjectId
 data class Serie(
     override val title: String,
     override val synopsis: String?,
-    override val image: Image,
+    override val image: Image?,
     override val rating: Double?,
     override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
@@ -33,7 +33,7 @@ fun Serie.toBdd(): SerieEntity = SerieEntity(
     apiId = apiId,
     ratingCount = ratingCount,
     status = status,
-    image = image.toBdd(),
+    image = image?.largeImageUrl,
     genres = genres.toBdd(),
     seasons = seasons.toBdd()
 )

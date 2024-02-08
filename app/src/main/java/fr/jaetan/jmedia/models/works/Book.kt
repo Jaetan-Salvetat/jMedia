@@ -11,7 +11,7 @@ import org.mongodb.kbson.ObjectId
 data class Book(
     override val title: String,
     override val synopsis: String?,
-    override val image: Image,
+    override val image: Image?,
     override val rating: Double?,
     override val id: ObjectId = ObjectId(),
     override val type: WorkType = WorkType.Book,
@@ -30,7 +30,7 @@ fun Book.toBdd(): BookEntity = BookEntity(
     synopsis = synopsis,
     rating = rating,
     publisher = publisher,
-    image = image.toBdd(),
+    image = image?.largeImageUrl,
     authors = authors.toBdd(),
     genres = genres.toBdd()
 )

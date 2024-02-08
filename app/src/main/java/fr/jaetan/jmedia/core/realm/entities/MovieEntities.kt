@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.core.realm.entities
 
 import fr.jaetan.jmedia.models.works.Movie
+import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
@@ -16,7 +17,7 @@ class MovieEntity(): RealmObject {
     var synopsis: String? = null
     var rating: Double? = null
     var ratingCounts: Long = 0
-    var image: ImageEntity? = null
+    var image: String? = null
     var apiId: Long = 0
     var status: String = Status.Unknown.name
     var releaseDate: String? = null
@@ -29,7 +30,7 @@ class MovieEntity(): RealmObject {
         rating: Double?,
         ratingCounts: Long,
         apiId: Long,
-        image: ImageEntity,
+        image: String?,
         genres: List<GenreEntity>,
         status: Status,
         releaseDate: LocalDate?
@@ -57,7 +58,13 @@ fun MovieEntity.toMovie(): Movie = Movie(
     rating = rating,
     ratingCounts = ratingCounts,
     apiId = apiId,
-    image = image.toImage(),
+    image = image?.let {
+        Image(
+            imageUrl = it,
+            smallImageUrl = it,
+            largeImageUrl = it
+        )
+    },
     genres = genres.toGenres(),
     status = Status.fromString(status),
     releaseDate = LocalDate.parse(releaseDate)
