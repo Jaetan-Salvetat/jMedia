@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.core.services
+package fr.jaetan.jmedia.services
 
 import android.content.Context
 import fr.jaetan.jmedia.controllers.AnimeController
@@ -12,7 +12,6 @@ import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
 import fr.jaetan.jmedia.core.realm.entities.DemographicEntity
 import fr.jaetan.jmedia.core.realm.entities.GenreEntity
-import fr.jaetan.jmedia.core.realm.entities.ImageEntity
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import fr.jaetan.jmedia.core.realm.entities.MovieEntity
 import fr.jaetan.jmedia.core.realm.entities.SeasonEntity
@@ -23,8 +22,8 @@ import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
 import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
 import fr.jaetan.jmedia.models.GlobalSettings
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
@@ -35,7 +34,6 @@ object MainViewModel {
     val bookRepository by lazy { BookRepository(realm) }
     val movieRepository by lazy { MovieRepository(realm) }
     val serieRepository by lazy { SerieRepository(realm) }
-    val controllers by lazy { controllersMap.values }
 
     val controllersMap = mapOf(
         WorkType.Manga to MangaController(),
@@ -44,6 +42,7 @@ object MainViewModel {
         WorkType.Movie to MovieController(),
         WorkType.Serie to SerieController()
     )
+
     private val realmConfig = RealmConfiguration.Builder(schema = setOf(
         // region Models
         MangaEntity::class,
@@ -53,7 +52,6 @@ object MainViewModel {
         SerieEntity::class,
         // endregion
         // region Sub models
-        ImageEntity::class,
         AuthorEntity::class,
         GenreEntity::class,
         DemographicEntity::class,
@@ -66,7 +64,10 @@ object MainViewModel {
     fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
 
     suspend fun initialize(context: Context) {
+        // Let it at first
         initializeSettings()
+
+        initializeControllers()
         userSettingsModel.initialize(context)
     }
 
@@ -75,7 +76,11 @@ object MainViewModel {
 
         realmConfig.schemaVersion(0)
         realm = Realm.open(realmConfig.build())
+    }
 
-
+    private suspend fun initializeControllers() {
+        controllersMap.forEach {
+            it.value.initializeFlow()
+        }
     }
 }

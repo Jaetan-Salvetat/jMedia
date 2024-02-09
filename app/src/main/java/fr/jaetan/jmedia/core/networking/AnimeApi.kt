@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia.core.networking
 
-import fr.jaetan.jmedia.core.networking.models.AnimeApiModels
+import fr.jaetan.jmedia.core.networking.models.AnimeApiEntities
 import fr.jaetan.jmedia.core.networking.models.toAnimes
 import fr.jaetan.jmedia.models.works.Anime
 import io.ktor.client.call.body
@@ -18,6 +18,6 @@ object AnimeApi: JMediaApi() {
             takeFrom("${baseUrl}&q=${field.replace(" ", "%20")}")
         }
         val response = httpClient.get(url.build())
-        return response.body<AnimeApiModels.AnimeApi>().toAnimes()
+        return response.body<AnimeApiEntities.AnimeApi>().toAnimes()
     }
 }

@@ -32,8 +32,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,7 +55,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,11 +67,12 @@ import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.isNotNull
+import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Smiley
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
@@ -102,7 +102,7 @@ private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
             style = MaterialTheme.typography.displaySmall
         )
         Text(
-            text = stringResource(message),
+            text = message.localized(),
             style = MaterialTheme.typography.bodyMedium,
             fontStyle = FontStyle.Italic,
             textAlign = TextAlign.Center,
@@ -228,7 +228,7 @@ private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
                 }
             }
 
-            Divider()
+            HorizontalDivider()
         }
     }
 }
@@ -261,10 +261,10 @@ private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier
 }
 
 @Composable
-private fun ImageCell(image: Image) {
+private fun ImageCell(image: Image?) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(image.imageUrl)
+            .data(image?.imageUrl)
             .crossfade(true)
             .error(R.drawable.placeholder)
             .build(),
@@ -326,7 +326,7 @@ private fun SynopsisCell(text: String?) {
         text = if (text.isNotNull()) {
             text!!
         } else {
-            stringResource(R.string.empty_description)
+            R.string.empty_description.localized()
         },
         maxLines = 3,
         overflow = TextOverflow.Ellipsis,

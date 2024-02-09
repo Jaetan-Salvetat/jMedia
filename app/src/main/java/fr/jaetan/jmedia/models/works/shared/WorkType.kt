@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models
+package fr.jaetan.jmedia.models.works.shared
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme

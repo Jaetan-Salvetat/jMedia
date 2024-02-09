@@ -18,7 +18,7 @@ class MangaRepository(private val realm: Realm): IRepository<MangaEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Log.d("testt::MangaRepository::error", e.message ?: "null")
+                Log.e("testt", "MangaRepository().add", e)
                 Firebase.crashlytics.recordException(e)
             }
         }

@@ -1,7 +1,9 @@
 package fr.jaetan.jmedia.core.realm.entities
 
 import fr.jaetan.jmedia.models.works.Serie
+import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
@@ -15,7 +17,7 @@ class SerieEntity(): RealmObject {
     var synopsis: String? = null
     var rating: Double? = null
     var ratingCount: Long = 0
-    var image: ImageEntity? = null
+    var image: String? = null
     var apiId: Long = 0
     var status: String = Status.Unknown.name
     var seasons: RealmList<SeasonEntity> = realmListOf()
@@ -28,7 +30,7 @@ class SerieEntity(): RealmObject {
         rating: Double?,
         ratingCount: Long,
         apiId: Long,
-        image: ImageEntity,
+        image: String?,
         genres: List<GenreEntity>,
         status: Status,
         seasons: List<SeasonEntity>
@@ -54,9 +56,15 @@ fun SerieEntity.toSerie(): Serie = Serie(
     synopsis = synopsis,
     rating = rating,
     apiId = apiId,
-    image = image.toImage(),
+    image = image?.let {
+        Image(
+            imageUrl = it,
+            smallImageUrl = it,
+            largeImageUrl = it
+        )
+    },
     genres = genres.toGenres(),
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Serie),
     ratingCount = ratingCount,
     seasons = seasons.toSeasons()
 )

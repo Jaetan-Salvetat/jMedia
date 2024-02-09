@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.core.realm.entities
 import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
@@ -20,7 +21,7 @@ class AnimeEntity(): RealmObject {
     var synopsis: String? = null
     var episodes: Int? = null
     var rating: Double? = null
-    var image: ImageEntity? = ImageEntity()
+    var image: String? = null
     var genres: RealmList<GenreEntity> = realmListOf()
     var demographics: RealmList<DemographicEntity> = realmListOf()
 
@@ -31,7 +32,7 @@ class AnimeEntity(): RealmObject {
         synopsis: String?,
         episodes: Int?,
         rating: Double?,
-        image: ImageEntity,
+        image: String?,
         genres: List<GenreEntity>,
         demographics: List<DemographicEntity>
     ): this() {
@@ -55,9 +56,15 @@ fun AnimeEntity.toAnime(): Anime = Anime(
     title = title,
     synopsis = synopsis,
     episodes = episodes,
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Anime),
     rating = rating,
-    image = image?.toImage() ?: Image(),
+    image = image?.let {
+       Image(
+           imageUrl = it,
+           smallImageUrl = it,
+           largeImageUrl = it
+       )
+    },
     genres = genres.toGenres(),
     demographics = demographics.toDemographics()
 )

@@ -3,10 +3,13 @@ package fr.jaetan.jmedia.controllers
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.core.realm.entities.toSeries
-import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.models.works.Serie
 import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.services.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SerieController: IWorkController<Serie>() {
     override val fetchedWorks = mutableStateListOf<Serie>()
@@ -21,12 +24,12 @@ class SerieController: IWorkController<Serie>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localWorks.isNotEmpty()) return
-
-        MainViewModel.serieRepository.all.collect {
-            localWorks.clear()
-            localWorks.addAll(it.list.toSeries())
-            setLibraryValues()
+        CoroutineScope(Dispatchers.IO).launch {
+            MainViewModel.serieRepository.all.collect {
+                localWorks.clear()
+                localWorks.addAll(it.list.toSeries())
+                setLibraryValues()
+            }
         }
     }
 
@@ -37,15 +40,21 @@ class SerieController: IWorkController<Serie>() {
     }
 
     override suspend fun libraryHandler(work: Serie) {
-        val serie = SerieApi.getDetails(work.apiId)
+        var serie = SerieApi.getDetails(work.apiId)
+        serie = serie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
-        if (!work.isInLibrary) {
-            MainViewModel.serieRepository.add(serie.toBdd())
+        fetchedWorks.replaceAll {
+            if (it.id == work.id) serie
+            else it
+        }
+
+        if (serie.isInLibrary) {
+            localWorks.takeWhereEqualTo(serie)?.let {
+                MainViewModel.serieRepository.remove(it.toBdd())
+            }
             return
         }
 
-        localWorks.takeWhereEqualTo(serie)?.let {
-            MainViewModel.serieRepository.remove(it.toBdd())
-        }
+        MainViewModel.serieRepository.add(serie.toBdd())
     }
 }

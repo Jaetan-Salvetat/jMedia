@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fr.jaetan.jmedia.app.home.HomeView
-import fr.jaetan.jmedia.core.services.Analytics
-import fr.jaetan.jmedia.core.services.Navigator
+import fr.jaetan.jmedia.services.Analytics
+import fr.jaetan.jmedia.services.Navigator
 
 @Composable
 fun App(navController: NavHostController) {

@@ -1,10 +1,10 @@
 package fr.jaetan.jmedia.models.works
 
 import fr.jaetan.jmedia.core.realm.entities.MovieEntity
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.toBdd
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
@@ -12,7 +12,7 @@ import java.time.LocalDate
 data class Movie(
     override val title: String,
     override val synopsis: String?,
-    override val image: Image,
+    override val image: Image?,
     override val rating: Double? = null,
     override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
@@ -29,7 +29,7 @@ fun Movie.toBdd(): MovieEntity = MovieEntity(
     id = id,
     title = title,
     synopsis = synopsis,
-    image = image.toBdd(),
+    image = image?.largeImageUrl,
     rating = rating,
     apiId = apiId,
     genres = genres.toBdd(),

@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia.core.networking
 
-import fr.jaetan.jmedia.core.networking.models.SerieApiModels
+import fr.jaetan.jmedia.core.networking.models.SerieApiEntities
 import fr.jaetan.jmedia.core.networking.models.toSerie
 import fr.jaetan.jmedia.core.networking.models.toSeries
 import fr.jaetan.jmedia.models.works.Serie
@@ -21,7 +21,7 @@ object SerieApi: JMediaApi() {
         }
 
         val response = httpClient.get(url.build())
-        return response.body<SerieApiModels.SerieList>().toSeries()
+        return response.body<SerieApiEntities.SerieList>().toSeries()
     }
 
     suspend fun getDetails(id: Long): Serie {
@@ -30,6 +30,6 @@ object SerieApi: JMediaApi() {
         }
 
         val response = httpClient.get(url.build())
-        return response.body<SerieApiModels.SerieDetails>().toSerie()
+        return response.body<SerieApiEntities.SerieDetails>().toSerie()
     }
 }

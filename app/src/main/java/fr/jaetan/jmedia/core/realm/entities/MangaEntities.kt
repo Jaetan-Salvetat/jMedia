@@ -1,8 +1,9 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
@@ -19,7 +20,7 @@ class MangaEntity(): RealmObject {
     var volumes: Int? = null
     var status: String = Status.Unknown.name
     var rating: Double? = null
-    var image: ImageEntity? = ImageEntity()
+    var image: String? = null
     var authors: RealmList<AuthorEntity> = realmListOf()
     var genres: RealmList<GenreEntity> = realmListOf()
     var demographics: RealmList<DemographicEntity> = realmListOf()
@@ -31,7 +32,7 @@ class MangaEntity(): RealmObject {
         volumes: Int?,
         status: String,
         rating: Double?,
-        image: ImageEntity,
+        image: String?,
         authors: List<AuthorEntity>,
         genres: List<GenreEntity>,
         demographics: List<DemographicEntity>
@@ -57,9 +58,15 @@ fun MangaEntity.toManga(): Manga = Manga(
     title = title,
     synopsis = synopsis,
     volumes = volumes,
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Manga),
     rating = rating,
-    image = image?.toImage() ?: Image(),
+    image = image?.let {
+        Image(
+            imageUrl = it,
+            smallImageUrl = it,
+            largeImageUrl = it
+        )
+    },
     authors = authors.toAuthors(),
     genres = genres.toGenres(),
     demographics = demographics.toDemographics()
