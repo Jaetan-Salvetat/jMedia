@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.controllers
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MovieApi
 import fr.jaetan.jmedia.core.realm.entities.toMovies
@@ -55,7 +54,6 @@ class MovieController: IWorkController<Movie>() {
             }
             return
         }
-        Log.d("testt", "add")
 
         MainViewModel.movieRepository.add(movie.toBdd())
     }
