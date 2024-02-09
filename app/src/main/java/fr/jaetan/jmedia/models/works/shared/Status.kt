@@ -15,13 +15,13 @@ enum class Status {
     companion object
 }
 
-fun Status.Companion.fromString(field: String): Status = try {
-    getStatusFromString(field)
+fun Status.Companion.fromString(field: String, type: WorkType): Status = try {
+    getStatusFromString(field, type)
 } catch (e: Exception) {
     throwUnknownStatus(e)
 }
 
-private fun getStatusFromString(field: String) = when {
+private fun getStatusFromString(field: String, type: WorkType) = when {
     // Mangas only
     field == "Publishing" -> Status.InProgress
     field == "On Hiatus" -> Status.Pause
@@ -33,6 +33,7 @@ private fun getStatusFromString(field: String) = when {
     // Movies only
     field == "Post Production" -> Status.Upcoming
     field == "Released" -> Status.Released
+    field == "In Production" -> Status.InProgress
 
     // Series only
     field == "Ended" -> Status.Released
@@ -40,9 +41,10 @@ private fun getStatusFromString(field: String) = when {
 
     // Generic
     field.contains("Finished") -> Status.Released
+    field.isBlank() -> Status.Unknown
     else -> {
         Status.entries.find { it.name == field }
-            ?: throw UnknownStatusException(field)
+            ?: throw UnknownStatusException(field, type)
     }
 }
 

@@ -6,6 +6,7 @@ import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Season
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 
@@ -56,7 +57,7 @@ fun SerieApiEntities.SerieDetails.toSerie(): Serie = Serie(
     apiId = id,
     rating = voteAverage,
     ratingCount = voteCount,
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Serie),
     genres = genres.toGenres(),
     seasons = seasons.toSeasons()
 )

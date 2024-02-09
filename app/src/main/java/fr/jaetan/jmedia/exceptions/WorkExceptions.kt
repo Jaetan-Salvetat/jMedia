@@ -1,3 +1,5 @@
 package fr.jaetan.jmedia.exceptions
 
-class UnknownStatusException(status: String): Exception("Unknown work status (${status.ifEmpty { "empty" }})")
+import fr.jaetan.jmedia.models.works.shared.WorkType
+
+class UnknownStatusException(status: String, type: WorkType): Exception("Unknown work status (${status.ifEmpty { "empty" }}) for $type work type")

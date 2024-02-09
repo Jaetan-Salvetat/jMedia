@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.core.realm.entities
 import fr.jaetan.jmedia.models.works.Serie
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
@@ -63,7 +64,7 @@ fun SerieEntity.toSerie(): Serie = Serie(
         )
     },
     genres = genres.toGenres(),
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Serie),
     ratingCount = ratingCount,
     seasons = seasons.toSeasons()
 )

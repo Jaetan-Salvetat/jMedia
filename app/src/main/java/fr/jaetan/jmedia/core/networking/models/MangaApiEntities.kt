@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.models.works.shared.Demographic
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 
@@ -39,7 +40,7 @@ fun MangaApiEntities.MangasApi.toMangas(): List<Manga> = data.removeDuplicate().
         title = it.title.trim(),
         synopsis = it.synopsis?.trim(),
         volumes = it.volumes,
-        status = Status.fromString(it.status),
+        status = Status.fromString(it.status, WorkType.Manga),
         rating = it.score,
         image = it.images.webp,
         authors = it.authors,

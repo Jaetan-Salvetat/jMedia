@@ -6,6 +6,7 @@ import fr.jaetan.jmedia.models.works.shared.Demographic
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 
@@ -38,7 +39,7 @@ fun AnimeApiEntities.AnimeApi.toAnimes(): List<Anime> = data.removeDuplicate().m
         title = it.title.trim(),
         synopsis = it.synopsis?.trim(),
         image = it.images.webp,
-        status = Status.fromString(it.status),
+        status = Status.fromString(it.status, WorkType.Anime),
         genres = it.genres,
         demographics = it.demographics,
         episodes = it.episodes,

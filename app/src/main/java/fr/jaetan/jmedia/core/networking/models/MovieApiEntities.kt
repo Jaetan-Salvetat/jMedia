@@ -5,6 +5,7 @@ import fr.jaetan.jmedia.models.works.Movie
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -51,7 +52,7 @@ fun MovieApiEntities.MovieDetail.toMovie(): Movie = Movie(
     apiId = id,
     genres = genres.toGenres(),
     releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null },
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Movie),
 )
 
 private fun List<MovieApiEntities.GenreData>.toGenres(): List<Genre> = map { Genre(name = it.name) }

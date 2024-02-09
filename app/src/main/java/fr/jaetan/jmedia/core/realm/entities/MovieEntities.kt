@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.core.realm.entities
 import fr.jaetan.jmedia.models.works.Movie
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
@@ -66,6 +67,6 @@ fun MovieEntity.toMovie(): Movie = Movie(
         )
     },
     genres = genres.toGenres(),
-    status = Status.fromString(status),
+    status = Status.fromString(status, WorkType.Movie),
     releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null }
 )
