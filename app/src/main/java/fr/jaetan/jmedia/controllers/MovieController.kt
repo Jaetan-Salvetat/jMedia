@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.controllers
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MovieApi
 import fr.jaetan.jmedia.core.realm.entities.toMovies
@@ -41,7 +42,7 @@ class MovieController: IWorkController<Movie>() {
 
     override suspend fun libraryHandler(work: Movie) {
         var movie = MovieApi.getDetail(work.apiId)
-        movie = movie.copy(id = work.id, title = work.title)
+        movie = movie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
         fetchedWorks.replaceAll {
             if (it.id == work.id) movie
@@ -54,6 +55,7 @@ class MovieController: IWorkController<Movie>() {
             }
             return
         }
+        Log.d("testt", "add")
 
         MainViewModel.movieRepository.add(movie.toBdd())
     }

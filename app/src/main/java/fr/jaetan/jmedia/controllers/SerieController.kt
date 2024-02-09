@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.controllers
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.core.realm.entities.toSeries
@@ -42,9 +41,7 @@ class SerieController: IWorkController<Serie>() {
 
     override suspend fun libraryHandler(work: Serie) {
         var serie = SerieApi.getDetails(work.apiId)
-        serie = serie.copy(id = work.id, title = work.title)
-
-        Log.d("testt", "")
+        serie = serie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
         fetchedWorks.replaceAll {
             if (it.id == work.id) serie
