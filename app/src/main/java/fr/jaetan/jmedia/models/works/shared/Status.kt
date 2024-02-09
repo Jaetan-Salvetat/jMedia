@@ -1,9 +1,9 @@
 package fr.jaetan.jmedia.models.works.shared
 
-import android.util.Log
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.exceptions.UnknownStatusException
+import fr.jaetan.jmedia.services.Logger
 
 enum class Status {
     InProgress,
@@ -49,10 +49,7 @@ private fun getStatusFromString(field: String, type: WorkType) = when {
 }
 
 private fun throwUnknownStatus(e: Exception): Status {
-    // handle try / catch because 'Log' does not exist in  unit tests
-    try { Log.e("testt::status_unknown", e.message.toString()) }
-    catch (_: Exception) {}
-
+    Logger.e(e, e.localizedMessage, "testt::status_unknown")
     Firebase.crashlytics.recordException(e)
 
     return Status.Unknown
