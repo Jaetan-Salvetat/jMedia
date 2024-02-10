@@ -29,26 +29,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import fr.jaetan.jmedia.app.library.LibraryView
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
-import fr.jaetan.jmedia.services.MainViewModel
-import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.app.library.LibraryView
+import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.services.MainViewModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryView.ContentView() {
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(top = 20.dp),
+        modifier = Modifier
+            .fillMaxSize(),
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         WorkType.all.forEach { workType ->
@@ -57,7 +58,7 @@ fun LibraryView.ContentView() {
             if (controller.localWorks.isNotEmpty()) {
                 stickyHeader {
                     Text(
-                        text = stringResource(workType.titleRes),
+                        text = workType.titleRes.localized(),
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxWidth()
@@ -73,7 +74,7 @@ fun LibraryView.ContentView() {
 }
 
 @Composable
-fun MediaCarousel(medias: List<IWork>) {
+private fun MediaCarousel(medias: List<IWork>) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
@@ -85,13 +86,13 @@ fun MediaCarousel(medias: List<IWork>) {
 }
 
 @Composable
-fun MediaItem(media: IWork) {
+private fun MediaItem(media: IWork) {
     Surface(
         modifier = Modifier
-            .width(130.dp)
-            .height(200.dp)
+            .width(110.dp)
+            .height(170.dp)
             .clip(RoundedCornerShape(10.dp))
-            .clickable {  },
+            .clickable { },
         shape = RoundedCornerShape(10.dp),
         shadowElevation = 4.dp
     ) {
@@ -104,7 +105,10 @@ fun MediaItem(media: IWork) {
                     .fillMaxWidth()
                     .background(
                         brush = Brush.verticalGradient(
-                            colors = listOf(MaterialTheme.colorScheme.surface.copy(alpha = 0f), MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)),
+                            colors = listOf(
+                                MaterialTheme.colorScheme.surface.copy(alpha = 0f),
+                                MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
+                            ),
                             startY = 0f,
                             endY = with(LocalDensity.current) { 50.dp.toPx() } // Hauteur du tiers en pixels
                         ),

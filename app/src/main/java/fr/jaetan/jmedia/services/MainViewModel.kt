@@ -43,6 +43,9 @@ object MainViewModel {
         WorkType.Serie to SerieController()
     )
 
+    val worksSize: Int
+        get() = controllersMap.values.map { it.localWorks.size }.reduce { acc, i -> acc + i }
+
     private val realmConfig = RealmConfiguration.Builder(schema = setOf(
         // region Models
         MangaEntity::class,

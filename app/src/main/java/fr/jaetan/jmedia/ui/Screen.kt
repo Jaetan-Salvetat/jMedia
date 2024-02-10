@@ -72,6 +72,6 @@ abstract class Screen <T: ViewModel> {
         isInitialized = false
         this.viewModel = viewModel
         navController = nc
-        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     }
 }

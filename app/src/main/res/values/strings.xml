@@ -26,5 +26,6 @@
     <string name="ascending">Ordre croissant</string>
     <string name="descending">Ordre décroissant</string>
     <string name="settings">Paramètres</string>
+    <string name="search_library_placeholder">Ma biblihotèque (%1$d)</string>
 
 </resources>

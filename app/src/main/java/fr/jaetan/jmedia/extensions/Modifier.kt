@@ -25,6 +25,5 @@ fun Modifier.scrollableTopAppBarBackground(state: TopAppBarState): Modifier = co
         label = ""
     )
 
-
-    background(color)
+    then(background(color))
 }

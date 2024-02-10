@@ -50,9 +50,10 @@ import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView.TopBarView() {
-    Column {
+    Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {
         TopBarCell()
         FilterCell()
 
@@ -111,12 +112,11 @@ private fun SearchView.TopBarCell() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView.FilterCell() {
     val context = LocalContext.current
 
-    Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {
+    Column {
         LazyRow {
             item { SortCell() }
 

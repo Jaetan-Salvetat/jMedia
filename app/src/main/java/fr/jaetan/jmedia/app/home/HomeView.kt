@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.home.views.BottomBarView
@@ -22,6 +21,8 @@ class HomeView: Screen<HomeViewModel>() {
     private val libraryView = LibraryView()
     private val searchView = SearchView()
     private val settingsView = SettingsView()
+
+    override val useScrollBehavior = true
 
     @SuppressLint("UnusedContentLambdaTargetStateParameter")
     @Composable
