@@ -33,19 +33,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import fr.jaetan.jmedia.app.library.LibraryView
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
-import fr.jaetan.jmedia.core.services.MainViewModel
-import fr.jaetan.jmedia.models.WorkType
+import fr.jaetan.jmedia.services.MainViewModel
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ContentView() {
+fun LibraryView.ContentView() {
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(top = 20.dp),
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -124,10 +125,10 @@ fun MediaItem(media: IWork) {
     }
 }
 @Composable
-private fun ImageCell(image: Image) {
+private fun ImageCell(image: Image?) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(image.imageUrl)
+            .data(image?.imageUrl)
             .crossfade(true)
             .error(R.drawable.placeholder)
             .build(),

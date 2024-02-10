@@ -40,11 +40,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
+import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.extensions.scrollableTopAppBarBackground
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
@@ -59,7 +59,10 @@ fun SearchView.TopBarView() {
         if (viewModel.listState == ListState.Loading) {
             LinearProgressIndicator(Modifier.fillMaxWidth())
         } else {
-            Box(Modifier.fillMaxWidth().height(3.dp))
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(3.dp))
             HorizontalDivider()
         }
     }
@@ -81,7 +84,7 @@ private fun SearchView.TopBarCell() {
                 onValueChange = { viewModel.searchValue = it },
                 modifier = Modifier
                     .fillMaxWidth(),
-                placeholder = { Text(stringResource(R.string.research)) },
+                placeholder = { Text(R.string.research.localized()) },
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
                     focusedContainerColor = Color.Transparent,
@@ -122,7 +125,7 @@ fun SearchView.FilterCell() {
                     FilterChip(
                         selected = viewModel.filters.size == viewModel.implementedFilters.size,
                         onClick = { viewModel.filterHandler(context) },
-                        label = { Text(stringResource(R.string.all)) }
+                        label = { Text(R.string.all.localized()) }
                     )
 
                     Box(
@@ -139,7 +142,7 @@ fun SearchView.FilterCell() {
                     FilterChip(
                         selected = viewModel.filters.contains(it),
                         onClick = { viewModel.filterHandler(context, it) },
-                        label = { Text(stringResource(it.textRes)) }
+                        label = { Text(it.textRes.localized()) }
                     )
                 }
             }
@@ -163,7 +166,7 @@ private fun SearchView.SortCell() {
                         DoneIconAnimated(viewModel.sort == it)
                     },
                     enabled = !(viewModel.filters.size > 1 && it == Sort.Default),
-                    text = { Text(stringResource(it.textRes)) },
+                    text = { Text(it.textRes.localized()) },
                     onClick = { viewModel.sort = it }
                 )
             }
@@ -175,7 +178,7 @@ private fun SearchView.SortCell() {
                     leadingIcon = {
                         DoneIconAnimated(viewModel.sortDirection == it)
                     },
-                    text = { Text(stringResource(it.textRes)) },
+                    text = { Text(it.textRes.localized()) },
                     onClick = { viewModel.sortDirection = it }
                 )
             }

@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.core.realm.entities
 
 import fr.jaetan.jmedia.models.works.Book
+import fr.jaetan.jmedia.models.works.shared.Image
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.types.RealmList
@@ -17,7 +18,7 @@ class BookEntity(): RealmObject {
     var synopsis: String? = null
     var rating: Double? = null
     var publisher: String? = null
-    var image: ImageEntity? = ImageEntity()
+    var image: String? = null
     var authors: RealmList<AuthorEntity> = realmListOf()
     var genres: RealmList<GenreEntity> = realmListOf()
 
@@ -28,7 +29,7 @@ class BookEntity(): RealmObject {
         synopsis: String?,
         rating: Double?,
         publisher: String?,
-        image: ImageEntity,
+        image: String?,
         authors: List<AuthorEntity>,
         genres: List<GenreEntity>,
     ): this() {
@@ -53,7 +54,13 @@ fun BookEntity.toBook(): Book = Book(
     synopsis = synopsis,
     rating = rating,
     publisher = publisher,
-    image = image.toImage(),
+    image = image?.let {
+        Image(
+            imageUrl = it,
+            smallImageUrl = it,
+            largeImageUrl = it
+        )
+    },
     authors = authors.toAuthors(),
     genres = genres.toGenres()
 )

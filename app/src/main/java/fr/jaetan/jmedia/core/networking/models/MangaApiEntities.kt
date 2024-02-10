@@ -1,15 +1,17 @@
 package fr.jaetan.jmedia.core.networking.models
 
+import fr.jaetan.jmedia.extensions.removeDuplicate
+import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.shared.Author
 import fr.jaetan.jmedia.models.works.shared.Demographic
 import fr.jaetan.jmedia.models.works.shared.Genre
 import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.Manga
 import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.models.works.shared.fromString
 import kotlinx.serialization.Serializable
 
-class MangaApiModels {
+class MangaApiEntities {
     @Serializable
      data class MangasApi(
          val data: List<MangaData>
@@ -33,12 +35,12 @@ class MangaApiModels {
     )
 }
 
-fun MangaApiModels.MangasApi.toMangas(): List<Manga> = data.map {
+fun MangaApiEntities.MangasApi.toMangas(): List<Manga> = data.removeDuplicate().map {
     Manga(
-        title = it.title,
-        synopsis = it.synopsis,
+        title = it.title.trim(),
+        synopsis = it.synopsis?.trim(),
         volumes = it.volumes,
-        status = Status.fromString(it.status),
+        status = Status.fromString(it.status, WorkType.Manga),
         rating = it.score,
         image = it.images.webp,
         authors = it.authors,

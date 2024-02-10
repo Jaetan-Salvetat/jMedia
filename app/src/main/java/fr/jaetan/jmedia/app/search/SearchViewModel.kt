@@ -3,22 +3,20 @@ package fr.jaetan.jmedia.app.search
 
 import android.content.Context
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
-import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
+import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
@@ -30,7 +28,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var sortDirection by mutableStateOf(SortDirection.Ascending)
     var showSortMenu by mutableStateOf(false)
     val filters: List<WorkType>
-        get() = MainViewModel.userSettingsModel.selectedWorkTypes
+        get() = MainViewModel.userSettings.selectedWorkTypes
     var sort: Sort
         get() = when {
             filters.size > 1 && _sort == Sort.Default -> Sort.Name
@@ -42,7 +40,8 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     val implementedFilters = WorkType.all.filter { it.implemented }
     val searchIsEnabled: Boolean
         get() = searchValue.length >= 2 && filters.isNotEmpty()
-    val sortedWorks = mutableStateListOf<IWork>()
+    val sortedWorks: List<IWork>
+        get() = sortWorks()
 
     // Methods
     fun fetchWorks(force: Boolean = true) {
@@ -55,7 +54,6 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
             filters.forEach { type ->
                 MainViewModel.getController(type).fetch(searchValue, force)
-                sortWorks()
             }
 
             listState = when {
@@ -74,11 +72,11 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     fun filterHandler(context: Context) {
         viewModelScope.launch {
             if (filters.size == implementedFilters.size) {
-                MainViewModel.userSettingsModel.setWorkTypes(context, listOf())
+                MainViewModel.userSettings.setWorkTypes(context, listOf())
                 return@launch
             }
 
-            MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
+            MainViewModel.userSettings.setWorkTypes(context, implementedFilters)
             if (listState != ListState.Default) {
                 fetchWorks(false)
             }
@@ -95,34 +93,31 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         viewModelScope.launch {
-            MainViewModel.userSettingsModel.setWorkTypes(context, localFilters)
+            MainViewModel.userSettings.setWorkTypes(context, localFilters)
             if (listState != ListState.Default) {
                 fetchWorks(false)
             }
         }
     }
 
-    private suspend fun sortWorks() = withContext(Dispatchers.IO) {
+    private fun sortWorks(): List<IWork> {
         val works = MainViewModel.controllersMap.toList().map {
             if (filters.contains(it.first)) it.second.fetchedWorks
             else null
         }.removeNullValues().flatMap { list -> list.map { it } }
 
-        sortedWorks.clear()
-        sortedWorks.addAll(
-            if (sortDirection == SortDirection.Ascending) {
-                when(sort) {
-                    Sort.Name -> works.sortedBy { it.title }
-                    Sort.Rating -> works.sortedBy { it.rating }
-                    Sort.Default -> works
-                }
-            } else {
-                when(sort) {
-                    Sort.Name -> works.sortedByDescending { it.title }
-                    Sort.Rating -> works.sortedByDescending { it.rating }
-                    Sort.Default -> works
-                }
+        return if (sortDirection == SortDirection.Ascending) {
+            when(sort) {
+                Sort.Name -> works.sortedBy { it.title }
+                Sort.Rating -> works.sortedBy { it.rating }
+                Sort.Default -> works
             }
-        )
+        } else {
+            when(sort) {
+                Sort.Name -> works.sortedByDescending { it.title }
+                Sort.Rating -> works.sortedByDescending { it.rating }
+                Sort.Default -> works
+            }
+        }
     }
 }

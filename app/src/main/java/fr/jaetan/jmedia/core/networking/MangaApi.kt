@@ -1,6 +1,6 @@
 package fr.jaetan.jmedia.core.networking
 
-import fr.jaetan.jmedia.core.networking.models.MangaApiModels
+import fr.jaetan.jmedia.core.networking.models.MangaApiEntities
 import fr.jaetan.jmedia.core.networking.models.toMangas
 import fr.jaetan.jmedia.models.works.Manga
 import io.ktor.client.call.body
@@ -18,6 +18,6 @@ object MangaApi: JMediaApi() {
             takeFrom("$baseUrl&q=${field.replace(" ", "%20")}")
         }
         val response = httpClient.get(url.build())
-        return response.body<MangaApiModels.MangasApi>().toMangas()
+        return response.body<MangaApiEntities.MangasApi>().toMangas()
     }
 }

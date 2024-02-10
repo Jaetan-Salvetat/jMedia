@@ -1,12 +1,12 @@
 package fr.jaetan.jmedia.extensions
 
-import android.util.Log
+import fr.jaetan.jmedia.services.Logger
 
 fun Any?.isNotNull(): Boolean = this != null
 
 fun Any?.isNull(): Boolean = this == null
 
-fun Any.printDataClassToString(tag: String = "API LOGGER") {
+fun Any.printDataClassToString(tag: String = "testt") {
     val excludeMembers = listOf("component", "hashCode", "toString")
     var result = "\n\ndata class ${this::class.simpleName}:"
 
@@ -19,10 +19,5 @@ fun Any.printDataClassToString(tag: String = "API LOGGER") {
     }
 
     result += "\n"
-
-    try {
-        Log.d(tag, result)
-    } catch (_: Exception) {
-        print(result)
-    }
+    Logger.d(result, tag)
 }

@@ -3,10 +3,13 @@ package fr.jaetan.jmedia.controllers
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.AnimeApi
 import fr.jaetan.jmedia.core.realm.entities.toAnimes
-import fr.jaetan.jmedia.core.services.MainViewModel
 import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.services.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AnimeController: IWorkController<Anime>() {
     override val fetchedWorks = mutableStateListOf<Anime>()
@@ -21,29 +24,29 @@ class AnimeController: IWorkController<Anime>() {
     }
 
     override suspend fun initializeFlow() {
-        if (localWorks.isNotEmpty()) return
-
-        MainViewModel.animeRepository.all.collect {
-            localWorks.clear()
-            localWorks.addAll(it.list.toAnimes())
-            setLibraryValues()
+        CoroutineScope(Dispatchers.IO).launch {
+            MainViewModel.animeRepository.all.collect {
+                localWorks.clear()
+                localWorks.addAll(it.list.toAnimes())
+                setLibraryValues()
+            }
         }
     }
 
     override fun setLibraryValues() {
-        fetchedWorks.replaceAll { anime ->
-            anime.copy(isInLibrary = isInLibrary(anime))
+        fetchedWorks.replaceAll { manga ->
+            manga.copy(isInLibrary = isInLibrary(manga))
         }
     }
 
     override suspend fun libraryHandler(work: Anime) {
-        if (!work.isInLibrary) {
-            MainViewModel.animeRepository.add(work.toBdd())
+        if (work.isInLibrary) {
+            localWorks.takeWhereEqualTo(work)?.let {
+                MainViewModel.animeRepository.remove(it.toBdd())
+            }
             return
         }
 
-        localWorks.takeWhereEqualTo(work)?.let {
-            MainViewModel.animeRepository.remove(it.toBdd())
-        }
+        MainViewModel.animeRepository.add(work.toBdd())
     }
 }

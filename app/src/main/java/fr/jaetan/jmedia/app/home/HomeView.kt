@@ -60,6 +60,3 @@ class HomeView: Screen<HomeViewModel>() {
         settingsView.Initialize(navController, viewModel(), scrollBehavior)
     }
 }
-
-@Composable
-fun Int.localized(): String = stringResource(this)

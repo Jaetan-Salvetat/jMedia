@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import fr.jaetan.jmedia.core.services.MainViewModel
+import fr.jaetan.jmedia.services.MainViewModel
 import fr.jaetan.jmedia.ui.theme.JMediaTheme
 import kotlinx.coroutines.launch
 
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch {
-            MainViewModel.initialize(this@MainActivity, lifecycleScope)
+            MainViewModel.initialize(this@MainActivity)
         }
 
         setContent {
