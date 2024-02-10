@@ -33,7 +33,7 @@ enum class WorkType(
     companion object {
         val all: List<WorkType> = WorkType.values().toList()
 
-        private fun fromString(type: String): WorkType? = all.find { it.name == type }
+        fun fromString(type: String): WorkType? = all.find { it.name == type }
 
         fun fromStringSet(types: Set<String>): List<WorkType> = types.toList().map {
             fromString(it)
