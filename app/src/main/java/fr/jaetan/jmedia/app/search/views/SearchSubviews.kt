@@ -35,8 +35,11 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -73,6 +76,7 @@ fun SearchView.TopBarView() {
 @Composable
 private fun SearchView.TopBarCell() {
     val focusManager = LocalFocusManager.current
+    val focusRequester = FocusRequester()
     val search = {
         viewModel.fetchWorks()
         focusManager.clearFocus()
@@ -84,7 +88,8 @@ private fun SearchView.TopBarCell() {
                 value = viewModel.searchValue,
                 onValueChange = { viewModel.searchValue = it },
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
                 placeholder = { Text(R.string.research.localized()) },
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = Color.Transparent,
@@ -110,6 +115,10 @@ private fun SearchView.TopBarCell() {
         },
         scrollBehavior = scrollBehavior,
     )
+
+    SideEffect {
+        focusRequester.requestFocus()
+    }
 }
 
 @Composable
