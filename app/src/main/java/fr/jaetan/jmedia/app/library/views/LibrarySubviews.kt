@@ -1,11 +1,14 @@
 package fr.jaetan.jmedia.app.library.views
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,7 +25,11 @@ import fr.jaetan.jmedia.services.MainViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryView.TopBarView() {
-    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
         SearchBar(
             query = viewModel.searchValue,
             onQueryChange = { viewModel.searchValue = it },
@@ -46,6 +53,10 @@ fun LibraryView.TopBarView() {
                 }
             },
             placeholder = { Text(R.string.search_library_placeholder.localized(MainViewModel.worksSize)) }) {
+        }
+
+        IconButton(onClick = { /*TODO*/ }, modifier = Modifier.statusBarsPadding()) {
+            Icon(Icons.Rounded.FilterList, null)
         }
     }
 }
