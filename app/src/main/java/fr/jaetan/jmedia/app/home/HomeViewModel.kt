@@ -14,9 +14,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import fr.jaetan.jmedia.R
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class HomeViewModel: ViewModel() {
     var currentScreen by mutableStateOf(HomeBottomBarItems.Library)
+    val searchValue = MutableStateFlow("")
 }
 
 enum class HomeBottomBarItems(

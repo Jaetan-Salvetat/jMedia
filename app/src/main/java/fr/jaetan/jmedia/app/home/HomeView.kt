@@ -12,15 +12,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.home.views.BottomBarView
 import fr.jaetan.jmedia.app.library.LibraryView
+import fr.jaetan.jmedia.app.library.LibraryViewModel
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.app.settings.SettingsView
 import fr.jaetan.jmedia.ui.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 class HomeView: Screen<HomeViewModel>() {
-    private val libraryView = LibraryView()
-    private val searchView = SearchView()
-    private val settingsView = SettingsView()
+    private val searchView by lazy { SearchView(viewModel.searchValue) }
+    private val settingsView by lazy { SettingsView() }
+    private val libraryView by lazy {
+        LibraryView(viewModel.searchValue) {
+            viewModel.searchValue.value = ""
+            viewModel.searchValue.value = it
+            viewModel.currentScreen = HomeBottomBarItems.Search
+        }
+    }
 
     override val useScrollBehavior = true
 
@@ -56,7 +63,7 @@ class HomeView: Screen<HomeViewModel>() {
     override fun Initialize(nc: NavHostController?, viewModel: HomeViewModel) {
         super.Initialize(nc, viewModel)
 
-        libraryView.Initialize(navController, viewModel(), scrollBehavior)
+        libraryView.Initialize(navController, LibraryViewModel(), scrollBehavior)
         searchView.Initialize(navController, viewModel(), scrollBehavior)
         settingsView.Initialize(navController, viewModel(), scrollBehavior)
     }
