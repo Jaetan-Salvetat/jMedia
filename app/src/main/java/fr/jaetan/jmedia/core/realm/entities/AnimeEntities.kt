@@ -66,5 +66,6 @@ fun AnimeEntity.toAnime(): Anime = Anime(
        )
     },
     genres = genres.toGenres(),
-    demographics = demographics.toDemographics()
+    demographics = demographics.toDemographics(),
+    isInLibrary = true
 )

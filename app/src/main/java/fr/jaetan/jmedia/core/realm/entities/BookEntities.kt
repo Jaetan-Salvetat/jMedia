@@ -62,5 +62,6 @@ fun BookEntity.toBook(): Book = Book(
         )
     },
     authors = authors.toAuthors(),
-    genres = genres.toGenres()
+    genres = genres.toGenres(),
+    isInLibrary = true
 )

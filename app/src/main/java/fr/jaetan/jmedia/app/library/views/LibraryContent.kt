@@ -43,7 +43,6 @@ import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.services.MainViewModel
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryView.ContentView() {

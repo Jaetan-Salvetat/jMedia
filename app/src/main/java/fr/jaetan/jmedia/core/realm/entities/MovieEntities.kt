@@ -68,5 +68,6 @@ fun MovieEntity.toMovie(): Movie = Movie(
     },
     genres = genres.toGenres(),
     status = Status.fromString(status, WorkType.Movie),
-    releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null }
+    releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null },
+    isInLibrary = true
 )
