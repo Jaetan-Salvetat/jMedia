@@ -53,7 +53,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             if (sortedWorks.isEmpty()) listState = ListState.Loading
 
             filters.forEach { type ->
-                MainViewModel.getController(type).fetch(searchValue, force)
+                MainViewModel.worksController.getController(type).fetch(searchValue, force)
             }
 
             listState = when {
@@ -65,7 +65,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
     fun libraryHandler(work: IWork) {
         viewModelScope.launch {
-            MainViewModel.getController(work.type).libraryHandler(work)
+            MainViewModel.worksController.getController(work.type).libraryHandler(work)
         }
     }
 
@@ -101,7 +101,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     }
 
     private fun sortWorks(): List<IWork> {
-        val works = MainViewModel.controllersMap.toList().map {
+        val works = MainViewModel.worksController.controllersMap.toList().map {
             if (filters.contains(it.first)) it.second.fetchedWorks
             else null
         }.removeNullValues().flatMap { list -> list.map { it } }

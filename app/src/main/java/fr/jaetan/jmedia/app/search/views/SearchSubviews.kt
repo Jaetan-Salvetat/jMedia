@@ -78,8 +78,8 @@ private fun SearchView.TopBarCell() {
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
     val search = {
-        viewModel.fetchWorks()
         focusManager.clearFocus()
+        viewModel.fetchWorks()
     }
 
     TopAppBar(

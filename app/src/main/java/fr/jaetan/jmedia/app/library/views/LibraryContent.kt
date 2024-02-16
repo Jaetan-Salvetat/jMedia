@@ -53,7 +53,7 @@ fun LibraryView.ContentView() {
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         WorkType.all.forEach { workType ->
-            val controller = MainViewModel.getController(workType)
+            val controller = MainViewModel.worksController.getController(workType)
 
             if (controller.localWorks.isNotEmpty()) {
                 stickyHeader {
