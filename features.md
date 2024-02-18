@@ -11,7 +11,7 @@
 - [x] improve the quality of the image in the search view
 - [x] Need to add a placeholder when we can't display the image
 - [x] Film and series synopsis are empty in some cases
-- [ ] Release Date isn't in all medias, crash on null value in, movies/series
+- [x] Release Date isn't in all medias, crash on null value in, movies/series
 
 ### Tech
 - [x] Create an build config object
@@ -34,15 +34,15 @@
   - [ ] Thank for reading: "contact for feature idea, bug, and stuff in settings view"
  
 ### Library
-- [ ] Show all works
+- [x] Show all works
 - [ ] Can open **work detail** screen
-- [ ] Can search a work by
+- Can search a work by
+  - [x] name
+  - [ ] author
+  - [ ] genre
 - [ ] Can filter works
-- [ ] Can sort works
-- [x] Can open the **search** screen
 - [ ] Show empty state
 - [ ] Remove one or more works from library
-- [x] display work type tab bar
 
 ### Search
 - [x] Can search a work
@@ -52,13 +52,13 @@
 - [x] display work types list tab
 - [x] save previous search on work type change
 - [x] display result of selected types
-- [x] can sort by (ascending and descending):
-  - title
-  - rating
-  - default (only if just one of work type is selected)
+- can sort by (ascending and descending):
+  - [x] title
+  - [x] rating
+  - [x] default (only if just one of work type is selected)
 
 ### Work detail
-- [ ] Can show all work detail
+- [ ] Can show all work details
 - [ ] Can add or remove a work from library
 
 ### Settings
