@@ -34,14 +34,16 @@
   - [ ] Thank for reading: "contact for feature idea, bug, and stuff in settings view"
  
 ### Library
-- [x] Show all works
+- [x] Show all works as carousel (max 10)
+- [x] Hide empty works type list
+- [ ] Display a button to show all
+- [ ] Show empty state
 - [ ] Can open **work detail** screen
 - Can search a work by
   - [x] name
   - [ ] author
   - [ ] genre
 - [ ] Can filter works
-- [ ] Show empty state
 - [ ] Remove one or more works from library
 
 ### Search
