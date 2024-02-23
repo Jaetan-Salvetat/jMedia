@@ -61,7 +61,7 @@ fun LibraryView.ContentView() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun WorksList() {
+private fun LibraryView.WorksList() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -80,7 +80,7 @@ private fun WorksList() {
 }
 
 @Composable
-private fun StickyHeader(type: WorkType) {
+private fun LibraryView.StickyHeader(type: WorkType) {
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -94,7 +94,7 @@ private fun StickyHeader(type: WorkType) {
             fontSize = 20.sp
         )
 
-        TextButton(onClick = { /*TODO*/ }) {
+        TextButton(onClick = { viewModel.bottomSheetWorkType = type }) {
             Text(R.string.more.localized())
         }
     }
@@ -155,6 +155,7 @@ private fun MediaItem(media: IWork) {
         }
     }
 }
+
 @Composable
 private fun ImageCell(image: Image?) {
     AsyncImage(

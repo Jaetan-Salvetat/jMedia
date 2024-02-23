@@ -20,6 +20,9 @@ abstract class SubScreen <T: ViewModel> {
     open fun TopBar() = Unit
 
     @Composable
+    open fun BottomSheet() = Unit
+
+    @Composable
     abstract fun Content()
 
     @Composable

@@ -25,8 +25,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,9 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.library.LibraryView
+import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.services.MainViewModel
 import fr.jaetan.jmedia.ui.shared.VerticalWorksListItem
+import fr.jaetan.jmedia.ui.widgets.JBottomSheet
+import fr.jaetan.jmedia.ui.widgets.JScaledContent
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,6 +139,51 @@ private fun LibraryView.SearchBarContent(onQuit: () -> Unit) {
 
             items(viewModel.filteredWorks, key = { it.id.toHexString() }) {
                 VerticalWorksListItem(it, Modifier.animateItemPlacement(), MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun LibraryView.BottomSheetsView() {
+    val state = rememberModalBottomSheetState(true)
+    val scope = rememberCoroutineScope()
+
+    val hide: () -> Unit = {
+        scope.launch {
+            state.hide()
+            viewModel.bottomSheetWorkType = null
+        }
+    }
+    
+    JBottomSheet(
+        isVisible = viewModel.bottomSheetWorkType.isNotNull(),
+        dismiss = hide,
+        shouldBeFullScreen = true,
+        state = state
+    ) {
+        val type = viewModel.bottomSheetWorkType!!
+        val controller = MainViewModel.worksController.getController(type)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 24.dp, horizontal = 16.dp)
+                .background(MaterialTheme.colorScheme.background),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("${type.titleRes.localized()} (${controller.localWorks.size})")
+
+            JScaledContent(onPressed = hide) {
+                Icon(Icons.Default.Clear, null)
+            }
+        }
+        
+        LazyColumn {
+            items(controller.localWorks) {
+                VerticalWorksListItem(work = it, modifier = Modifier.animateItemPlacement(), isShowingTag = false)
             }
         }
     }

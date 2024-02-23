@@ -61,6 +61,15 @@ class HomeView: Screen<HomeViewModel>() {
     }
 
     @Composable
+    override fun BottomSheet() {
+        when (viewModel.currentScreen) {
+            HomeBottomBarItems.Library -> libraryView.BottomSheet()
+            HomeBottomBarItems.Search -> searchView.BottomSheet()
+            HomeBottomBarItems.Settings -> settingsView.BottomSheet()
+        }
+    }
+
+    @Composable
     override fun Initialize(nc: NavHostController?, viewModel: HomeViewModel) {
         super.Initialize(nc, viewModel)
 
