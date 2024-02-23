@@ -32,6 +32,7 @@ jobs:
           fallback: 0.0.1
 
       - name: Parse changelog.md
+        id: readRelease
         run: |
           r=$(cat ${{ github.workspace }}/changelog.md)
           r="${r//'%'/'%25'}"
@@ -47,4 +48,4 @@ jobs:
           asset_name: ${{ steps.previousTag.outputs.tag }}.apk
           tag: ${{ steps.previousTag.outputs.tag }}
           overwrite: true
-          body: ${{ steps.read_release.outputs.RELEASE_BODY }}
+          body: ${{ steps.readRelease.outputs.RELEASE_BODY }}
