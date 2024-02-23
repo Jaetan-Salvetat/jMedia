@@ -1,8 +1,5 @@
-### My release
+### Changelog
 
-##### First title
-- first point
-- second point
+##### Features
 
-##### Second title
-- first point
+##### Bugfix
