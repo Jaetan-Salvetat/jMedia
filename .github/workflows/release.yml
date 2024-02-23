@@ -1,0 +1,69 @@
+on:
+  push:
+    branches:
+      - main
+name: Create Release
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Setup
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      # Take global info
+      - name: Get app version
+        id: getVersion
+        uses: ltDino/android-get-version-action@v1.0
+        with:
+          gradlePath: app/build.gradle.kts
+
+      - name: Create Tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: ${{ steps.getVersion.outputs.versionName }}
+          tag_exists_error: false
+
+      - name: Get Previous tag
+        id: previousTag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+
+      - name: Parse changelog.md
+        id: readRelease
+        run: |
+          r=$(cat ${{ github.workspace }}/changelog.md)
+          r="${r//'%'/'%25'}"
+          r="${r//$'\n'/'%0A'}"
+          r="${r//$'\r'/'%0D'}"
+          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
+
+
+      # Build
+      - name: build release
+        run: ./gradlew assembleRelease
+
+
+      # Manage release
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: App
+          path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
+
+      - name: Create Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.previousTag.outputs.tag }}
+          body: ${{ steps.readRelease.outputs.RELEASE_BODY }}
+          file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
