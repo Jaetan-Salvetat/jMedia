@@ -22,13 +22,22 @@ jobs:
           name: App
           path: ${{ github.workspace}}/app/build/outputs/apk/release/app-release.apk
 
-      - name: Create Release
+      - name: Create Draft Release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: ${{ github.workspace}}/app/build/outputs/apk/release/app-release.apk
-          draft: false
+          draft: true
           prerelease: false
+
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace}}/app/build/outputs/apk/release/app-release.apk
+          asset_name: ${{ github.ref }}
+          asset_content_type: application/apk
