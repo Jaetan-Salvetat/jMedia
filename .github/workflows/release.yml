@@ -43,7 +43,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/mything
+          file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
           asset_name: ${{ steps.previousTag.outputs.tag }}.apk
           tag: ${{ steps.previousTag.outputs.tag }}
           overwrite: true
