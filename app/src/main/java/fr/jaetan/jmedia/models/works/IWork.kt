@@ -18,4 +18,5 @@ fun <T: IWork> IWork.equalTo(work: T): Boolean = title == work.title
         && synopsis == work.synopsis
         && type == work.type
 
+@Suppress("UNCHECKED_CAST")
 fun <T: IWork> List<IWork>.takeWhereEqualTo(work: T): T? = takeWhile { it.equalTo(work) }.firstOrNull() as T?
