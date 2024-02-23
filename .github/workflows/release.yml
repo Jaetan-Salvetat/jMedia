@@ -1,6 +1,9 @@
 on: push
 name: Create Release
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,27 +26,25 @@ jobs:
           path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
 
       - name: Get Previous tag
-        id: previoustag
+        id: previousTag
         uses: WyriHaximus/github-action-get-previous-tag@v1
         with:
-          fallback: 0.1.0
+          fallback: 0.0.1
+
+      - name: Parse changelog.md
+        run: |
+          r=$(cat ${{ github.workspace }}/changelog.md)
+          r="${r//'%'/'%25'}"
+          r="${r//$'\n'/'%0A'}"
+          r="${r//$'\r'/'%0D'}"
+          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT  
 
       - name: Create Draft Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: svenstaro/upload-release-action@v2
         with:
-          tag_name: steps.previoustag.outputs.tag
-          release_name: steps.previoustag.outputs.tag
-          draft: true
-          prerelease: false
-
-      - uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
-          asset_name: steps.previoustag.outputs.tag
-          asset_content_type: application/apk
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/mything
+          asset_name: ${{ steps.previousTag.outputs.tag }}.apk
+          tag: ${{ steps.previousTag.outputs.tag }}
+          overwrite: true
+          body: ${{ steps.read_release.outputs.RELEASE_BODY }}
