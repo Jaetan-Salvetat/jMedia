@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +39,29 @@ import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.extensions.localized
+import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.services.MainViewModel
+import fr.jaetan.jmedia.ui.shared.InfoCell
+
+@Composable
+fun LibraryView.ContentView() {
+    if (MainViewModel.worksController.worksSize <= 0) {
+        InfoCell(smiley = Smiley.Surprise, message = R.string.empty_library) {
+            TextButton(onClick = { navigateToSearchBab(null) }) {
+                Text(R.string.add_to_library.localized())
+            }
+        }
+    } else {
+        WorksList()
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LibraryView.ContentView() {
+private fun WorksList() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),

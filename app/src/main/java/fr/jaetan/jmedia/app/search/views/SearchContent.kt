@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.app.search.views
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -15,7 +14,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -55,8 +53,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -73,6 +69,7 @@ import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.ui.shared.InfoCell
 import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
@@ -87,27 +84,6 @@ fun SearchView.ContentView() {
         ListState.Loading -> WorksList()
         ListState.HasData -> WorksList()
         ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-    }
-}
-
-@Composable
-private fun InfoCell(smiley: Smiley, @StringRes message: Int) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = smiley.text,
-            style = MaterialTheme.typography.displaySmall
-        )
-        Text(
-            text = message.localized(),
-            style = MaterialTheme.typography.bodyMedium,
-            fontStyle = FontStyle.Italic,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 20.dp)
-        )
     }
 }
 

@@ -23,8 +23,9 @@ class HomeView: Screen<HomeViewModel>() {
     private val settingsView by lazy { SettingsView() }
     private val libraryView by lazy {
         LibraryView(viewModel.searchValue) {
-            viewModel.searchValue.value = ""
-            viewModel.searchValue.value = it
+            it?.let {
+                viewModel.searchValue.value = it
+            }
             viewModel.currentScreen = HomeBottomBarItems.Search
         }
     }

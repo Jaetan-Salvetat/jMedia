@@ -28,5 +28,7 @@
     <string name="settings">Paramètres</string>
     <string name="search_library_placeholder">Ma biblihotèque (%1$d)</string>
     <string name="search_media_online">Cherche ton media en ligne:</string>
+    <string name="empty_library">Ta biblihotèque est vide!</string>
+    <string name="add_to_library">Ajoute en un!</string>
 
 </resources>
