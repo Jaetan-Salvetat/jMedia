@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Setup
       - uses: actions/checkout@v2
 
       - name: set up JDK 1.8
@@ -16,20 +17,19 @@ jobs:
         with:
           java-version: 17
 
-      - name: build release
-        run: ./gradlew assembleRelease
+      # Take global info
+      - name: Get app version
+        id: getVersion
+        uses: eriknyk/android-get-app-version-action@v1.0.1
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
+      - uses: rickstaa/action-create-tag@v1
         with:
-          name: App
-          path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
+          tag: ${{ steps.getVersion.outputs.versionName }}
+          tag_exists_error: false
 
       - name: Get Previous tag
         id: previousTag
         uses: WyriHaximus/github-action-get-previous-tag@v1
-        with:
-          fallback: 0.0.1
 
       - name: Parse changelog.md
         id: readRelease
@@ -38,7 +38,20 @@ jobs:
           r="${r//'%'/'%25'}"
           r="${r//$'\n'/'%0A'}"
           r="${r//$'\r'/'%0D'}"
-          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT  
+          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
+
+
+      # Build
+      - name: build release
+        run: ./gradlew assembleRelease
+
+
+      # Manage release
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: App
+          path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
 
       - name: Create Draft Release
         uses: svenstaro/upload-release-action@v2
