@@ -40,19 +40,23 @@ class MovieController: IWorkController<Movie>() {
     }
 
     override suspend fun libraryHandler(work: Movie) {
+        if (work.isInLibrary) {
+            localWorks.takeWhereEqualTo(work)?.let {
+                MainViewModel.movieRepository.remove(it.toBdd())
+            }
+            return
+        }
+
+        addToLibrary(work)
+    }
+
+    private suspend fun addToLibrary(work: Movie) {
         var movie = MovieApi.getDetail(work.apiId)
         movie = movie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
         fetchedWorks.replaceAll {
             if (it.id == work.id) movie
             else it
-        }
-
-        if (movie.isInLibrary) {
-            localWorks.takeWhereEqualTo(movie)?.let {
-                MainViewModel.movieRepository.remove(it.toBdd())
-            }
-            return
         }
 
         MainViewModel.movieRepository.add(movie.toBdd())
