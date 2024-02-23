@@ -71,19 +71,31 @@ private fun WorksList() {
             val controller = MainViewModel.worksController.getController(workType)
 
             if (controller.localWorks.isNotEmpty()) {
-                stickyHeader {
-                    Text(
-                        text = workType.titleRes.localized(),
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        fontSize = 20.sp
-                    )
-                }
+                stickyHeader { StickyHeader(workType) }
                 item { MediaCarousel(controller.localWorks) }
                 item { Spacer(modifier = Modifier.height(16.dp))}
             }
+        }
+    }
+}
+
+@Composable
+private fun StickyHeader(type: WorkType) {
+    Row(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = type.titleRes.localized(),
+            fontSize = 20.sp
+        )
+
+        TextButton(onClick = { /*TODO*/ }) {
+            Text(R.string.more.localized())
         }
     }
 }

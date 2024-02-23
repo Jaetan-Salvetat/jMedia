@@ -36,8 +36,9 @@
 ### Library
 - [x] Show all works as carousel (max 10)
 - [x] Hide empty works type list
-- [ ] Display a button to show all
-- [ ] Show empty state
+- [x] Display a button to show all
+- [ ] navigate to the bottom sheet that display all
+- [x] Show empty state
 - [ ] Can open **work detail** screen
 - Can search a work by
   - [x] name
