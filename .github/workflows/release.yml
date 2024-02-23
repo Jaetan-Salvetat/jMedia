@@ -21,15 +21,14 @@ jobs:
       # Take global info
       - name: Get app version
         id: getVersion
-        uses: michpohl/android-expose-version-name-action@v1.0.0
+        uses: ltDino/android-get-version-action@v1.0
         with:
-          expose-version-name: true
-          expose-version-code: false
+          gradlePath: app/build.gradle.kts
 
       - name: Create Tag
         uses: rickstaa/action-create-tag@v1
         with:
-          tag: ${{ github.env.ANDROID_VERSION_NAME }}
+          tag: ${{ steps.getVersion.outputs.versionName }}
           tag_exists_error: false
 
       - name: Get Previous tag
