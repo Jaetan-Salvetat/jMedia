@@ -69,6 +69,7 @@ fun MangaEntity.toManga(): Manga = Manga(
     },
     authors = authors.toAuthors(),
     genres = genres.toGenres(),
-    demographics = demographics.toDemographics()
+    demographics = demographics.toDemographics(),
+    isInLibrary = true
 )
 

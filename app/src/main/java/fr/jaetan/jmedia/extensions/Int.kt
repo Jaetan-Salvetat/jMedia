@@ -7,4 +7,5 @@ import androidx.compose.ui.res.stringResource
 
 @SuppressLint("SupportAnnotationUsage")
 @Composable
-fun Int.localized(): String = stringResource(this)
+fun Int.localized(vararg args: Any): String = stringResource(this, *args)
+

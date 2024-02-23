@@ -1,13 +1,13 @@
 package fr.jaetan.jmedia.app.library
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import fr.jaetan.jmedia.app.library.views.BottomSheetsView
 import fr.jaetan.jmedia.app.library.views.ContentView
 import fr.jaetan.jmedia.app.library.views.TopBarView
 import fr.jaetan.jmedia.ui.SubScreen
+import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalMaterial3Api::class)
-class LibraryView: SubScreen<LibraryViewModel>() {
+class LibraryView(val searchValue: StateFlow<String>, val navigateToSearchBab: (String?) -> Unit): SubScreen<LibraryViewModel>() {
     @Composable
     override fun TopBar() {
         TopBarView()
@@ -16,5 +16,10 @@ class LibraryView: SubScreen<LibraryViewModel>() {
     @Composable
     override fun Content() {
         ContentView()
+    }
+
+    @Composable
+    override fun BottomSheet() {
+        BottomSheetsView()
     }
 }

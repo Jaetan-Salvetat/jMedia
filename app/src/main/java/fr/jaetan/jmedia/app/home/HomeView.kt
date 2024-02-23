@@ -4,21 +4,33 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jmedia.app.home.views.BottomBarView
 import fr.jaetan.jmedia.app.library.LibraryView
+import fr.jaetan.jmedia.app.library.LibraryViewModel
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.app.settings.SettingsView
 import fr.jaetan.jmedia.ui.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 class HomeView: Screen<HomeViewModel>() {
-    private val libraryView = LibraryView()
-    private val searchView = SearchView()
-    private val settingsView = SettingsView()
+    private val searchView by lazy { SearchView(viewModel.searchValue) }
+    private val settingsView by lazy { SettingsView() }
+    private val libraryView by lazy {
+        LibraryView(viewModel.searchValue) {
+            it?.let {
+                viewModel.searchValue.value = it
+            }
+            viewModel.currentScreen = HomeBottomBarItems.Search
+        }
+    }
+
+    override val useScrollBehavior = true
 
     @SuppressLint("UnusedContentLambdaTargetStateParameter")
     @Composable
@@ -27,7 +39,7 @@ class HomeView: Screen<HomeViewModel>() {
             targetState = viewModel.currentScreen,
             label = ""
         ) {
-            Column {
+            Column(Modifier.padding(bottom = padding.calculateBottomPadding())) {
                 when (it) {
                     HomeBottomBarItems.Library -> libraryView.TopBar()
                     HomeBottomBarItems.Search -> searchView.TopBar()
@@ -49,10 +61,19 @@ class HomeView: Screen<HomeViewModel>() {
     }
 
     @Composable
-    override fun Initialize(nc: NavHostController?, model: HomeViewModel) {
-        super.Initialize(nc, model)
+    override fun BottomSheet() {
+        when (viewModel.currentScreen) {
+            HomeBottomBarItems.Library -> libraryView.BottomSheet()
+            HomeBottomBarItems.Search -> searchView.BottomSheet()
+            HomeBottomBarItems.Settings -> settingsView.BottomSheet()
+        }
+    }
 
-        libraryView.Initialize(navController, viewModel(), scrollBehavior)
+    @Composable
+    override fun Initialize(nc: NavHostController?, viewModel: HomeViewModel) {
+        super.Initialize(nc, viewModel)
+
+        libraryView.Initialize(navController, LibraryViewModel(), scrollBehavior)
         searchView.Initialize(navController, viewModel(), scrollBehavior)
         settingsView.Initialize(navController, viewModel(), scrollBehavior)
     }

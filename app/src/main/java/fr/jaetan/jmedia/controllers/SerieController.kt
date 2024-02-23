@@ -40,19 +40,23 @@ class SerieController: IWorkController<Serie>() {
     }
 
     override suspend fun libraryHandler(work: Serie) {
+        if (work.isInLibrary) {
+            localWorks.takeWhereEqualTo(work)?.let {
+                MainViewModel.serieRepository.remove(it.toBdd())
+            }
+            return
+        }
+
+        addToLibrary(work)
+    }
+
+    private suspend fun addToLibrary(work: Serie) {
         var serie = SerieApi.getDetails(work.apiId)
         serie = serie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
         fetchedWorks.replaceAll {
             if (it.id == work.id) serie
             else it
-        }
-
-        if (serie.isInLibrary) {
-            localWorks.takeWhereEqualTo(serie)?.let {
-                MainViewModel.serieRepository.remove(it.toBdd())
-            }
-            return
         }
 
         MainViewModel.serieRepository.add(serie.toBdd())

@@ -23,6 +23,7 @@ abstract class Screen <T: ViewModel> {
      */
     lateinit var scrollBehavior: TopAppBarScrollBehavior
     var navController: NavHostController? = null
+    open val useScrollBehavior = false
 
     @Composable
     open fun TopBar() = Unit
@@ -34,15 +35,21 @@ abstract class Screen <T: ViewModel> {
     open fun BottomBar() = Unit
 
     @Composable
-    open fun GetView(nc: NavHostController? = null, model: T) {
-        if (!isInitialized) Initialize(nc, model)
+    open fun GetView(nc: NavHostController? = null, viewModel: T) {
+        if (!isInitialized) Initialize(nc, viewModel)
+
+        val modifier = if (useScrollBehavior) {
+            Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+        } else {
+            Modifier
+        }
 
         Scaffold(
             topBar = { TopBar() },
             bottomBar = { BottomBar() },
             floatingActionButton = { Fab() },
-            modifier = Modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
+            modifier = modifier
         ) {
             Content(it)
         }
@@ -61,10 +68,10 @@ abstract class Screen <T: ViewModel> {
     open fun BottomSheet() = Unit
 
     @Composable
-    open fun Initialize(nc: NavHostController?, model: T) {
+    open fun Initialize(nc: NavHostController?, viewModel: T) {
         isInitialized = false
-        viewModel = model
+        this.viewModel = viewModel
         navController = nc
-        scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     }
 }

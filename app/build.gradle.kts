@@ -72,7 +72,7 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.6.0"
+    val composeVersion = "1.6.2"
 
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
@@ -80,8 +80,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.2.0-rc01")
-    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
 
     // Networking
@@ -104,8 +104,8 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Analytics / Crashlytics
-    implementation("com.google.firebase:firebase-analytics:21.5.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.6.1")
+    implementation("com.google.firebase:firebase-analytics:21.5.1")
+    implementation("com.google.firebase:firebase-crashlytics:18.6.2")
 
     // Others
     implementation(kotlin("reflect"))

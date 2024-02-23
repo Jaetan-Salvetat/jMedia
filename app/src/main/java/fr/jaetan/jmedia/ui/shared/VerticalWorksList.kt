@@ -1,14 +1,10 @@
-package fr.jaetan.jmedia.app.search.views
+package fr.jaetan.jmedia.ui.shared
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -18,25 +14,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,63 +48,21 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
-import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.localized
-import fr.jaetan.jmedia.models.ListState
-import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.ui.shared.InfoCell
-import fr.jaetan.jmedia.ui.shared.JTag
+import fr.jaetan.jmedia.services.MainViewModel
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun SearchView.ContentView() {
-    when (viewModel.listState) {
-        ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
-        ListState.Loading -> WorksList()
-        ListState.HasData -> WorksList()
-        ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun SearchView.WorksList() {
-    val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
-    val showButton by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
-
-    val scrollToTop: () -> Unit = {
-        scope.launch {
-            listState.animateScrollToItem(0)
-        }
-    }
-
-    LazyColumn(state = listState) {
-        items(viewModel.sortedWorks, key = { it.id.toHexString() }) {
-            WorksListItem(it, Modifier.animateItemPlacement())
-        }
-
-    }
-
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomEnd) {
-        AnimatedVisibility(showButton, enter = scaleIn(), exit = scaleOut()) {
-            FloatingActionButton(onClick = scrollToTop, modifier = Modifier.padding(20.dp)) {
-                Icon(Icons.Default.ArrowUpward, null)
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
+fun VerticalWorksListItem(work: IWork, modifier: Modifier, backgroundColor: Color = MaterialTheme.colorScheme.background, isShowingTag: Boolean = true) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
@@ -160,7 +105,7 @@ private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
             if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
-                viewModel.libraryHandler(work)
+                libraryHandler(work)
             }
 
             scope.launch {
@@ -190,7 +135,7 @@ private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
                         onDragStopped = onDragStopped
                     )
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(backgroundColor)
                     .clickable { }
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
@@ -199,12 +144,10 @@ private fun SearchView.WorksListItem(work: IWork, modifier: Modifier) {
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
                     WorkTitleCell(work)
-                    TagCell(work.type)
+                    TagCell(work.type, isShowingTag)
                     SynopsisCell(work.synopsis)
                 }
             }
-
-            HorizontalDivider()
         }
     }
 }
@@ -255,7 +198,7 @@ private fun ImageCell(image: Image?) {
 }
 
 @Composable
-private fun SearchView.WorkTitleCell(work: IWork) {
+private fun WorkTitleCell(work: IWork) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = work.title,
@@ -267,7 +210,7 @@ private fun SearchView.WorkTitleCell(work: IWork) {
         )
 
         JScaledContent(
-            onPressed = { viewModel.libraryHandler(work) },
+            onPressed = { libraryHandler(work) },
             modifier = Modifier.padding(horizontal = 10.dp)) {
             Icon(
                 painter = if (work.isInLibrary) {
@@ -288,9 +231,9 @@ private fun SearchView.WorkTitleCell(work: IWork) {
 }
 
 @Composable
-private fun SearchView.TagCell(type: WorkType) {
+private fun TagCell(type: WorkType, isShowing: Boolean) {
     Box(Modifier.padding(vertical = 5.dp)) {
-        if (viewModel.filters.size > 1) {
+        if (isShowing) {
             JTag(type)
         }
     }
@@ -309,4 +252,10 @@ private fun SynopsisCell(text: String?) {
         fontSize = 12.sp,
         color = MaterialTheme.colorScheme.outline
     )
+}
+
+private fun libraryHandler(work: IWork) {
+    CoroutineScope(Dispatchers.Unconfined).launch {
+        MainViewModel.worksController.getController(work.type).libraryHandler(work)
+    }
 }

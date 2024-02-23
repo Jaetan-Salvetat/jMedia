@@ -28,7 +28,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     var sortDirection by mutableStateOf(SortDirection.Ascending)
     var showSortMenu by mutableStateOf(false)
     val filters: List<WorkType>
-        get() = MainViewModel.userSettingsModel.selectedWorkTypes
+        get() = MainViewModel.userSettings.selectedWorkTypes
     var sort: Sort
         get() = when {
             filters.size > 1 && _sort == Sort.Default -> Sort.Name
@@ -53,7 +53,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
             if (sortedWorks.isEmpty()) listState = ListState.Loading
 
             filters.forEach { type ->
-                MainViewModel.getController(type).fetch(searchValue, force)
+                MainViewModel.worksController.getController(type).fetch(searchValue, force)
             }
 
             listState = when {
@@ -65,18 +65,18 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
 
     fun libraryHandler(work: IWork) {
         viewModelScope.launch {
-            MainViewModel.getController(work.type).libraryHandler(work)
+            MainViewModel.worksController.getController(work.type).libraryHandler(work)
         }
     }
 
     fun filterHandler(context: Context) {
         viewModelScope.launch {
             if (filters.size == implementedFilters.size) {
-                MainViewModel.userSettingsModel.setWorkTypes(context, listOf())
+                MainViewModel.userSettings.setWorkTypes(context, listOf())
                 return@launch
             }
 
-            MainViewModel.userSettingsModel.setWorkTypes(context, implementedFilters)
+            MainViewModel.userSettings.setWorkTypes(context, implementedFilters)
             if (listState != ListState.Default) {
                 fetchWorks(false)
             }
@@ -93,7 +93,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
         }
 
         viewModelScope.launch {
-            MainViewModel.userSettingsModel.setWorkTypes(context, localFilters)
+            MainViewModel.userSettings.setWorkTypes(context, localFilters)
             if (listState != ListState.Default) {
                 fetchWorks(false)
             }
@@ -101,7 +101,7 @@ class SearchViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.
     }
 
     private fun sortWorks(): List<IWork> {
-        val works = MainViewModel.controllersMap.toList().map {
+        val works = MainViewModel.worksController.controllersMap.toList().map {
             if (filters.contains(it.first)) it.second.fetchedWorks
             else null
         }.removeNullValues().flatMap { list -> list.map { it } }

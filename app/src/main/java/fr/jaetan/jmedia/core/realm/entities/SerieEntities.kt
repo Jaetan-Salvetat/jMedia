@@ -66,5 +66,6 @@ fun SerieEntity.toSerie(): Serie = Serie(
     genres = genres.toGenres(),
     status = Status.fromString(status, WorkType.Serie),
     ratingCount = ratingCount,
-    seasons = seasons.toSeasons()
+    seasons = seasons.toSeasons(),
+    isInLibrary = true
 )
