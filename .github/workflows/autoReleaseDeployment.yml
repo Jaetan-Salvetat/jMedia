@@ -10,7 +10,7 @@ jobs:
       - name: Build
         run: echo ${{ github.sha }} > changelog.md
       - name: Test
-        run: cat Release.txt
+        run: cat Release.md
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
