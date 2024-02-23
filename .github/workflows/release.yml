@@ -58,9 +58,9 @@ jobs:
           path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
 
       - name: Create Release
-        uses: ncipollo/release-action@v1
+        uses: svenstaro/upload-release-action@v2
         with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.previousTag.outputs.tag }}
           body: ${{ steps.readRelease.outputs.RELEASE_BODY }}
-          bodyFile: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
-          name: v${{ steps.previousTag.outputs.tag }}
+          file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
