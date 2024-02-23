@@ -57,9 +57,10 @@ jobs:
           name: App
           path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
 
-      - uses: ncipollo/release-action@v1
+      - name: Create Release
+        uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.previousTag.outputs.tag }}
-          body: ${{ github.workspace }}/changelog.md
+          body: ${{ steps.readRelease.outputs.RELEASE_BODY }}
           bodyFile: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
           name: v${{ steps.previousTag.outputs.tag }}
