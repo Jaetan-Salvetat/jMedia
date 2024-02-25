@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import fr.jaetan.jmedia.core.networking.models.GithubApiEntities
+import fr.jaetan.jmedia.models.ReplaceableLocal
 import fr.jaetan.jmedia.services.GlobalSettings
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -32,21 +33,47 @@ private object GithubApi: JMediaApi() {
 }
 
 @Composable
-fun rememberGithubRelease(): GithubApiEntities.Release? {
-    if (!GlobalSettings.isInRelease) return null
-
+private fun rememberGithubRelease(makeRequest: Boolean): ReleaseSettings {
+    val releaseSettings by remember { mutableStateOf(ReleaseSettings()) }
     val scope = rememberCoroutineScope()
-    var release by rememberSaveable { mutableStateOf(null as GithubApiEntities.Release?) }
+
+    if (!GlobalSettings.isInRelease || !makeRequest) return releaseSettings
 
     SideEffect {
         scope.launch {
             val tempRelease = GithubApi.getLastVersion()
 
             if (tempRelease.tagName != GlobalSettings.versionName) {
-                release = tempRelease
+                releaseSettings.setRelease(tempRelease)
             }
         }
     }
 
-    return release
+    return releaseSettings
+}
+
+object LocalReleaseSettings: ReplaceableLocal<ReleaseSettings>() {
+    private var makeRequest = true
+
+    @Composable
+    override fun currentValue(): ReleaseSettings {
+        val settings =  rememberGithubRelease(makeRequest)
+        makeRequest = false
+        return settings
+    }
+
+}
+
+class ReleaseSettings {
+    var release by mutableStateOf(null as GithubApiEntities.Release?)
+    private set
+
+    fun removeRelease() {
+        release = null
+    }
+
+    @JvmName("addRelease")
+    fun setRelease(r: GithubApiEntities.Release) {
+        release = r
+    }
 }

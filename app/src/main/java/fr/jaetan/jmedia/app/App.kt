@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +14,7 @@ import androidx.navigation.compose.composable
 import com.meetup.twain.MarkdownText
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.home.HomeView
-import fr.jaetan.jmedia.core.networking.rememberGithubRelease
+import fr.jaetan.jmedia.core.networking.LocalReleaseSettings
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.services.Analytics
 import fr.jaetan.jmedia.services.Navigator
@@ -54,23 +55,24 @@ fun App(navController: NavHostController) {
 
 @Composable
 private fun UpdaterDialog() {
-    val release = rememberGithubRelease()
+    val uriHandler = LocalUriHandler.current
+    val settings = LocalReleaseSettings.current
 
-    release?.let {
+    settings.release?.let {
         AlertDialog(
-            title = { Text(R.string.version_x.localized(release.tagName)) },
+            title = { Text(R.string.version_x.localized(it.tagName)) },
             text = {
                 MarkdownText(it.body, color = MaterialTheme.colorScheme.onBackground)
             },
-            onDismissRequest = { /*TODO*/ },
+            onDismissRequest = { settings.removeRelease() },
             confirmButton = {
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = { uriHandler.openUri(it.assets.first().browserDownloadUrl) }) {
                     Text(R.string.download.localized())
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { settings.removeRelease() },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )

@@ -5,6 +5,7 @@ plugins {
     id("io.realm.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
