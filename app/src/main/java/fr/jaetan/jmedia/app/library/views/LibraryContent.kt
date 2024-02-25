@@ -37,7 +37,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
+import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.core.services.MainViewModel
+import fr.jaetan.jmedia.core.services.Navigator
 import fr.jaetan.jmedia.models.WorkType
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
@@ -45,7 +47,7 @@ import fr.jaetan.jmedia.models.works.shared.Image
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ContentView() {
+fun LibraryView.ContentView() {
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(top = 20.dp),
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -72,7 +74,7 @@ fun ContentView() {
 }
 
 @Composable
-fun MediaCarousel(medias: List<IWork>) {
+fun LibraryView.MediaCarousel(medias: List<IWork>) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(horizontal = 16.dp)
@@ -84,18 +86,18 @@ fun MediaCarousel(medias: List<IWork>) {
 }
 
 @Composable
-fun MediaItem(media: IWork) {
+fun LibraryView.MediaItem(work: IWork) {
     Surface(
         modifier = Modifier
             .width(130.dp)
             .height(200.dp)
             .clip(RoundedCornerShape(10.dp))
-            .clickable {  },
+            .clickable { navController?.navigate(Navigator.workDetail.getNavRoute(work.id.toHexString(), work.type)) },
         shape = RoundedCornerShape(10.dp),
         shadowElevation = 4.dp
     ) {
         Box {
-            ImageCell(media.image)
+            ImageCell(work.image)
             Spacer(modifier = Modifier.height(8.dp))
             Row (
                 modifier = Modifier
@@ -113,7 +115,7 @@ fun MediaItem(media: IWork) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = media.title,
+                    text = work.title,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

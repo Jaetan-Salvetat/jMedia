@@ -17,8 +17,8 @@ object Navigator {
         override val workId: String = "WorkId"
 
 
-        override fun getNavRoute(workId: String, workType: WorkType) {
-            TODO("Not yet implemented")
+        override fun getNavRoute(workId: String, workType: WorkType): String {
+            return "work_detail/$workType/$workId"
         }
 
         override val route: String
@@ -40,5 +40,5 @@ interface ISampleScreen: IScreen {
 interface IWorkDetail: IScreen {
     val workType: String
     val workId: String
-    fun getNavRoute(workId: String, workType: WorkType)
+    fun getNavRoute(workId: String, workType: WorkType): String
 }
