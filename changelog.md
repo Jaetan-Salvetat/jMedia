@@ -1,5 +1,5 @@
 ### Changelog
 
 ##### Features
-
-##### Bugfix
+- Auto create release on merge on `main`
+- Auto update
