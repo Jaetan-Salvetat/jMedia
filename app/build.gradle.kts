@@ -64,7 +64,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -99,7 +99,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     // Storage
-    implementation("io.realm.kotlin:library-base:1.11.0")
+    implementation("io.realm.kotlin:library-base:1.13.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Images

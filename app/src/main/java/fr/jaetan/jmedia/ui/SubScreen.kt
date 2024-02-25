@@ -26,7 +26,7 @@ abstract class SubScreen <T: ViewModel> {
     abstract fun Content()
 
     @Composable
-    open fun Initialize(nc: NavHostController?, model: T, scrollBehavior: TopAppBarScrollBehavior? = null) {
+    open fun Initialize(nc: NavHostController?, model: T, scrollBehavior: TopAppBarScrollBehavior?) {
         isInitialized = false
         viewModel = model
         navController = nc
