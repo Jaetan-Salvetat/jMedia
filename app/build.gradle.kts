@@ -16,7 +16,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.0.1"
+        versionName = "0.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -98,6 +98,9 @@ dependencies {
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
+    // Github auto updates
+    implementation("com.github.supersu-man:apkupdater-library:v2.0.0")
+
     // Storage
     implementation("io.realm.kotlin:library-base:1.13.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -108,6 +111,9 @@ dependencies {
     // Analytics / Crashlytics
     implementation("com.google.firebase:firebase-analytics:21.5.1")
     implementation("com.google.firebase:firebase-crashlytics:18.6.2")
+
+    // Markdown
+    implementation("com.meetup:twain:0.2.2")
 
     // Others
     implementation(kotlin("reflect"))

@@ -5,7 +5,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.logEvent
 import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.models.AnalyticsEvent
-import fr.jaetan.jmedia.models.GlobalSettings
 
 object Analytics {
     private val analytics = Firebase.analytics

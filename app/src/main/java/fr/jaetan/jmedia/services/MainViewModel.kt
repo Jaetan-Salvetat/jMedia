@@ -16,7 +16,6 @@ import fr.jaetan.jmedia.core.realm.repositories.BookRepository
 import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
 import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
-import fr.jaetan.jmedia.models.GlobalSettings
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
