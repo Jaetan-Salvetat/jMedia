@@ -35,7 +35,7 @@ abstract class Screen <T: ViewModel> {
     open fun BottomBar() = Unit
 
     @Composable
-    open fun GetView(nc: NavHostController? = null, viewModel: T) {
+    open fun GetView(nc: NavHostController?, viewModel: T) {
         if (!isInitialized) Initialize(nc, viewModel)
 
         val modifier = if (useScrollBehavior) {

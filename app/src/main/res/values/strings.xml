@@ -31,5 +31,7 @@
     <string name="empty_library">Ta biblihotèque est vide!</string>
     <string name="add_to_library">Ajoute en un!</string>
     <string name="more">Plus</string>
-
+    <string name="download">Télécharger</string>
+    <string name="cancel">Annuler</string>
+    <string name="version_x">Version %s</string>
 </resources>

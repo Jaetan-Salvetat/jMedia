@@ -5,6 +5,7 @@ plugins {
     id("io.realm.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
@@ -64,7 +65,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.7"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -98,8 +99,11 @@ dependencies {
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
+    // Github auto updates
+    implementation("com.github.supersu-man:apkupdater-library:v2.0.0")
+
     // Storage
-    implementation("io.realm.kotlin:library-base:1.11.0")
+    implementation("io.realm.kotlin:library-base:1.13.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Images
@@ -108,6 +112,9 @@ dependencies {
     // Analytics / Crashlytics
     implementation("com.google.firebase:firebase-analytics:21.5.1")
     implementation("com.google.firebase:firebase-crashlytics:18.6.2")
+
+    // Markdown
+    implementation("com.meetup:twain:0.2.2")
 
     // Others
     implementation(kotlin("reflect"))
