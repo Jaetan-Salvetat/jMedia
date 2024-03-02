@@ -1,3 +1,6 @@
 ### Features
-- Auto create release on merge on `main`
-- Auto check for update (only for release build variant)
+- Design the main view of settings
+
+### Tech
+- Update gradle to 8.3.0
+- Update dependencies

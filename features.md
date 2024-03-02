@@ -65,6 +65,7 @@
 - [ ] Can add or remove a work from library
 
 ### Settings
+- [x] Design the main view
 - [ ] Delete data
 - [ ] Contact
 - [ ] View Customization
