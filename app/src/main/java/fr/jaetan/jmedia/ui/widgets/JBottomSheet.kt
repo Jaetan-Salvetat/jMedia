@@ -41,7 +41,7 @@ fun JBottomSheet(
             dragHandle = {},
             tonalElevation = if (shouldBeFullScreen) 0.dp else 10.dp,
             modifier = if (!shouldBeFullScreen) {
-                Modifier.Companion
+                Modifier
                     .padding(horizontal = 10.dp)
                     .navigationBarsPadding()
                     .defaultMinSize(minHeight = 100.dp)

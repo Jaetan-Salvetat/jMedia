@@ -4,6 +4,9 @@ object Navigator {
     val home = object: ISampleScreen {
         override val route = "home"
     }
+    val appearance = object: ISampleScreen {
+        override val route = "appearance"
+    }
 }
 
 // Screens navigator models

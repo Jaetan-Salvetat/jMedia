@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.services
 
 import android.content.Context
+import android.content.Intent
+import fr.jaetan.jmedia.app.MainActivity
 import fr.jaetan.jmedia.controllers.WorksController
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
@@ -27,6 +29,16 @@ object MainViewModel {
     val movieRepository by lazy { MovieRepository(realm) }
     val serieRepository by lazy { SerieRepository(realm) }
     val worksController = WorksController()
+
+    private val repositories by lazy {
+        listOf(
+            mangaRepository,
+            animeRepository,
+            bookRepository,
+            movieRepository,
+            serieRepository
+        )
+    }
 
     private val realmConfig = RealmConfiguration.Builder(schema = setOf(
         // region Models
@@ -58,5 +70,22 @@ object MainViewModel {
 
         realmConfig.schemaVersion(0)
         realm = Realm.open(realmConfig.build())
+    }
+
+    suspend fun clearUserData(context: Context) {
+        repositories.forEach {
+            it.removeAll()
+        }
+
+        userSettings.clearUserPreferences(context)
+        restartApp(context)
+    }
+
+    private fun restartApp(context: Context) {
+        val activity = (context as MainActivity?)
+        val intent = Intent(activity, MainActivity::class.java)
+
+        activity?.finish()
+        context.startActivity(intent)
     }
 }
