@@ -5,3 +5,4 @@
 ### Tech
 - Update gradle to 8.3.0
 - Update dependencies
+- Fix windows build fail
