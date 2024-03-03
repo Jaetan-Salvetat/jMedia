@@ -85,9 +85,6 @@ object MainViewModel {
         val activity = (context as MainActivity?)
         val intent = Intent(activity, MainActivity::class.java)
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
         activity?.finish()
         context.startActivity(intent)
     }

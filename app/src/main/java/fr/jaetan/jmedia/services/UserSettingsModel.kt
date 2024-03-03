@@ -8,14 +8,18 @@ import androidx.datastore.preferences.preferencesDataStore
 import fr.jaetan.jmedia.models.works.shared.WorkType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class UserSettingsModel {
     private val Context.userSettings by preferencesDataStore(UserSettingsKeys.SETTINGS_KEY)
+    private var mainJob: Job? = null
     var selectedWorkTypes = mutableStateListOf<WorkType>()
 
     suspend fun initialize(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
+        mainJob?.cancel()
+
+        mainJob = CoroutineScope(Dispatchers.IO).launch {
             context.userSettings.data.collect { prefs ->
                 prefs[UserSettingsKeys.workTypes]?.let {
                     selectedWorkTypes.clear()
@@ -32,7 +36,9 @@ class UserSettingsModel {
     }
 
     suspend fun clearUserPreferences(context: Context) {
-        context.userSettings.edit { it.clear() }
+        context.userSettings.edit {
+            it[UserSettingsKeys.workTypes] = setOf()
+        }
     }
 }
 
