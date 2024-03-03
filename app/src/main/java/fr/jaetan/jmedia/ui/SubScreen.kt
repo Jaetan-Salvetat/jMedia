@@ -23,6 +23,9 @@ abstract class SubScreen <T: ViewModel> {
     open fun BottomSheet() = Unit
 
     @Composable
+    open fun Dialogs() = Unit
+
+    @Composable
     abstract fun Content()
 
     @Composable

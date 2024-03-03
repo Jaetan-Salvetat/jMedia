@@ -12,6 +12,14 @@ object Logger {
         }
     }
 
+    fun d(nbr: Long, tag: String = "testt") {
+        try {
+            Log.d(tag, nbr.toString())
+        } catch (_: Exception) {
+            print(nbr)
+        }
+    }
+
     fun d(obj: Any?, tag: String = "testt") {
         obj?.printDataClassToString(tag)
             ?: Log.d(tag, "null")

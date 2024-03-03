@@ -67,8 +67,7 @@
 ### Settings
 - [x] Design the main view
 - [ ] Delete data
-- [ ] Contact
 - [ ] View Customization
-- [ ] Theming
+- [ ] User feedback
 - [ ] Display OnBoarding
-- [ ] Display Version and build
+- [x] Display Version and build

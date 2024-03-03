@@ -1,5 +1,8 @@
 package fr.jaetan.jmedia.app
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +17,7 @@ import androidx.navigation.compose.composable
 import com.meetup.twain.MarkdownText
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.home.HomeView
+import fr.jaetan.jmedia.app.settings.appearance.AppearanceView
 import fr.jaetan.jmedia.core.networking.LocalReleaseSettings
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.services.Analytics
@@ -31,8 +35,8 @@ fun App(navController: NavHostController) {
         composable(Navigator.home.route) {
             HomeView().GetView(navController, viewModel())
         }
-        /*composable(
-            route = Navigator.search.route,
+        composable(
+            route = Navigator.appearance.route,
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
@@ -46,8 +50,8 @@ fun App(navController: NavHostController) {
                 )
             }
         ) {
-            SearchView().GetView(navController, viewModel())
-        }*/
+            AppearanceView().GetView(navController, viewModel())
+        }
     }
 
     UpdaterDialog()
