@@ -33,4 +33,14 @@ class SerieRepository(private val realm: Realm): IRepository<SerieEntity>() {
             }
         }
     }
+
+    override suspend fun removeAll() {
+        realm.write {
+            realm.query<SerieEntity>().find().forEach { entity ->
+                findLatest(entity)?.let {
+                    delete(it)
+                }
+            }
+        }
+    }
 }

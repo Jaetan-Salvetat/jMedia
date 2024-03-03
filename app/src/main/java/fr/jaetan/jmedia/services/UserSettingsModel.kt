@@ -30,6 +30,10 @@ class UserSettingsModel {
             prefs[UserSettingsKeys.workTypes] = types.map { it.name }.toSet()
         }
     }
+
+    suspend fun clearUserPreferences(context: Context) {
+        context.userSettings.edit { it.clear() }
+    }
 }
 
 private object UserSettingsKeys {

@@ -33,4 +33,14 @@ class MangaRepository(private val realm: Realm): IRepository<MangaEntity>() {
             }
         }
     }
+
+    override suspend fun removeAll() {
+        realm.write {
+            realm.query<MangaEntity>().find().forEach { entity ->
+                findLatest(entity)?.let {
+                    delete(it)
+                }
+            }
+        }
+    }
 }

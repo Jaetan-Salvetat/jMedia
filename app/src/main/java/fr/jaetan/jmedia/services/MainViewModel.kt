@@ -28,6 +28,16 @@ object MainViewModel {
     val serieRepository by lazy { SerieRepository(realm) }
     val worksController = WorksController()
 
+    private val repositories by lazy {
+        listOf(
+            mangaRepository,
+            animeRepository,
+            bookRepository,
+            movieRepository,
+            serieRepository
+        )
+    }
+
     private val realmConfig = RealmConfiguration.Builder(schema = setOf(
         // region Models
         MangaEntity::class,
@@ -58,5 +68,13 @@ object MainViewModel {
 
         realmConfig.schemaVersion(0)
         realm = Realm.open(realmConfig.build())
+    }
+
+    suspend fun clearUserData(context: Context) {
+        repositories.forEach {
+            it.removeAll()
+        }
+
+        userSettings.clearUserPreferences(context)
     }
 }

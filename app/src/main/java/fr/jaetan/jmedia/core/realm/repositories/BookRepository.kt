@@ -33,4 +33,14 @@ class BookRepository(private val realm: Realm): IRepository<BookEntity>() {
             }
         }
     }
+
+    override suspend fun removeAll() {
+        realm.write {
+            realm.query<BookEntity>().find().forEach { entity ->
+                findLatest(entity)?.let {
+                    delete(it)
+                }
+            }
+        }
+    }
 }

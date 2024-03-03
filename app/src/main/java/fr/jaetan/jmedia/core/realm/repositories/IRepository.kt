@@ -9,4 +9,6 @@ abstract class IRepository<T: RealmObject> {
 
     abstract suspend fun add(work: T)
     abstract suspend fun remove(work: T)
+
+    abstract suspend fun removeAll()
 }
