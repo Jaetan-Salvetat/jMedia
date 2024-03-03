@@ -66,8 +66,15 @@
 
 ### Settings
 - [x] Design the main view
-- [ ] Delete data
-- [ ] View Customization
-- [ ] User feedback
-- [ ] Display OnBoarding
+- [x] Delete data
+- View Customization
+  - [ ] Add multiples themes
+  - [ ] Can manually change between light, dark and system theme
+  - [ ] Add a pure dark (only for dark themes)
+  - [ ] ~~Can change the default list type~~
+  - [ ] ~~Can Edit the grid list size~~
+- [ ] User feedback (Google form ?)
+- Display OnBoarding
+  - [ ] Select works type
+  - [ ] Select theme
 - [x] Display Version and build
