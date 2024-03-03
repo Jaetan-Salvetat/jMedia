@@ -1,6 +1,8 @@
 package fr.jaetan.jmedia.services
 
 import android.content.Context
+import android.content.Intent
+import fr.jaetan.jmedia.app.MainActivity
 import fr.jaetan.jmedia.controllers.WorksController
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
@@ -76,5 +78,17 @@ object MainViewModel {
         }
 
         userSettings.clearUserPreferences(context)
+        restartApp(context)
+    }
+
+    private fun restartApp(context: Context) {
+        val activity = (context as MainActivity?)
+        val intent = Intent(activity, MainActivity::class.java)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        activity?.finish()
+        context.startActivity(intent)
     }
 }
