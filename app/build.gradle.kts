@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -13,11 +15,17 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val properties = Properties()
+        val keystoreFile = project.rootProject.file("local.properties")
+        properties.load(keystoreFile.inputStream())
+
         applicationId = "fr.jaetan.jmedia"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.0.2"
+        versionName = "0.0.3"
+        buildConfigField("String", "GITHUB_API_KEY", properties.getProperty("github.token"))
+        buildConfigField("String", "THE_MOVIE_DB_API_KEY", properties.getProperty("theMovieDb.token"))
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -76,6 +84,7 @@ android {
 
 dependencies {
     val composeVersion = "1.6.2"
+    val ackpineVersion = "0.5.1"
 
     // Androidx
     implementation("androidx.core:core-ktx:1.12.0")
@@ -115,6 +124,10 @@ dependencies {
 
     // Markdown
     implementation("com.meetup:twain:0.2.2")
+
+    // Apk Manager
+    implementation("ru.solrudev.ackpine:ackpine-core:$ackpineVersion")
+    implementation("ru.solrudev.ackpine:ackpine-ktx:$ackpineVersion")
 
     // Others
     implementation(kotlin("reflect"))

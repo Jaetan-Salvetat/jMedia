@@ -3,7 +3,9 @@ package fr.jaetan.jmedia.core.networking
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
 import io.ktor.http.ContentType
@@ -31,6 +33,7 @@ abstract class JMediaApi(private val namingStrategy: JsonNamingStrategy? = JsonN
                 })
             }
             install(Logging) {
+                logger = Logger.ANDROID
                 level = LogLevel.ALL
             }
             defaultRequest {

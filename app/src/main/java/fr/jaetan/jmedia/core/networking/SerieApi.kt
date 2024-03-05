@@ -4,6 +4,7 @@ import fr.jaetan.jmedia.core.networking.models.SerieApiEntities
 import fr.jaetan.jmedia.core.networking.models.toSerie
 import fr.jaetan.jmedia.core.networking.models.toSeries
 import fr.jaetan.jmedia.models.works.Serie
+import fr.jaetan.jmedia.services.GlobalSettings
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
@@ -13,7 +14,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 @OptIn(ExperimentalSerializationApi::class)
 object SerieApi: JMediaApi() {
     override val baseUrl = "https://api.themoviedb.org/3"
-    override val authorization = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2MjJlZWI3Y2YwNzkyYTk5M2JiNzA3ZDVlZjk0MGFmOCIsInN1YiI6IjY1OTNiZjVkY2U0ZGRjNmQzODdlZWJjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.cOxaS8lMWOz2u94wQ3LFL261kYEaR5hMan4FHssv0T8"
+    override val authorization = GlobalSettings.ApiKeys.TheMovieDb.key
 
     suspend fun search(field: String): List<Serie> {
         val url = URLBuilder().apply {

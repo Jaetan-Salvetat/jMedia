@@ -4,25 +4,12 @@ import android.util.Log
 import fr.jaetan.jmedia.extensions.printDataClassToString
 
 object Logger {
-    fun d(message: String, tag: String = "testt") {
-        try {
-            Log.d(tag, message)
-        } catch (_: Exception) {
-            print(message)
-        }
-    }
-
-    fun d(nbr: Long, tag: String = "testt") {
-        try {
-            Log.d(tag, nbr.toString())
-        } catch (_: Exception) {
-            print(nbr)
-        }
-    }
-
     fun d(obj: Any?, tag: String = "testt") {
-        obj?.printDataClassToString(tag)
-            ?: Log.d(tag, "null")
+        when (obj) {
+            is String, is Long, is Boolean -> Log.d(tag, obj.toString())
+            else -> obj?.printDataClassToString(tag)
+                ?: Log.d(tag, "null")
+        }
     }
 
     fun e(error: Throwable, message: String? = null, tag: String = "testt") {

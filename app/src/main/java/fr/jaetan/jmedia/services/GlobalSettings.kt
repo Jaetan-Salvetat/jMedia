@@ -12,4 +12,9 @@ object GlobalSettings {
 
     val isInRelease: Boolean
         get() = buildType.isInRelease
+
+    enum class ApiKeys(val key: String) {
+        Github(BuildConfig.GITHUB_API_KEY),
+        TheMovieDb(BuildConfig.THE_MOVIE_DB_API_KEY)
+    }
 }
