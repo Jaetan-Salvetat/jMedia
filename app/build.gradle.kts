@@ -23,7 +23,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "0.0.1"
+        versionName = "0.0.3"
         buildConfigField("String", "GITHUB_API_KEY", properties.getProperty("github.token"))
         buildConfigField("String", "THE_MOVIE_DB_API_KEY", properties.getProperty("theMovieDb.token"))
 
