@@ -16,6 +16,7 @@ sealed class GithubApiEntities {
     @Parcelize
     @Serializable
     data class Asset(
+        val id: String,
         val browserDownloadUrl: String
     ) : Parcelable
 }

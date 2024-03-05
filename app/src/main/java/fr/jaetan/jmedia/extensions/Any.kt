@@ -2,6 +2,8 @@ package fr.jaetan.jmedia.extensions
 
 import fr.jaetan.jmedia.services.Logger
 
+fun Any?.log() = Logger.d(this)
+
 fun Any?.isNotNull(): Boolean = this != null
 
 fun Any?.isNull(): Boolean = this == null
