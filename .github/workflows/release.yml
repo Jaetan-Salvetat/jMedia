@@ -50,8 +50,8 @@ jobs:
 
       - name: Generate local.properties content
         run: |
-          echo "github.token=\"${{ secrets.GIT_TOKEN }}\"" >> local.properties
-          echo "theMovieDb.token=\"${{ secrets.THE_MOVIE_DB_TOKEN }}\"" >> local.properties
+          echo "github.token=\""${{ secrets.GIT_TOKEN }}"\"" >> local.properties
+          echo "theMovieDb.token=\""${{ secrets.THE_MOVIE_DB_TOKEN }}"\"" >> local.properties
 
       # Build
       - name: Build release
