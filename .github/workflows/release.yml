@@ -1,7 +1,4 @@
-on:
-  push:
-    branches:
-      - main
+on: push
 name: Create Release
 
 permissions:
@@ -47,11 +44,18 @@ jobs:
           r="${r//$'\r'/'%0D'}"
           echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
 
+      # Generate local.properties
+      - name: Create local.properties
+        run: touch local.properties
+
+      - name: Generate local.properties content
+        run: |
+          echo github.token=\"${secrets.GIT_TOKEN}\" >> local.properties
+          echo theMovieDb.token=\"${secrets.THE_MOVIE_DB}\" >> local.properties
 
       # Build
-      - name: build release
+      - name: Build release
         run: ./gradlew assembleRelease
-
 
       # Manage release
       - name: Upload APK
