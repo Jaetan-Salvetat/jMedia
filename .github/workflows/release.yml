@@ -55,12 +55,12 @@ jobs:
 
       # Generate google-services.json
       - name: Create google-services.json
-        run: cat app/google-services.json | base64
+        run: cat app/src/release/google-services.json | base64
 
       - name: Generate google-services.json content
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA | base64 --decode > app/google-services.json
+        run: echo $DATA | base64 --decode > app/src/release/google-services.json
 
       # Build
       - name: Build release
