@@ -54,13 +54,10 @@ jobs:
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
 
       # Generate google-services.json
-      - name: Create google-services.json
-        run: cat app/src/release/google-services.json | base64
-
       - name: Generate google-services.json content
         env:
-          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo $DATA | base64 --decode > app/src/release/google-services.json
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: touch ./app/google-services.json && echo $GOOGLE_SERVICES_JSON | base64 -d > ./app/google-services.json
 
       # Build
       - name: Build release
