@@ -53,8 +53,12 @@ jobs:
           echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
 
+      # Generate google-services.json
+      - name: Create google-services.json
+        run: touch /home/runner/work/jMedia/app/src/release/google-services.json
+
       - name: Generate google-services.json
-        run: echo '${{ secrets.FIREBASE_RELEASE_GOOGLE_SERVICE }}' >> /home/runner/work/<Project-Name>/jMedia/app/src/release/google-services.json
+        run: echo '${{ secrets.FIREBASE_RELEASE_GOOGLE_SERVICE }}' >> /home/runner/work/jMedia/app/src/release/google-services.json
 
       # Build
       - name: Build release
