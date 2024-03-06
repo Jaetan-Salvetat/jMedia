@@ -55,10 +55,10 @@ jobs:
 
       # Generate google-services.json
       - name: Create google-services.json
-        run: cat /home/runner/work/jMedia/app/src/release/google-services.json | base64
+        run: touch /home/runner/work/jMedia/app/src/release/google-services.json
 
       - name: Generate google-services.json content
-        run: echo '${{ secrets.FIREBASE_RELEASE_GOOGLE_SERVICE }}' >> /home/runner/work/jMedia/app/src/release/google-services.json
+        run: echo '${{ secrets.FIREBASE_RELEASE_GOOGLE_SERVICE }}' >> app/src/release/google-services.json
 
       # Build
       - name: Build release
