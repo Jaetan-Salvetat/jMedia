@@ -58,7 +58,10 @@ jobs:
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo $DATA | base64 --decode > app/google-services.json
-      - run: cat app/google-services.json
+
+      - name: Show certificate information
+        run: |
+          openssl x509 -in app/google-services.json -inform DER -text -noout
 
       # Build
       - name: Build release
