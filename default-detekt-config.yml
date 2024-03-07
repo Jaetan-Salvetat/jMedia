@@ -88,6 +88,7 @@ formatting:
 
 naming:
   ClassNaming:
+    active: false
     ignoreAnnotated: ['org.junit.jupiter.api.Nested']
   FunctionNaming:
     active: true
