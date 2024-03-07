@@ -1,4 +1,4 @@
-on: push
+on: [pull_request]
 
 jobs:
   build:
@@ -12,7 +12,8 @@ jobs:
           fetch-depth: 1
 
       #Lint
-      - name: Lint
-        uses: natiginfo/action-detekt-all@1.23.5
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
         with:
-          args:  --config detekt.yml
+          github_token: ${{ secrets.GIT_TOKEN }}
+          reporter: github-pr-review
