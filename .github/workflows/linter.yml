@@ -8,18 +8,12 @@ jobs:
       # Setup
       - name: Clone repo
         uses: actions/checkout@master
-
-      - name: Create local.properties
-        run: |
-          touch local.properties
-          echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
-          echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
-
-      - name: set up JDK
-        uses: actions/setup-java@v1
         with:
-          java-version: 17
+          fetch-depth: 1
+          ref: ${{ github.head_ref }}
 
       #Linter
       - name: Linter
-        run: ./gradlew detekt
+        uses: alaegin/Detekt-Action@v1.23.5
+        with:
+          github_token: ${{ secrets.github_token }}
