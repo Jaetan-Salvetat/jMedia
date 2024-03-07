@@ -11,6 +11,7 @@ jobs:
 
       #Linter
       - name: Linter
-        uses: natiginfo/action-detekt-all@1.23.5
+        uses: alaegin/Detekt-Action@v1.23.5
         with:
-          args:   --config default-detekt-config.yml --build-upon-default-config
+          github_token: ${{ secrets.github_token }}
+          detekt_config: default-detekt-config.yml
