@@ -9,6 +9,9 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@master
 
+      - name: Create local.properties
+        run: touch local.properties
+
       - name: set up JDK
         uses: actions/setup-java@v1
         with:
