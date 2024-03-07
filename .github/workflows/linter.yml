@@ -16,7 +16,7 @@ jobs:
       - name: Setup detekt
         uses: peter-murray/setup-detekt@v2
         with:
-          detekt_version: 1.23.5
+          detekt_version: 1.23
           add_to_path: false
 
       - name: Run detekt
