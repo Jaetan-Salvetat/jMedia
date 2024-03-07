@@ -11,7 +11,6 @@ jobs:
 
       #Lint
       - name: Code style review
-        uses: alaegin/Detekt-Action@v1.23.5
+        uses: DominuS-RU/Detekt-Action@master
         with:
           github_token: ${{ secrets.github_token }}
-          reviewdog_level: info
