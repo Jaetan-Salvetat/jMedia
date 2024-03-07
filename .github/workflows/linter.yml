@@ -9,10 +9,6 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@master
 
-      #Lint
-      - name: Code style review
-        uses: DominuS-RU/Detekt-Action@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reviewdog_level: warning
-          reviewdog_filter: nofilter
+      #Linter
+      - name: Linter
+        uses: natiginfo/action-detekt-all@1.23.5
