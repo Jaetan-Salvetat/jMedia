@@ -8,12 +8,12 @@ jobs:
       # Setup
       - name: Clone repo
         uses: actions/checkout@master
-        with:
-          fetch-depth: 1
 
       #Lint
-      - name: ktlint
-        uses: ScaCap/action-ktlint@master
+      - name: Code style review
+        uses: alaegin/Detekt-Action@v1.23.5
         with:
           github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
+          detekt_config: default-detekt-config.yml
+          reviewdog_level: warning
+          reviewdog_reporter: github-pr-review

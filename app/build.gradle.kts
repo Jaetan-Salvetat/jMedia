@@ -6,7 +6,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.realm.kotlin")
     id("org.jetbrains.kotlin.plugin.parcelize")
-    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -140,4 +139,3 @@ dependencies {
     // Others
     implementation(kotlin("reflect"))
 }
-

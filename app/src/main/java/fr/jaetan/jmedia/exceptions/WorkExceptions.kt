@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package fr.jaetan.jmedia.exceptions
 
 import fr.jaetan.jmedia.models.works.shared.WorkType
