@@ -12,3 +12,5 @@ jobs:
       #Linter
       - name: Linter
         uses: natiginfo/action-detekt-all@1.23.5
+        with:
+          args:   --config default-detekt-config.yml

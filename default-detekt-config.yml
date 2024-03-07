@@ -23,8 +23,6 @@ complexity:
   LargeClass:
     active: true
     excludes: ['**/test/**', '**/*.Test.kt', '**/*.Spec.kt']
-  LongMethod:
-    active: false
   MethodOverloading:
     active: true
   TooManyFunctions:
