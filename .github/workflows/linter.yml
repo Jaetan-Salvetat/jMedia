@@ -9,6 +9,11 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@master
 
+      - name: set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
       #Linter
       - name: Linter
         run: ./gradlew detekt
