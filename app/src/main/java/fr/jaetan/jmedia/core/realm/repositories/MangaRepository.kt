@@ -1,9 +1,7 @@
 package fr.jaetan.jmedia.core.realm.repositories
 
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.core.realm.entities.MangaEntity
-import fr.jaetan.jmedia.services.Logger
+import fr.jaetan.jmedia.extensions.log
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
@@ -18,8 +16,7 @@ class MangaRepository(private val realm: Realm): IRepository<MangaEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Logger.e(e, "MangaRepository().add")
-                Firebase.crashlytics.recordException(e)
+                e.log("MangaRepository().add")
             }
         }
     }

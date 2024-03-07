@@ -5,8 +5,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.realm.kotlin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
@@ -117,10 +115,6 @@ dependencies {
 
     // Images
     implementation("io.coil-kt:coil-compose:2.5.0")
-
-    // Analytics / Crashlytics
-    implementation("com.google.firebase:firebase-analytics:21.5.1")
-    implementation("com.google.firebase:firebase-crashlytics:18.6.2")
 
     // Markdown
     implementation("com.meetup:twain:0.2.2")
