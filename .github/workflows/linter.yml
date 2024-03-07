@@ -14,3 +14,4 @@ jobs:
         uses: DominuS-RU/Detekt-Action@master
         with:
           github_token: ${{ secrets.github_token }}
+          reviewdog_filter: nofilter
