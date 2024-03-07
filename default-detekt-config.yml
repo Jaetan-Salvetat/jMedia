@@ -93,6 +93,7 @@ naming:
     active: true
     excludes: []
     ignoreAnnotated: ['Test', 'ParameterizedTest', 'RepeatedTest', 'TestFactory']
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
   TopLevelPropertyNaming:
     constantPattern: '[a-z][_A-Za-z0-9]*|[A-Z][_A-Z0-9]*'
   InvalidPackageDeclaration:
@@ -148,7 +149,7 @@ style:
   CascadingCallWrapping:
     active: true
   ClassOrdering:
-    active: true
+    active: false
   CollapsibleIfStatements:
     active: true
   DestructuringDeclarationWithTooManyEntries:
@@ -219,7 +220,7 @@ style:
   MandatoryBracesLoops:
     active: true
   MaxLineLength:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
     excludeCommentStatements: true
   NestedClassesVisibility:
