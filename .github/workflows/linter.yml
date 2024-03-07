@@ -1,0 +1,18 @@
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Setup
+      - name: Clone repo
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+
+      #Lint
+      - name: Lint
+        uses: natiginfo/action-detekt-all@1.23.5
+        with:
+          args:  --config detekt.yml

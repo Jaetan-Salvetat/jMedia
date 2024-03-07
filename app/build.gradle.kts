@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.realm.kotlin")
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -123,9 +124,6 @@ dependencies {
     implementation("ru.solrudev.ackpine:ackpine-core:$ackpineVersion")
     implementation("ru.solrudev.ackpine:ackpine-ktx:$ackpineVersion")
 
-    // Others
-    implementation(kotlin("reflect"))
-
     // Debug
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
@@ -138,4 +136,8 @@ dependencies {
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
+    // Others
+    implementation(kotlin("reflect"))
 }
+
