@@ -219,7 +219,7 @@ style:
   MandatoryBracesLoops:
     active: true
   MaxLineLength:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
     excludeCommentStatements: true
   NestedClassesVisibility:
