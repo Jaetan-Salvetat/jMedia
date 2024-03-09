@@ -80,20 +80,6 @@ android {
     }
 }
 
-val detekt by configurations.creating
-
-val detektTask = tasks.register<JavaExec>("detekt") {
-    mainClass.set("io.gitlab.arturbosch.detekt.cli.Main")
-    classpath = detekt
-
-    val input = projectDir
-    val config = "$projectDir/default-detekt-config.yml"
-    val exclude = ".*/build/.*,.*/resources/.*"
-    val params = listOf("-i", input, "-c", config, "-ex", exclude)
-
-    args(params)
-}
-
 dependencies {
     val composeVersion = "1.6.2"
     val ackpineVersion = "0.5.1"
