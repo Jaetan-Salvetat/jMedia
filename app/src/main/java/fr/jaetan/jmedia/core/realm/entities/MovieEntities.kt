@@ -12,7 +12,7 @@ import io.realm.kotlin.types.RealmObject
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 
-class MovieEntity(): RealmObject {
+class MovieEntity() : RealmObject {
     var id: ObjectId = ObjectId()
     var title: String = ""
     var synopsis: String? = null

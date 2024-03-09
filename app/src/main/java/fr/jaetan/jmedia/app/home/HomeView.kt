@@ -17,7 +17,7 @@ import fr.jaetan.jmedia.app.settings.SettingsView
 import fr.jaetan.jmedia.ui.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
-class HomeView: Screen<HomeViewModel>() {
+class HomeView : Screen<HomeViewModel>() {
     private val searchView by lazy { SearchView(viewModel.searchValue) }
     private val settingsView by lazy { SettingsView() }
     private val libraryView by lazy {

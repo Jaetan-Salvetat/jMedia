@@ -23,7 +23,7 @@ data class Movie(
     val genres: List<Genre> = emptyList(),
     val status: Status = Status.Unknown,
     val releaseDate: LocalDate? = null
-): IWork
+) : IWork
 
 fun Movie.toBdd(): MovieEntity = MovieEntity(
     id = id,

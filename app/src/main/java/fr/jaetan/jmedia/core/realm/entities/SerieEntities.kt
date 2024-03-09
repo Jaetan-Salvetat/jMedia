@@ -11,7 +11,7 @@ import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import org.mongodb.kbson.ObjectId
 
-class SerieEntity(): RealmObject {
+class SerieEntity() : RealmObject {
     var id: ObjectId = ObjectId()
     var title: String = ""
     var synopsis: String? = null

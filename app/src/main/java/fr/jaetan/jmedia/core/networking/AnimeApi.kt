@@ -10,7 +10,7 @@ import io.ktor.http.takeFrom
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
-object AnimeApi: JMediaApi() {
+object AnimeApi : JMediaApi() {
     override val baseUrl = "https://api.jikan.moe/v4/anime?limit=15"
 
     suspend fun search(field: String): List<Anime> {

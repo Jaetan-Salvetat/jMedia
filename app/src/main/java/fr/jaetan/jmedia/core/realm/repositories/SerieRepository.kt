@@ -7,7 +7,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.Flow
 
-class SerieRepository(private val realm: Realm): IRepository<SerieEntity>() {
+class SerieRepository(private val realm: Realm) : IRepository<SerieEntity>() {
     override val all: Flow<ResultsChange<SerieEntity>>
         get() = realm.query<SerieEntity>().find().asFlow()
 

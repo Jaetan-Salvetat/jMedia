@@ -11,7 +11,7 @@ import fr.jaetan.jmedia.ui.SubScreen
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
-class SearchView(val searchValue: StateFlow<String>): SubScreen<SearchViewModel>() {
+class SearchView(val searchValue: StateFlow<String>) : SubScreen<SearchViewModel>() {
     @Composable
     override fun TopBar() {
         TopBarView()

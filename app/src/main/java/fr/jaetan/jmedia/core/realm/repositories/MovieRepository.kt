@@ -7,7 +7,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.Flow
 
-class MovieRepository(private val realm: Realm): IRepository<MovieEntity>() {
+class MovieRepository(private val realm: Realm) : IRepository<MovieEntity>() {
     override val all: Flow<ResultsChange<MovieEntity>>
         get() = realm.query<MovieEntity>().find().asFlow()
 

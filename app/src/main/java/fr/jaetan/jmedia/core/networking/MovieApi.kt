@@ -12,7 +12,7 @@ import io.ktor.http.takeFrom
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
-object MovieApi: JMediaApi() {
+object MovieApi : JMediaApi() {
     override val baseUrl = "https://api.themoviedb.org/3"
     override val authorization = GlobalSettings.ApiKeys.TheMovieDb.key
 

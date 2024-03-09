@@ -23,7 +23,7 @@ data class Serie(
     val status: Status = Status.Unknown,
     val genres: List<Genre> = emptyList(),
     val seasons: List<Season> = emptyList()
-): IWork
+) : IWork
 
 fun Serie.toBdd(): SerieEntity = SerieEntity(
     id = id,

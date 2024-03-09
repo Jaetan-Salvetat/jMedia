@@ -10,7 +10,7 @@ import io.ktor.http.takeFrom
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
-object BookApi: JMediaApi(null) {
+object BookApi : JMediaApi(null) {
     override val baseUrl = "https://www.googleapis.com/books/v1/volumes?maxResults=15&printType=books"
 
     suspend fun search(field: String): List<Book> {

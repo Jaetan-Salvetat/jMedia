@@ -7,7 +7,7 @@ import fr.jaetan.jmedia.app.settings.views.RemoveDataDialog
 import fr.jaetan.jmedia.app.settings.views.TopBarView
 import fr.jaetan.jmedia.ui.SubScreen
 
-class SettingsView: SubScreen<SettingsViewModel>() {
+class SettingsView : SubScreen<SettingsViewModel>() {
     @Composable
     override fun TopBar() {
         TopBarView()

@@ -47,7 +47,7 @@ private fun rememberGithubRelease(makeRequest: Boolean): GithubReleaseManager {
     return githubReleaseManager
 }
 
-object LocalGithubReleaseManager: ReplaceableLocal<GithubReleaseManager>() {
+object LocalGithubReleaseManager : ReplaceableLocal<GithubReleaseManager>() {
     private var makeRequest = true
 
     @Composable
