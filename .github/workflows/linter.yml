@@ -1,22 +1,21 @@
-on: [pull_request]
+name: Linter
+on: pull_request
+
+permissions: write-all
 
 jobs:
-  build:
+  builds:
     runs-on: ubuntu-latest
 
     steps:
-      # Setup
       - name: Clone repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
         with:
           fetch-depth: 1
           ref: ${{ github.head_ref }}
 
-      #Linter
-      - name: Setup detekt
-        uses: peter-murray/setup-detekt@v2
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
         with:
-          detekt_version: 1.20
-
-      - name: Run detekt
-        run: detekt-cli --version
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
