@@ -66,7 +66,8 @@ object MainViewModel {
     }
 
     private fun initializeSettings() {
-        if (!GlobalSettings.isInRelease) { realmConfig.deleteRealmIfMigrationNeeded() }
+        //if (!GlobalSettings.isInRelease) { realmConfig.deleteRealmIfMigrationNeeded() }
+        realmConfig.deleteRealmIfMigrationNeeded()
 
         realmConfig.schemaVersion(0)
         realm = Realm.open(realmConfig.build())
