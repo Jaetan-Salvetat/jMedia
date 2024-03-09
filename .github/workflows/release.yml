@@ -1,4 +1,7 @@
-on: push
+on:
+  push:
+    branches:
+      - main
 name: Create Release
 
 permissions:
@@ -29,7 +32,7 @@ jobs:
         uses: rickstaa/action-create-tag@v1
         with:
           tag: ${{ steps.getVersion.outputs.versionName }}
-          tag_exists_error: false
+          force_push_tag: true
 
       - name: Get Previous tag
         id: previousTag
@@ -50,8 +53,8 @@ jobs:
 
       - name: Generate local.properties content
         run: |
-          echo github.token=\"${secrets.GIT_TOKEN}\" >> local.properties
-          echo theMovieDb.token=\"${secrets.THE_MOVIE_DB}\" >> local.properties
+          echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
+          echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
 
       # Build
       - name: Build release

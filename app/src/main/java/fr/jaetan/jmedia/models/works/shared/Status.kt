@@ -1,9 +1,7 @@
 package fr.jaetan.jmedia.models.works.shared
 
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.exceptions.UnknownStatusException
-import fr.jaetan.jmedia.services.Logger
+import fr.jaetan.jmedia.extensions.log
 
 enum class Status {
     InProgress,
@@ -49,8 +47,7 @@ private fun getStatusFromString(field: String, type: WorkType) = when {
 }
 
 private fun throwUnknownStatus(e: Exception): Status {
-    Logger.e(e, e.localizedMessage, "testt::status_unknown")
-    Firebase.crashlytics.recordException(e)
+    e.log("Status.throwUnknownStatus()")
 
     return Status.Unknown
 }

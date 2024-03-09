@@ -32,19 +32,12 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.home.HomeView
 import fr.jaetan.jmedia.app.settings.appearance.AppearanceView
 import fr.jaetan.jmedia.extensions.localized
-import fr.jaetan.jmedia.services.Analytics
 import fr.jaetan.jmedia.services.LocalGithubReleaseManager
 import fr.jaetan.jmedia.services.Navigator
 import kotlinx.coroutines.launch
 
 @Composable
 fun App(navController: NavHostController) {
-    navController.addOnDestinationChangedListener { _, navDestination, _ ->
-        navDestination.route?.let {
-            Analytics.tagScreen(it)
-        }
-    }
-
     NavHost(navController = navController, startDestination = Navigator.home.route) {
         composable(Navigator.home.route) {
             HomeView().GetView(navController, viewModel())

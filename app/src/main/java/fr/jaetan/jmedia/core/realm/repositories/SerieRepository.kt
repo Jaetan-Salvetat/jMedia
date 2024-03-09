@@ -1,9 +1,7 @@
 package fr.jaetan.jmedia.core.realm.repositories
 
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import fr.jaetan.jmedia.core.realm.entities.SerieEntity
-import fr.jaetan.jmedia.services.Logger
+import fr.jaetan.jmedia.extensions.log
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
@@ -18,8 +16,7 @@ class SerieRepository(private val realm: Realm): IRepository<SerieEntity>() {
             try {
                 copyToRealm(work)
             } catch (e: Exception) {
-                Logger.e(e, "SerieRepository().add")
-                Firebase.crashlytics.recordException(e)
+                e.log("SerieRepository().add")
             }
         }
     }
