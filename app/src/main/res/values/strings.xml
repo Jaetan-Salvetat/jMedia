@@ -47,4 +47,8 @@
     <string name="confirm">Confimer</string>
     <string name="remove_data_dialog_content_1">En continuant, tu supprimeras toutes tes données et ne pouras plus faire machine arrière.</string>
     <string name="remove_data_dialog_content_2">Est tu sûr de vouloir continuer ?</string>
+    <string name="cosmic_latte">Cosmic Latte</string>
+    <string name="sunset_sienna">Sunset Sienna</string>
+    <string name="neon_city">Neon City</string>
+    <string name="system">Système</string>
 </resources>
