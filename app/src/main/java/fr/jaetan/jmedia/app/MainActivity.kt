@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         requestNotificationPermission()
-        requestStoragePermission()
 
         lifecycleScope.launch {
             MainViewModel.initialize(this@MainActivity)
@@ -54,7 +53,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun requestStoragePermission() {
+    fun requestStoragePermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && GlobalSettings.isInRelease) {
             requestPermissionLauncher.launch(WRITE_EXTERNAL_STORAGE)
         }
