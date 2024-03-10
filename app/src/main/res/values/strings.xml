@@ -35,7 +35,7 @@
     <string name="download">Télécharger</string>
     <string name="cancel">Annuler</string>
     <string name="version_x">Version %s</string>
-    <string name="version_x_and_build_x">Version %s (%d)</string>
+    <string name="version_x_and_build_x" formatted="false">Version %s (%d)</string>
     <string name="appearance">Apparence</string>
     <string name="show_onboarding">Afficher l\'onboarding</string>
     <string name="contact_us">Nous contacter</string>
