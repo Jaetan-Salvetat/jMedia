@@ -140,7 +140,8 @@ fun SearchView.FilterCell() {
                     Box(
                         Modifier
                             .padding(start = 10.dp)
-                            .padding(end = 5.dp)) {
+                            .padding(end = 5.dp)
+                    ) {
                         VerticalDivider(Modifier.height(30.dp))
                     }
                 }

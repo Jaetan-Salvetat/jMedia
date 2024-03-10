@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.ui.theme.themes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import fr.jaetan.jmedia.services.MainViewModel
 
 val CosmicLatteLightColorScheme = lightColorScheme(
     primary = Color(0xFFD0BCFF),
@@ -57,9 +58,9 @@ val CosmicLatteDarkColorScheme = darkColorScheme(
     onTertiary = Color(0xFFFFFFFF),
     tertiaryContainer = Color(0xFFFFD8E4),
     onTertiaryContainer = Color(0xFF31111D),
-    background = Color(0xFF1C1B1F),
+    background = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF1C1B1F),
     onBackground = Color(0xFFE6E1E5),
-    surface = Color(0xFF1C1B1F),
+    surface = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF1C1B1F),
     onSurface = Color(0xFFE6E1E5),
     surfaceVariant = Color(0xFF49454F),
     onSurfaceVariant = Color(0xFFCAC4D0),

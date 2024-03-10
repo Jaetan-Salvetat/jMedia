@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.ui.theme.themes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import fr.jaetan.jmedia.services.MainViewModel
 
 val NeonCityLightColorScheme = lightColorScheme(
     primary = Color(0xFFD500F9),
@@ -57,9 +58,9 @@ val NeonCityDarkColorScheme = darkColorScheme(
     onTertiary = Color(0xFF00363A),
     tertiaryContainer = Color(0xFF1A237E),
     onTertiaryContainer = Color(0xFFB2EBF2),
-    background = Color(0xFF212121),
+    background = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF212121),
     onBackground = Color(0xFFE0E0E0),
-    surface = Color(0xFF212121),
+    surface = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF212121),
     onSurface = Color(0xFFE0E0E0),
     surfaceVariant = Color(0xFF424242),
     onSurfaceVariant = Color(0xFFC6C6C6),

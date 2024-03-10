@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.ui.theme.themes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import fr.jaetan.jmedia.services.MainViewModel
 
 val SunsetSiennaLightColorScheme = lightColorScheme(
     primary = Color(0xFF965A29),
@@ -57,9 +58,9 @@ val SunsetSiennaDarkColorScheme = darkColorScheme(
     onTertiary = Color(0xFFFFFFFF),
     tertiaryContainer = Color(0xFF732522),
     onTertiaryContainer = Color(0xFFFFDAD4),
-    background = Color(0xFF201A18),
+    background = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF201A18),
     onBackground = Color(0xFFEDE0DC),
-    surface = Color(0xFF201A18),
+    surface = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF201A18),
     onSurface = Color(0xFFEDE0DC),
     surfaceVariant = Color(0xFF534341),
     onSurfaceVariant = Color(0xFFD8C2BE),
