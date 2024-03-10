@@ -3,7 +3,7 @@ import java.util.Properties
 object AppVersion {
     const val major = 0
     const val minor = 0
-    const val patch = 4
+    const val patch = 5
 }
 
 plugins {

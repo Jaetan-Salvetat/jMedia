@@ -34,7 +34,6 @@
     <string name="more">Plus</string>
     <string name="download">Télécharger</string>
     <string name="cancel">Annuler</string>
-    <string name="version_x">Version %s</string>
     <string name="version_x_and_build_x" formatted="false">Version %s (%d)</string>
     <string name="appearance">Apparence</string>
     <string name="show_onboarding">Afficher l\'onboarding</string>
@@ -58,4 +57,6 @@
     <string name="color_scheme">Schéma de couleur</string>
     <string name="pur_dark">Noir</string>
     <string name="pur_dark_subtitle">Utilise moins d\'énergie pour les écrans AMOLED</string>
+    <string name="new_version_x">Nouvelle version: %s</string>
+    <string name="new_available_version">Une nouvelle version est disponible</string>
 </resources>
