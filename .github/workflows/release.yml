@@ -1,7 +1,4 @@
-on:
-  push:
-    branches:
-      - main
+on: push
 name: Create Release
 
 permissions:
@@ -42,6 +39,8 @@ jobs:
         id: readRelease
         run: bash ./parse_changelog.sh
 
+      - run: echo ${{ env.RELEASE_BODY }}
+
       # Generate local.properties
       - name: Create local.properties
         run: touch local.properties
@@ -67,5 +66,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.previousTag.outputs.tag }}
-          body: ${{ steps.readRelease.outputs.RELEASE_BODY }}
+          body: ${{ env.RELEASE_BODY }}
           file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
