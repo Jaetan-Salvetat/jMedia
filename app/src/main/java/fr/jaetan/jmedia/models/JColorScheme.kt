@@ -28,7 +28,7 @@ enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolea
         @Composable
         get() {
             val context = LocalContext.current
-            val isDarkTheme = when(MainViewModel.userSettings.currentTheme) {
+            val isDarkTheme = when (MainViewModel.userSettings.currentTheme) {
                 JTheme.Dark -> true
                 JTheme.Light -> false
                 JTheme.System -> isSystemInDarkTheme()
