@@ -14,6 +14,12 @@ import kotlinx.coroutines.launch
 class AppearanceViewModel : ViewModel() {
     var showThemeSelectorMenu by mutableStateOf(false)
 
+    fun isDarkTheme(isSystemDark: Boolean): Boolean = when (MainViewModel.userSettings.currentTheme) {
+        JTheme.Dark -> true
+        JTheme.Light -> false
+        JTheme.System -> isSystemDark
+    }
+
     fun setColorScheme(context: Context, colorScheme: JColorScheme) {
         viewModelScope.launch {
             MainViewModel.userSettings.setColorScheme(context, colorScheme)
