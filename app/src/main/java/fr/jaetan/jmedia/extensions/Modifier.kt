@@ -19,7 +19,7 @@ fun Modifier.scrollableTopAppBarBackground(state: TopAppBarState): Modifier = co
         targetValue = if (state.overlappedFraction > .01) {
             MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
         } else {
-            MaterialTheme.colorScheme.background
+            MaterialTheme.colorScheme.surface
         },
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
         label = ""

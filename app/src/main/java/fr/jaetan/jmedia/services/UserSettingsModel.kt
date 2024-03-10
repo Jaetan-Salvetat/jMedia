@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
@@ -23,6 +24,7 @@ class UserSettingsModel {
     var selectedWorkTypes = mutableStateListOf<WorkType>()
     var currentColorScheme by mutableStateOf(JColorScheme.Default)
     var currentTheme by mutableStateOf(JTheme.System)
+    var isPureDark by mutableStateOf(false)
 
     suspend fun initialize(context: Context) {
         mainJob?.cancel()
@@ -36,9 +38,7 @@ class UserSettingsModel {
 
                 currentColorScheme = JColorScheme.fromString(prefs[UserSettingsKeys.currentColorScheme])
                 currentTheme = JTheme.fromString(prefs[UserSettingsKeys.currentTheme])
-                prefs[UserSettingsKeys.currentTheme]?.let {
-                    currentTheme = JTheme.fromString(it)
-                }
+                isPureDark = prefs[UserSettingsKeys.isPurDark] ?: false
             }
         }
     }
@@ -61,11 +61,18 @@ class UserSettingsModel {
         }
     }
 
+    suspend fun setPurDark(context: Context, isPurDark: Boolean) {
+        context.userSettings.edit { prefs ->
+            prefs[UserSettingsKeys.isPurDark] = isPurDark
+        }
+    }
+
     suspend fun clearUserPreferences(context: Context) {
         context.userSettings.edit {
             it[UserSettingsKeys.workTypes] = setOf()
             it[UserSettingsKeys.currentColorScheme] = JColorScheme.Default.name
             it[UserSettingsKeys.currentTheme] = JTheme.System.name
+            it[UserSettingsKeys.isPurDark] = false
         }
     }
 }
@@ -76,4 +83,5 @@ private object UserSettingsKeys {
     val workTypes = stringSetPreferencesKey("work_types")
     val currentColorScheme = stringPreferencesKey("current_color_scheme")
     val currentTheme = stringPreferencesKey("current_theme")
+    val isPurDark = booleanPreferencesKey("is_pur_dark")
 }

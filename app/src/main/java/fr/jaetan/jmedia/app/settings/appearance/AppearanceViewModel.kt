@@ -19,9 +19,16 @@ class AppearanceViewModel : ViewModel() {
             MainViewModel.userSettings.setColorScheme(context, colorScheme)
         }
     }
+
     fun setTheme(context: Context, theme: JTheme) {
         viewModelScope.launch {
             MainViewModel.userSettings.setTheme(context, theme)
+        }
+    }
+
+    fun setPurDark(context: Context, isPurDark: Boolean) {
+        viewModelScope.launch {
+            MainViewModel.userSettings.setPurDark(context, isPurDark)
         }
     }
 }

@@ -56,4 +56,6 @@
     <string name="dark">Sombre</string>
     <string name="light">Clair</string>
     <string name="color_scheme">Schéma de couleur</string>
+    <string name="pur_dark">Noir</string>
+    <string name="pur_dark_subtitle">Utilise moins d\'énergie pour les écrans AMOLED</string>
 </resources>

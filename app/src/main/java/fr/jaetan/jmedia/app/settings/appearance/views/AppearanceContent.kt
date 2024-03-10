@@ -19,6 +19,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ fun AppearanceView.ContentView() {
         item { HorizontalDivider(Modifier.padding(horizontal = 20.dp)) }
 
         item { ThemeSwitcher() }
+        item { PureDarkSelector() }
     }
 }
 
@@ -163,5 +165,33 @@ private fun AppearanceView.ThemeSwitcher() {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun AppearanceView.PureDarkSelector() {
+    val context = LocalContext.current
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { viewModel.setPurDark(context, !MainViewModel.userSettings.isPureDark) }
+            .padding(horizontal = 20.dp, vertical = 10.dp)
+    ) {
+        Column {
+            Text(R.string.pur_dark.localized())
+            Text(
+                text = R.string.pur_dark_subtitle.localized(),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.outline
+            )
+        }
+
+        Switch(
+            checked = MainViewModel.userSettings.isPureDark,
+            onCheckedChange = { viewModel.setPurDark(context, it) }
+        )
     }
 }

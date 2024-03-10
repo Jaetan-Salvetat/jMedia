@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -16,6 +15,7 @@ import fr.jaetan.jmedia.ui.theme.themes.NeonCityDarkColorScheme
 import fr.jaetan.jmedia.ui.theme.themes.NeonCityLightColorScheme
 import fr.jaetan.jmedia.ui.theme.themes.SunsetSiennaDarkColorScheme
 import fr.jaetan.jmedia.ui.theme.themes.SunsetSiennaLightColorScheme
+import fr.jaetan.jmedia.ui.theme.themes.SystemDarkColorScheme
 
 enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolean) {
     System(R.string.system, Build.VERSION.SDK_INT >= Build.VERSION_CODES.S),
@@ -27,6 +27,7 @@ enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolea
     val colorScheme: ColorScheme
         @Composable
         get() {
+            val context = LocalContext.current
             val isDarkTheme = when(MainViewModel.userSettings.currentTheme) {
                 JTheme.Dark -> true
                 JTheme.Light -> false
@@ -38,8 +39,7 @@ enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolea
                 SunsetSienna -> if (isDarkTheme) SunsetSiennaDarkColorScheme else SunsetSiennaLightColorScheme
                 NeonCity -> if (isDarkTheme) NeonCityDarkColorScheme else NeonCityLightColorScheme
                 System, Default -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val context = LocalContext.current
-                    if (isDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+                    if (isDarkTheme) SystemDarkColorScheme else dynamicLightColorScheme(context)
                 } else {
                     if (isDarkTheme) NeonCityDarkColorScheme else NeonCityLightColorScheme
                 }
