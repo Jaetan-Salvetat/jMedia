@@ -3,10 +3,11 @@ package fr.jaetan.jmedia.app
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FiberNew
+import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -22,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -82,14 +84,22 @@ private fun UpdaterDialog() {
 
     settings.release?.let {
         AlertDialog(
-            icon = { Icon(Icons.Default.FiberNew, null) },
-            title = { Text(R.string.version_x.localized(it.tagName)) },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.SystemUpdate,
+                    null,
+                    modifier = Modifier.size(30.dp)
+                )
+            },
+            title = { Text(R.string.new_available_version.localized(), textAlign = TextAlign.Center) },
             text = {
-                Column {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(R.string.new_version_x.localized(it.tagName))
+                    
                     MarkdownText(it.body, color = MaterialTheme.colorScheme.onBackground)
 
                     if (hasDownloadStarted) {
-                        LinearProgressIndicator(modifier = Modifier.padding(top = 10.dp))
+                        LinearProgressIndicator()
                     }
                 }
             },
