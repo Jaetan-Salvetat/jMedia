@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
 import fr.jaetan.jmedia.R
+import fr.jaetan.jmedia.app.MainActivity
 import fr.jaetan.jmedia.core.networking.GithubApi
 import fr.jaetan.jmedia.core.networking.models.GithubApiEntities
 import fr.jaetan.jmedia.extensions.log
@@ -52,11 +53,10 @@ object LocalGithubReleaseManager : ReplaceableLocal<GithubReleaseManager>() {
 
     @Composable
     override fun currentValue(): GithubReleaseManager {
-        val settings =  rememberGithubRelease(makeRequest)
+        val settings = rememberGithubRelease(makeRequest)
         makeRequest = false
         return settings
     }
-
 }
 
 class GithubReleaseManager {
@@ -73,6 +73,10 @@ class GithubReleaseManager {
     }
 
     suspend fun download(context: Context) = runCatching {
+        val activity = context as MainActivity?
+
+        activity?.requestStoragePermission()
+
         release?.let {
             val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
             val url = Uri.parse(it.assets.first().browserDownloadUrl)
