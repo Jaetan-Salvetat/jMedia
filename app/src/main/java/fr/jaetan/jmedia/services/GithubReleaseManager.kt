@@ -52,11 +52,10 @@ object LocalGithubReleaseManager : ReplaceableLocal<GithubReleaseManager>() {
 
     @Composable
     override fun currentValue(): GithubReleaseManager {
-        val settings =  rememberGithubRelease(makeRequest)
+        val settings = rememberGithubRelease(makeRequest)
         makeRequest = false
         return settings
     }
-
 }
 
 class GithubReleaseManager {
