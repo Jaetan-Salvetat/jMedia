@@ -81,12 +81,6 @@ android {
     }
 }
 
-ktlint {
-    filter {
-        exclude("**/generated/**", "**/build.gradle.kts", "**/test/**")
-    }
-}
-
 dependencies {
     val composeVersion = "1.6.3"
     val ackpineVersion = "0.5.1"
