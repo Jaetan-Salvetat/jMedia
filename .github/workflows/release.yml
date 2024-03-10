@@ -1,4 +1,6 @@
-on: pull_request
+on:
+  push:
+    - main
 name: Create Release
 
 permissions:
