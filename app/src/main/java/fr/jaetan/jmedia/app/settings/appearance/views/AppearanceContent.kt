@@ -80,7 +80,6 @@ private fun AppearanceView.ThemeCell(theme: JTheme) {
                 )
             }
             Row {
-
                 Box(
                     Modifier
                         .size(40.dp)

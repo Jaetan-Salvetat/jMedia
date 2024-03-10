@@ -40,21 +40,23 @@ object MainViewModel {
         )
     }
 
-    private val realmConfig = RealmConfiguration.Builder(schema = setOf(
-        // region Models
-        MangaEntity::class,
-        AnimeEntity::class,
-        BookEntity::class,
-        MovieEntity::class,
-        SerieEntity::class,
-        // endregion
-        // region Sub models
-        AuthorEntity::class,
-        GenreEntity::class,
-        DemographicEntity::class,
-        SeasonEntity::class
-        // endregion
-    ))
+    private val realmConfig = RealmConfiguration.Builder(
+        schema = setOf(
+            // region Models
+            MangaEntity::class,
+            AnimeEntity::class,
+            BookEntity::class,
+            MovieEntity::class,
+            SerieEntity::class,
+            // endregion
+            // region Sub models
+            AuthorEntity::class,
+            GenreEntity::class,
+            DemographicEntity::class,
+            SeasonEntity::class
+            // endregion
+        )
+    )
     private lateinit var realm: Realm
 
     suspend fun initialize(context: Context) {
@@ -66,7 +68,7 @@ object MainViewModel {
     }
 
     private fun initializeSettings() {
-        //if (!GlobalSettings.isInRelease) { realmConfig.deleteRealmIfMigrationNeeded() }
+        // if (!GlobalSettings.isInRelease) { realmConfig.deleteRealmIfMigrationNeeded() }
         realmConfig.deleteRealmIfMigrationNeeded()
 
         realmConfig.schemaVersion(0)

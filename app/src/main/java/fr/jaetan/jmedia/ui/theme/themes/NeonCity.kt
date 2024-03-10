@@ -40,7 +40,7 @@ val NeonCityLightColorScheme = lightColorScheme(
     surfaceContainerHigh = Color(0xFFAA00FF),
     surfaceContainerHighest = Color(0xFFE040FB),
     surfaceContainerLow = Color(0xFFFCD5D5),
-    surfaceContainerLowest = Color(0xFFF0F0F0),
+    surfaceContainerLowest = Color(0xFFF0F0F0)
 )
 
 val NeonCityDarkColorScheme = darkColorScheme(
@@ -79,5 +79,5 @@ val NeonCityDarkColorScheme = darkColorScheme(
     surfaceContainerHigh = Color(0xFFAA00FF),
     surfaceContainerHighest = Color(0xFF7C4DFF),
     surfaceContainerLow = Color(0xFFEDE4FF),
-    surfaceContainerLowest = Color(0xFFB3E5FC),
+    surfaceContainerLowest = Color(0xFFB3E5FC)
 )

@@ -40,7 +40,7 @@ val CosmicLatteLightColorScheme = lightColorScheme(
     surfaceContainerHigh = Color(0xFFF6E2DA),
     surfaceContainerHighest = Color(0xFFF9E8E0),
     surfaceContainerLow = Color(0xFFE7DAD1),
-    surfaceContainerLowest = Color(0xFFE0D0C8),
+    surfaceContainerLowest = Color(0xFFE0D0C8)
 )
 
 val CosmicLatteDarkColorScheme = darkColorScheme(
@@ -79,5 +79,5 @@ val CosmicLatteDarkColorScheme = darkColorScheme(
     surfaceContainerHigh = Color(0xFF3D3B41),
     surfaceContainerHighest = Color(0xFF4E4C52),
     surfaceContainerLow = Color(0xFF1F1D22),
-    surfaceContainerLowest = Color(0xFF171519),
+    surfaceContainerLowest = Color(0xFF171519)
 )

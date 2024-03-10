@@ -40,7 +40,7 @@ val  SunsetSiennaLightColorScheme = lightColorScheme(
     surfaceContainerHigh = Color(0xFFF6E2DA),
     surfaceContainerHighest = Color(0xFFF9E8E0),
     surfaceContainerLow = Color(0xFFE7DAD1),
-    surfaceContainerLowest = Color(0xFFE0D0C8),
+    surfaceContainerLowest = Color(0xFFE0D0C8)
 )
 
 val SunsetSiennaDarkColorScheme = darkColorScheme(
@@ -79,5 +79,5 @@ val SunsetSiennaDarkColorScheme = darkColorScheme(
     surfaceContainerHigh = Color(0xFF4E4542),
     surfaceContainerHighest = Color(0xFF625953),
     surfaceContainerLow = Color(0xFF2C2523),
-    surfaceContainerLowest = Color(0xFF1F1917),
+    surfaceContainerLowest = Color(0xFF1F1917)
 )

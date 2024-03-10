@@ -40,13 +40,13 @@ class UserSettingsModel {
     }
 
     suspend fun setWorkTypes(context: Context, types: List<WorkType>) {
-        context.userSettings.edit {  prefs ->
+        context.userSettings.edit { prefs ->
             prefs[UserSettingsKeys.workTypes] = types.map { it.name }.toSet()
         }
     }
 
     suspend fun setTheme(context: Context, theme: JTheme) {
-        context.userSettings.edit {  prefs ->
+        context.userSettings.edit { prefs ->
             prefs[UserSettingsKeys.currentTheme] = theme.name
         }
     }
