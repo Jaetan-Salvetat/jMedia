@@ -26,7 +26,7 @@ fun JMediaTheme(content: @Composable () -> Unit) {
     }
 
     MaterialTheme(
-        colorScheme = MainViewModel.userSettings.currentTheme.colorScheme,
+        colorScheme = MainViewModel.userSettings.currentColorScheme.colorScheme,
         typography = Typography,
         content = content
     )
