@@ -4,7 +4,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
-val  SunsetSiennaLightColorScheme = lightColorScheme(
+val SunsetSiennaLightColorScheme = lightColorScheme(
     primary = Color(0xFF965A29),
     onPrimary = Color(0xFFFFFFFF),
     primaryContainer = Color(0xFFFFD8C2),
