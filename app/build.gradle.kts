@@ -1,5 +1,11 @@
 import java.util.Properties
 
+object AppVersion {
+    const val major = 0
+    const val minor = 0
+    const val patch = 4
+}
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -21,8 +27,8 @@ android {
         applicationId = "fr.jaetan.jmedia"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.0.4"
+        versionCode = AppVersion.major * 10000 + AppVersion.minor * 100 + AppVersion.patch
+        versionName = "${AppVersion.major}.${AppVersion.minor}.${AppVersion.patch}"
         buildConfigField("String", "GITHUB_API_KEY", properties.getProperty("github.token"))
         buildConfigField("String", "THE_MOVIE_DB_API_KEY", properties.getProperty("theMovieDb.token"))
 
