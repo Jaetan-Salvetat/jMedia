@@ -23,15 +23,12 @@ jobs:
 
       # Take global info
       - name: Get app version
-        id: getVersion
-        uses: ltDino/android-get-version-action@v1.0
-        with:
-          gradlePath: app/build.gradle.kts
+        run: bash ./app_version.sh
 
       - name: Create Tag
         uses: rickstaa/action-create-tag@v1
         with:
-          tag: ${{ steps.getVersion.outputs.versionName }}
+          tag: ${{ env.APP_VERSION }}
           force_push_tag: true
 
       - name: Get Previous tag

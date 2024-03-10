@@ -2,6 +2,7 @@ package fr.jaetan.jmedia.app.settings.appearance.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -171,13 +172,14 @@ private fun AppearanceView.ThemeSwitcher() {
 @Composable
 private fun AppearanceView.PureDarkSelector() {
     val context = LocalContext.current
+    val isDarkTheme = viewModel.isDarkTheme(isSystemInDarkTheme())
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { viewModel.setPurDark(context, !MainViewModel.userSettings.isPureDark) }
+            .clickable(isDarkTheme) { viewModel.setPurDark(context, !MainViewModel.userSettings.isPureDark) }
             .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
         Column {
@@ -190,7 +192,8 @@ private fun AppearanceView.PureDarkSelector() {
         }
 
         Switch(
-            checked = MainViewModel.userSettings.isPureDark,
+            checked = if (isDarkTheme) MainViewModel.userSettings.isPureDark else false,
+            enabled = isDarkTheme,
             onCheckedChange = { viewModel.setPurDark(context, it) }
         )
     }
