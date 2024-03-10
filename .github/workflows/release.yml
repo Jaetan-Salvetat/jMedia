@@ -20,7 +20,7 @@ jobs:
 
       # Take global info
       - name: Get app version
-        run: ./app_version.sh
+        run: bash ./app_version.sh
 
       - name: Create Tag
         uses: rickstaa/action-create-tag@v1
