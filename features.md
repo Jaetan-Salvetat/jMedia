@@ -68,9 +68,9 @@
 - [x] Design the main view
 - [x] Delete data
 - View Customization
-  - [ ] Add multiples themes
-  - [ ] Can manually change between light, dark and system theme
-  - [ ] Add a pure dark (only for dark themes)
+  - [x] Add multiples color schemes
+  - [x] Can manually change theme between light, dark and system
+  - [x] Add a pure dark (only for dark themes)
   - [ ] ~~Can change the default list type~~
   - [ ] ~~Can Edit the grid list size~~
 - [ ] User feedback (Google form ?)
