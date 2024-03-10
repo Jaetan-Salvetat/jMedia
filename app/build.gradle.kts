@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.realm.kotlin")
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -77,6 +78,12 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+ktlint {
+    filter {
+        exclude("**/generated/**", "**/build.gradle.kts", "**/test/**")
     }
 }
 
