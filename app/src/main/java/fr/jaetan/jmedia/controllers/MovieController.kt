@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MovieController: IWorkController<Movie>() {
+class MovieController : IWorkController<Movie>() {
     override val fetchedWorks = mutableStateListOf<Movie>()
     override var localWorks = mutableStateListOf<Movie>()
 

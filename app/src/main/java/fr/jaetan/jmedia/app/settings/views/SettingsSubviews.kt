@@ -36,10 +36,10 @@ fun SettingsView.RemoveDataDialog() {
             onDismissRequest = viewModel::hideRemoveDataDialog,
             title = { Text(R.string.remove_my_data.localized()) },
             text = {
-                   Column {
-                       Text(R.string.remove_data_dialog_content_1.localized())
-                       Text(R.string.remove_data_dialog_content_2.localized())
-                   }
+                Column {
+                    Text(R.string.remove_data_dialog_content_1.localized())
+                    Text(R.string.remove_data_dialog_content_2.localized())
+                }
             },
             confirmButton = {
                 TextButton(

@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MangaController: IWorkController<Manga>() {
+class MangaController : IWorkController<Manga>() {
     override val fetchedWorks = mutableStateListOf<Manga>()
     override var localWorks = mutableStateListOf<Manga>()
 

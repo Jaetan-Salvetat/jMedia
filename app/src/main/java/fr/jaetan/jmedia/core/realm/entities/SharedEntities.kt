@@ -9,7 +9,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
 
-class AuthorEntity(): RealmObject {
+class AuthorEntity() : RealmObject {
     @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
 
@@ -19,7 +19,7 @@ class AuthorEntity(): RealmObject {
     }
 }
 
-class GenreEntity(): RealmObject {
+class GenreEntity() : RealmObject {
     @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
 
@@ -29,7 +29,7 @@ class GenreEntity(): RealmObject {
     }
 }
 
-class SeasonEntity(): RealmObject {
+class SeasonEntity() : RealmObject {
     @PrimaryKey var id: ObjectId = BsonObjectId()
     var episodeCount: Int = 0
     var seasonNumber: Int = 0
@@ -54,7 +54,7 @@ class SeasonEntity(): RealmObject {
     }
 }
 
-class DemographicEntity(): RealmObject {
+class DemographicEntity() : RealmObject {
     @PrimaryKey var id: ObjectId = BsonObjectId()
     var name: String = ""
 

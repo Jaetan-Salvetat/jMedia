@@ -21,7 +21,7 @@ data class Book(
     val authors: List<Author>,
     val publisher: String?,
     val ratingsCount: Int
-): IWork
+) : IWork
 
 fun Book.toBdd(): BookEntity = BookEntity(
     id = id,

@@ -10,7 +10,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 
 @OptIn(ExperimentalSerializationApi::class)
-object GithubApi: JMediaApi() {
+object GithubApi : JMediaApi() {
     override val authorization = GlobalSettings.ApiKeys.Github.key
     override val baseUrl = "https://api.github.com"
 

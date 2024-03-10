@@ -13,7 +13,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
 
-class AnimeEntity(): RealmObject {
+class AnimeEntity() : RealmObject {
     @PrimaryKey
     var id: ObjectId = BsonObjectId()
     var title: String = ""

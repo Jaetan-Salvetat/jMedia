@@ -7,7 +7,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.Flow
 
-class BookRepository(private val realm: Realm): IRepository<BookEntity>() {
+class BookRepository(private val realm: Realm) : IRepository<BookEntity>() {
     override val all: Flow<ResultsChange<BookEntity>>
         get() = realm.query<BookEntity>().find().asFlow()
 

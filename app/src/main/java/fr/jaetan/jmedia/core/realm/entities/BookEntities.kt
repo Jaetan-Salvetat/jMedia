@@ -10,7 +10,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
 
-class BookEntity(): RealmObject {
+class BookEntity() : RealmObject {
     @PrimaryKey
     var id: ObjectId = BsonObjectId()
     var title: String = ""

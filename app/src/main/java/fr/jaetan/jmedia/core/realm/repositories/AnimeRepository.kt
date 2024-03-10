@@ -7,7 +7,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import kotlinx.coroutines.flow.Flow
 
-class AnimeRepository(private val realm: Realm): IRepository<AnimeEntity>() {
+class AnimeRepository(private val realm: Realm) : IRepository<AnimeEntity>() {
     override val all: Flow<ResultsChange<AnimeEntity>>
         get() = realm.query<AnimeEntity>().find().asFlow()
 

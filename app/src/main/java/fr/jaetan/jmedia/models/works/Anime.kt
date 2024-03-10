@@ -22,7 +22,7 @@ data class Anime(
     val genres: List<Genre>,
     val demographics: List<Demographic>,
     val episodes: Int?,
-): IWork
+) : IWork
 
 fun Anime.toBdd(): AnimeEntity = AnimeEntity(
     id = id,

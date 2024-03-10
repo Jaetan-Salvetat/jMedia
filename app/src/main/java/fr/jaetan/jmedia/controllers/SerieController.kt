@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SerieController: IWorkController<Serie>() {
+class SerieController : IWorkController<Serie>() {
     override val fetchedWorks = mutableStateListOf<Serie>()
     override var localWorks = mutableStateListOf<Serie>()
 

@@ -9,7 +9,7 @@ import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.services.MainViewModel
 
-class LibraryViewModel(): ViewModel() {
+class LibraryViewModel : ViewModel() {
     var isSearchBarActive by mutableStateOf(false)
     var bottomSheetWorkType by mutableStateOf(null as WorkType?)
     var searchValue by mutableStateOf("")

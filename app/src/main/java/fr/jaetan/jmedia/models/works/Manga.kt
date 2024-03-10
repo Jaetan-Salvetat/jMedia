@@ -24,7 +24,7 @@ data class Manga(
     val authors: List<Author>,
     val genres: List<Genre>,
     val demographics: List<Demographic>,
-): IWork
+) : IWork
 
 fun Manga.toBdd(): MangaEntity = MangaEntity(
     id = id,

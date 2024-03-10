@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.launch
 
-class SettingsViewModel: ViewModel() {
+class SettingsViewModel : ViewModel() {
     var showRemoveDataDialog by mutableStateOf(false)
         private set
     var isLoading by mutableStateOf(false)

@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.realm.kotlin")
     id("org.jetbrains.kotlin.plugin.parcelize")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
