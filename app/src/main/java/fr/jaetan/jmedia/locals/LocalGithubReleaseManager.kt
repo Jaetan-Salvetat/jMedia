@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.services
+package fr.jaetan.jmedia.locals
 
 import android.app.DownloadManager
 import android.content.Context
@@ -18,6 +18,8 @@ import fr.jaetan.jmedia.core.networking.GithubApi
 import fr.jaetan.jmedia.core.networking.models.GithubApiEntities
 import fr.jaetan.jmedia.extensions.log
 import fr.jaetan.jmedia.models.ReplaceableLocal
+import fr.jaetan.jmedia.services.GlobalSettings
+import fr.jaetan.jmedia.services.Logger
 import kotlinx.coroutines.launch
 import ru.solrudev.ackpine.installer.PackageInstaller
 import ru.solrudev.ackpine.installer.createSession

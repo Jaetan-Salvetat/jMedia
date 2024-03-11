@@ -13,32 +13,12 @@ import fr.jaetan.jmedia.core.realm.entities.MangaEntity
 import fr.jaetan.jmedia.core.realm.entities.MovieEntity
 import fr.jaetan.jmedia.core.realm.entities.SeasonEntity
 import fr.jaetan.jmedia.core.realm.entities.SerieEntity
-import fr.jaetan.jmedia.core.realm.repositories.AnimeRepository
-import fr.jaetan.jmedia.core.realm.repositories.BookRepository
-import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
-import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
-import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 
 object MainViewModel {
     val userSettings = UserSettingsModel()
-    val mangaRepository by lazy { MangaRepository(realm) }
-    val animeRepository by lazy { AnimeRepository(realm) }
-    val bookRepository by lazy { BookRepository(realm) }
-    val movieRepository by lazy { MovieRepository(realm) }
-    val serieRepository by lazy { SerieRepository(realm) }
     val worksController = WorksController()
-
-    private val repositories by lazy {
-        listOf(
-            mangaRepository,
-            animeRepository,
-            bookRepository,
-            movieRepository,
-            serieRepository
-        )
-    }
 
     private val realmConfig = RealmConfiguration.Builder(
         schema = setOf(
@@ -57,7 +37,7 @@ object MainViewModel {
             // endregion
         )
     )
-    private lateinit var realm: Realm
+    lateinit var realm: Realm
 
     suspend fun initialize(context: Context) {
         // Let it at first
@@ -76,11 +56,9 @@ object MainViewModel {
     }
 
     suspend fun clearUserData(context: Context) {
-        repositories.forEach {
-            it.removeAll()
-        }
-
+        worksController.removeAll()
         userSettings.clearUserPreferences(context)
+
         restartApp(context)
     }
 

@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.controllers
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.core.realm.entities.toSeries
+import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
 import fr.jaetan.jmedia.models.works.Serie
 import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SerieController : IWorkController<Serie>() {
+    private val repository by lazy { SerieRepository(MainViewModel.realm) }
     override val fetchedWorks = mutableStateListOf<Serie>()
     override var localWorks = mutableStateListOf<Serie>()
 
@@ -25,7 +27,7 @@ class SerieController : IWorkController<Serie>() {
 
     override suspend fun initializeFlow() {
         CoroutineScope(Dispatchers.IO).launch {
-            MainViewModel.serieRepository.all.collect {
+            repository.all.collect {
                 localWorks.clear()
                 localWorks.addAll(it.list.toSeries())
                 setLibraryValues()
@@ -42,7 +44,7 @@ class SerieController : IWorkController<Serie>() {
     override suspend fun libraryHandler(work: Serie) {
         if (work.isInLibrary) {
             localWorks.takeWhereEqualTo(work)?.let {
-                MainViewModel.serieRepository.remove(it.toBdd())
+                repository.remove(it.toBdd())
             }
             return
         }
@@ -59,6 +61,10 @@ class SerieController : IWorkController<Serie>() {
             else it
         }
 
-        MainViewModel.serieRepository.add(serie.toBdd())
+        repository.add(serie.toBdd())
+    }
+
+    override suspend fun removeAll() {
+        repository.removeAll()
     }
 }

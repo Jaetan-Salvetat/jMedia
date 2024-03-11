@@ -20,10 +20,13 @@ class WorksController {
     @Suppress("UNCHECKED_CAST")
     fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
 
-
     suspend fun initializeControllers() {
         controllersMap.forEach {
             it.value.initializeFlow()
         }
+    }
+
+    suspend fun removeAll() {
+        controllersMap.values.forEach { it.removeAll() }
     }
 }

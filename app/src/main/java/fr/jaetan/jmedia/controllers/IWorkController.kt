@@ -11,6 +11,7 @@ abstract class IWorkController<T : IWork> {
     abstract suspend fun fetch(searchValue: String, force: Boolean)
     abstract suspend fun libraryHandler(work: T)
     abstract suspend fun initializeFlow()
+    abstract suspend fun removeAll()
     protected abstract fun setLibraryValues()
     protected fun isInLibrary(work: T): Boolean = localWorks.find { work.equalTo(it) }.isNotNull()
 }
