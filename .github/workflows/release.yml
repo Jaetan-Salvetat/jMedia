@@ -50,6 +50,8 @@ jobs:
       - name: Decode Keystore
         run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > /tmp/keystore.jks
 
+      - run: echo /tmp/keystore.jks
+
       # Build
       - name: Build release
         run: ./gradlew assembleDemo -Pandroid.injected.signing.store.file=/tmp/keystore.jks -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTONE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEYSTONE_PASSWORD }}
