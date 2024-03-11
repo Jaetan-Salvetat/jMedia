@@ -5,6 +5,7 @@ import fr.jaetan.jmedia.BuildConfig
 enum class BuildType {
     Release,
     Staging,
+    Demo,
     Debug;
 
     val isInRelease: Boolean
@@ -14,6 +15,7 @@ enum class BuildType {
         fun get(): BuildType = when (BuildConfig.BUILD_TYPE) {
             "release" -> Release
             "staging" -> Staging
+            "demo" -> Demo
             else -> Debug
         }
     }

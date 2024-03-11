@@ -52,6 +52,18 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("demo") {
+            isDebuggable = false
+            isMinifyEnabled = false
+            versionNameSuffix = "-demo"
+            applicationIdSuffix = ".demo"
+            signingConfig = signingConfigs.getByName("debug")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
         release {
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("debug")

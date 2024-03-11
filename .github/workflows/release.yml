@@ -1,7 +1,4 @@
-on:
-  push:
-    branches:
-      - main
+on: push
 name: Create Release
 
 permissions:
@@ -52,14 +49,14 @@ jobs:
 
       # Build
       - name: Build release
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleDemo
 
       # Manage release
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
           name: App
-          path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
+          path: ${{ github.workspace }}/app/build/outputs/apk/demo/app-demo.apk
 
       - name: Create Release
         uses: svenstaro/upload-release-action@v2
@@ -67,4 +64,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.previousTag.outputs.tag }}
           body: ${{ env.RELEASE_BODY }}
-          file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
+          file: ${{ github.workspace }}/app/build/outputs/apk/demo/app-demo.apk
