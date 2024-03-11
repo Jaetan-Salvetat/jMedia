@@ -143,7 +143,8 @@ private fun AppearanceView.ThemeCell(scheme: JColorScheme) {
                 Box(
                     Modifier
                         .size(20.dp)
-                        .background(scheme.colorScheme.primary, RoundedCornerShape(4.dp)))
+                        .background(scheme.colorScheme.primary, RoundedCornerShape(4.dp))
+                )
             }
         }
 
