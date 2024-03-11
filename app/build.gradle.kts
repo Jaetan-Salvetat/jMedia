@@ -3,7 +3,7 @@ import java.util.Properties
 object AppVersion {
     const val major = 0
     const val minor = 0
-    const val patch = 9
+    const val patch = 8
 }
 
 val properties = Properties()
@@ -66,7 +66,7 @@ android {
             isMinifyEnabled = false
             versionNameSuffix = "-demo"
             applicationIdSuffix = ".demo"
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("demo")
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
