@@ -52,13 +52,13 @@ jobs:
         uses: timheuer/base64-to-file@v1
         with:
           fileName: 'upload-keystore.jks'
-          encodedString: ${{ secrets.KEYSTORE }}
+          encodedString: ${{ secrets.KEYSTONE }}
 
       - run: echo /tmp/keystore.jks
 
       # Build
       - name: Build release
-        run: ./gradlew assembleDemo -Pandroid.injected.signing.store.file=${{ steps.write_file.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTONE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEYSTONE_PASSWORD }}
+        run: ./gradlew assembleDemo -Pandroid.injected.signing.store.file=${{ steps.write_file.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.KEYSTONE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTONE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEYSTONE_PASSWORD }}
 
       # Manage release
       - name: Upload APK
