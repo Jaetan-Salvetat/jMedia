@@ -51,7 +51,7 @@ jobs:
       - name: Decode Keystore
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: 'app/keystore.jks'
+          fileName: 'app/keystone.jks'
           encodedString: ${{ secrets.KEYSTONE }}
 
       # Build
