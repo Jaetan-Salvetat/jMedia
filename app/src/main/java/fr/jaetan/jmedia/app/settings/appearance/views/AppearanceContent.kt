@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.app.settings.appearance.views
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -8,13 +9,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -55,7 +62,7 @@ private fun AppearanceView.ColorSchemeSelector() {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(R.string.color_scheme.localized(), modifier = Modifier.padding(start = 20.dp))
 
-        LazyRow(contentPadding = PaddingValues(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+        LazyRow(contentPadding = PaddingValues(horizontal = 15.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             items(JColorScheme.entries) {
                 if (it.shouldBeDisplayed) {
                     ThemeCell(it)
@@ -66,63 +73,72 @@ private fun AppearanceView.ColorSchemeSelector() {
 }
 
 @Composable
-private fun AppearanceView.ThemeCell(theme: JColorScheme) {
+private fun AppearanceView.ThemeCell(scheme: JColorScheme) {
     val context = LocalContext.current
-    val backgroundColor = if (MainViewModel.userSettings.currentColorScheme.name == theme.name) {
-        MaterialTheme.colorScheme.scrim
-    } else {
-        Color.Transparent
-    }
+    val isSelected = MainViewModel.userSettings.currentColorScheme == scheme
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .clickable { viewModel.setColorScheme(context, theme) }
-            .background(backgroundColor, RoundedCornerShape(8.dp))
-            .padding(5.dp)
+            .clickable { viewModel.setColorScheme(context, scheme) }
     ) {
-        Column {
-            Row {
+        Column(
+            modifier = Modifier
+                .width(100.dp)
+                .height(150.dp)
+                .padding(10.dp)
+                .background(scheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                .border(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent, RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { viewModel.setColorScheme(context, colorScheme = scheme) }
+                .padding(10.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text("Abc", fontSize = 11.sp)
+
+                if (isSelected) {
+                    Icon(
+                        Icons.Default.Done,
+                        contentDescription = null,
+                        tint = scheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .background(scheme.colorScheme.primary, CircleShape)
+                            .padding(2.dp)
+                    )
+                } else {
+                    Box(Modifier.size(20.dp))
+                }
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                 Box(
                     Modifier
-                        .size(40.dp)
-                        .background(
-                            theme.colorScheme.primaryContainer,
-                            RoundedCornerShape(topStart = 8.dp)
-                        )
+                        .width(40.dp)
+                        .height(5.dp)
+                        .background(scheme.colorScheme.primaryContainer, CircleShape)
                 )
                 Box(
                     Modifier
-                        .size(40.dp)
-                        .background(
-                            theme.colorScheme.secondaryContainer,
-                            RoundedCornerShape(topEnd = 8.dp)
-                        )
+                        .width(60.dp)
+                        .height(5.dp)
+                        .background(scheme.colorScheme.primaryContainer, CircleShape)
                 )
             }
+
             Row {
-                Box(
-                    Modifier
-                        .size(40.dp)
-                        .background(
-                            theme.colorScheme.tertiaryContainer,
-                            RoundedCornerShape(bottomStart = 8.dp)
-                        )
-                )
-                Box(
-                    Modifier
-                        .size(40.dp)
-                        .background(
-                            theme.colorScheme.background,
-                            RoundedCornerShape(bottomEnd = 8.dp)
-                        )
-                )
+                Spacer(Modifier.weight(1f))
+                Box(Modifier.size(20.dp).background(scheme.colorScheme.primary, RoundedCornerShape(4.dp)))
             }
         }
 
-        Text(theme.title.localized())
+        Text(scheme.title.localized(), fontSize = 13.sp)
     }
 }
 
@@ -179,7 +195,12 @@ private fun AppearanceView.PureDarkSelector() {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(isDarkTheme) { viewModel.setPurDark(context, !MainViewModel.userSettings.isPureDark) }
+            .clickable(isDarkTheme) {
+                viewModel.setPurDark(
+                    context,
+                    !MainViewModel.userSettings.isPureDark
+                )
+            }
             .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
         Column {

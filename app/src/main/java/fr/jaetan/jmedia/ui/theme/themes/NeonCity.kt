@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.ui.theme.themes
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
@@ -44,41 +45,42 @@ val NeonCityLightColorScheme = lightColorScheme(
     surfaceContainerLowest = Color(0xFFF0F0F0)
 )
 
-val NeonCityDarkColorScheme = darkColorScheme(
-    primary = Color(0xFFCF47FB),
-    onPrimary = Color(0xFF280D4F),
-    primaryContainer = Color(0xFF4A0072),
-    onPrimaryContainer = Color(0xFFEDE4FF),
-    inversePrimary = Color(0xFF7C4DFF),
-    secondary = Color(0xFF40C4FF),
-    onSecondary = Color(0xFF003350),
-    secondaryContainer = Color(0xFF00579A),
-    onSecondaryContainer = Color(0xFFB3E5FC),
-    tertiary = Color(0xFF18FFFF),
-    onTertiary = Color(0xFF00363A),
-    tertiaryContainer = Color(0xFF1A237E),
-    onTertiaryContainer = Color(0xFFB2EBF2),
-    background = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF212121),
-    onBackground = Color(0xFFE0E0E0),
-    surface = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF212121),
-    onSurface = Color(0xFFE0E0E0),
-    surfaceVariant = Color(0xFF424242),
-    onSurfaceVariant = Color(0xFFC6C6C6),
-    surfaceTint = Color(0xFFCF47FB),
-    inverseSurface = Color(0xFFE0E0E0),
-    inverseOnSurface = Color(0xFF212121),
-    error = Color(0xFFFF5252),
-    onError = Color(0xFF000000),
-    errorContainer = Color(0xFF9E0000),
-    onErrorContainer = Color(0xFFFFD0D0),
-    outline = Color(0xFF919191),
-    outlineVariant = Color(0xFF424242),
-    scrim = Color(0xFF000000),
-    surfaceBright = Color(0xFF292929),
-    surfaceDim = Color(0xFF383838),
-    surfaceContainer = Color(0xFFCF47FB),
-    surfaceContainerHigh = Color(0xFFAA00FF),
-    surfaceContainerHighest = Color(0xFF7C4DFF),
-    surfaceContainerLow = Color(0xFFEDE4FF),
-    surfaceContainerLowest = Color(0xFFB3E5FC)
-)
+val NeonCityDarkColorScheme: ColorScheme
+    get() = darkColorScheme(
+        primary = Color(0xFFCF47FB),
+        onPrimary = Color(0xFF280D4F),
+        primaryContainer = Color(0xFF4A0072),
+        onPrimaryContainer = Color(0xFFEDE4FF),
+        inversePrimary = Color(0xFF7C4DFF),
+        secondary = Color(0xFF40C4FF),
+        onSecondary = Color(0xFF003350),
+        secondaryContainer = Color(0xFF00579A),
+        onSecondaryContainer = Color(0xFFB3E5FC),
+        tertiary = Color(0xFF18FFFF),
+        onTertiary = Color(0xFF00363A),
+        tertiaryContainer = Color(0xFF1A237E),
+        onTertiaryContainer = Color(0xFFB2EBF2),
+        background = if (MainViewModel.userSettings.isPureDark) Color.Black else Color(0xFF212121),
+        onBackground = Color(0xFFE0E0E0),
+        surface = Color(0xFF212121),
+        onSurface = Color(0xFFE0E0E0),
+        surfaceVariant = Color(0xFF424242),
+        onSurfaceVariant = Color(0xFFC6C6C6),
+        surfaceTint = Color(0xFFCF47FB),
+        inverseSurface = Color(0xFFE0E0E0),
+        inverseOnSurface = Color(0xFF212121),
+        error = Color(0xFFFF5252),
+        onError = Color(0xFF000000),
+        errorContainer = Color(0xFF9E0000),
+        onErrorContainer = Color(0xFFFFD0D0),
+        outline = Color(0xFF919191),
+        outlineVariant = Color(0xFF424242),
+        scrim = Color(0xFF000000),
+        surfaceBright = Color(0xFF292929),
+        surfaceDim = Color(0xFF383838),
+        surfaceContainer = Color(0xFFCF47FB),
+        surfaceContainerHigh = Color(0xFFAA00FF),
+        surfaceContainerHighest = Color(0xFF7C4DFF),
+        surfaceContainerLow = Color(0xFFEDE4FF),
+        surfaceContainerLowest = Color(0xFFB3E5FC)
+    )
