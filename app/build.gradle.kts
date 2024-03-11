@@ -6,6 +6,10 @@ object AppVersion {
     const val patch = 8
 }
 
+val properties = Properties()
+val keystoreFile = project.rootProject.file("local.properties")
+properties.load(keystoreFile.inputStream())
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -20,10 +24,6 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        val properties = Properties()
-        val keystoreFile = project.rootProject.file("local.properties")
-        properties.load(keystoreFile.inputStream())
-
         applicationId = "fr.jaetan.jmedia"
         minSdk = 26
         targetSdk = 34
@@ -35,6 +35,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    signingConfigs {
+        create("demo") {
+            storeFile = file("upload-keystone.jks")
+            storePassword = properties.getProperty("keystone.password")
+            keyAlias = properties.getProperty("keystone.alias")
+            keyPassword = properties.getProperty("keystone.key.password")
         }
     }
 

@@ -36,8 +36,6 @@ jobs:
         id: readRelease
         run: bash ./parse_changelog.sh
 
-      - run: echo ${{ env.RELEASE_BODY }}
-
       # Generate temp files
       - name: Create local.properties
         run: touch local.properties
@@ -46,6 +44,9 @@ jobs:
         run: |
           echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
+          echo 'keystone.password="${{ secrets.KEYSTONE_PASSWORD }}"' >> local.properties
+          echo 'keystone.alias="${{ secrets.KEYSTONE_ALIAS }}"' >> local.properties
+          echo 'keystone.key.password="${{ secrets.KEYSTONE_KEY_PASSWORD }}"' >> local.properties
 
       - name: Decode Keystore
         id: decode_keystore
@@ -54,11 +55,9 @@ jobs:
           fileName: 'upload-keystore.jks'
           encodedString: ${{ secrets.KEYSTONE }}
 
-      - run: echo /tmp/keystore.jks
-
       # Build
       - name: Build release
-        run: ./gradlew assembleDemo -Pandroid.injected.signing.store.file=${{ steps.write_file.outputs.filePath }} -Pandroid.injected.signing.store.password=${{ secrets.KEYSTONE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTONE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEYSTONE_PASSWORD }}
+        run: ./gradlew assembleDemo
 
       # Manage release
       - name: Upload APK
