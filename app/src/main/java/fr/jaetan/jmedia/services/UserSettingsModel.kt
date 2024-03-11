@@ -22,7 +22,7 @@ class UserSettingsModel {
     private val Context.userSettings by preferencesDataStore(UserSettingsKeys.SETTINGS_KEY)
     private var mainJob: Job? = null
     var selectedWorkTypes = mutableStateListOf<WorkType>()
-    var currentColorScheme by mutableStateOf(JColorScheme.Default)
+    var currentColorScheme by mutableStateOf(JColorScheme.default)
     var currentTheme by mutableStateOf(JTheme.System)
     var isPureDark by mutableStateOf(false)
 
@@ -70,7 +70,7 @@ class UserSettingsModel {
     suspend fun clearUserPreferences(context: Context) {
         context.userSettings.edit {
             it[UserSettingsKeys.workTypes] = setOf()
-            it[UserSettingsKeys.currentColorScheme] = JColorScheme.Default.name
+            it[UserSettingsKeys.currentColorScheme] = JColorScheme.default.name
             it[UserSettingsKeys.currentTheme] = JTheme.System.name
             it[UserSettingsKeys.isPurDark] = false
         }
