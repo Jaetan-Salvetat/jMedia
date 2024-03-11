@@ -33,7 +33,7 @@ val SystemDarkColorScheme: ColorScheme
             onTertiaryContainer = dynamicDark.onTertiaryContainer,
             background = if (MainViewModel.userSettings.isPureDark) Color.Black else dynamicDark.background,
             onBackground = dynamicDark.onBackground,
-            surface = if (MainViewModel.userSettings.isPureDark) Color.Black else dynamicDark.surface,
+            surface = dynamicDark.surface,
             onSurface = dynamicDark.onSurface,
             surfaceVariant = dynamicDark.surfaceVariant,
             onSurfaceVariant = dynamicDark.onSurfaceVariant,
