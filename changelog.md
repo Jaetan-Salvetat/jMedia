@@ -1,2 +1,6 @@
- ### Features
- - Edit the color scheme UI on appearance page
+ ### Bugfix
+ - Remove `Default` value from `JColorScheme`
+
+### Tech
+- Refactor WorksController management
+- Update dependencies
