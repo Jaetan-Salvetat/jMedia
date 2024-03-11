@@ -38,7 +38,7 @@ jobs:
 
       - run: echo ${{ env.RELEASE_BODY }}
 
-      # Generate local.properties
+      # Generate temp files
       - name: Create local.properties
         run: touch local.properties
 
@@ -47,9 +47,12 @@ jobs:
           echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
 
+      - name: Decode Keystore
+        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > /tmp/keystore.jks
+
       # Build
       - name: Build release
-        run: ./gradlew assembleDemo
+        run: ./gradlew assembleDemo -Pandroid.injected.signing.store.file=/tmp/keystore.jks -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.KEYSTONE_ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.KEYSTONE_PASSWORD }}
 
       # Manage release
       - name: Upload APK
