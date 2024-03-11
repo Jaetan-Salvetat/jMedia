@@ -40,7 +40,7 @@ android {
 
     signingConfigs {
         create("demo") {
-            storeFile = file("upload-keystone.jks")
+            storeFile = file("keystone.jks")
             storePassword = properties.getProperty("keystone.password")
             keyAlias = properties.getProperty("keystone.alias")
             keyPassword = properties.getProperty("keystone.key.password")
