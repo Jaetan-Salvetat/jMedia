@@ -44,9 +44,9 @@ jobs:
         run: |
           echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
-          echo 'keystore.alias="upload"' >> local.properties
-          echo 'keystore.password="Viol1418"' >> local.properties
-          echo 'keystore.key.password="Viol1418"' >> local.properties
+          echo 'keystore.alias=${{ secrets.KEYSTORE_ALIAS }}' >> local.properties
+          echo 'keystore.password=${{ secrets.KEYSTORE_PASSWORD }}' >> local.properties
+          echo 'keystore.key.password=${{ secrets.KEYSTORE_KEY_PASSWORD }}' >> local.properties
 
       - name: Decode Keystore
         uses: timheuer/base64-to-file@v1
