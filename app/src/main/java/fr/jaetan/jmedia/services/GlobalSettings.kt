@@ -7,8 +7,12 @@ import fr.jaetan.jmedia.models.BuildType
 object GlobalSettings {
     private val buildType = BuildType.get()
 
-    const val versionName = BuildConfig.VERSION_NAME
     const val versionCode = BuildConfig.VERSION_CODE
+    const val fullVersionName = BuildConfig.VERSION_NAME
+    val versionName = when {
+        fullVersionName.contains("-") -> fullVersionName.split("-").first()
+        else -> fullVersionName
+    }
 
     val isInDemo: Boolean
         get() = buildType == BuildType.Demo

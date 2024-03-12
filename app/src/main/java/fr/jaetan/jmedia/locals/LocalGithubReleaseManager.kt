@@ -11,24 +11,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.core.net.toUri
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.MainActivity
 import fr.jaetan.jmedia.core.networking.GithubApi
 import fr.jaetan.jmedia.core.networking.models.GithubApiEntities
-import fr.jaetan.jmedia.extensions.log
 import fr.jaetan.jmedia.models.ReplaceableLocal
 import fr.jaetan.jmedia.services.GlobalSettings
-import fr.jaetan.jmedia.services.Logger
 import kotlinx.coroutines.launch
-import ru.solrudev.ackpine.installer.PackageInstaller
-import ru.solrudev.ackpine.installer.createSession
-import ru.solrudev.ackpine.session.SessionResult
-import ru.solrudev.ackpine.session.await
-import ru.solrudev.ackpine.session.parameters.Confirmation
-import ru.solrudev.ackpine.session.parameters.NotificationString
-import ru.solrudev.ackpine.session.parameters.notification
-import java.io.File
 
 @Composable
 private fun rememberGithubRelease(makeRequest: Boolean): GithubReleaseManager {
@@ -74,7 +63,7 @@ class GithubReleaseManager {
         release = r
     }
 
-    suspend fun download(context: Context) = runCatching {
+    fun download(context: Context) = runCatching {
         val activity = context as MainActivity?
 
         activity?.requestStoragePermission()
@@ -91,32 +80,26 @@ class GithubReleaseManager {
 
             dm.enqueue(request)
         }
-    }.onSuccess {
-        val downloadPath = File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS)
-        val file = File(downloadPath, "jMedia-v${release?.tagName}.apk")
-        installApk(context, file.toUri())
-    }.onFailure {
-        it.log()
     }
 
-    private suspend fun installApk(context: Context, apkUri: Uri) {
-        val packageInstaller = PackageInstaller.getInstance(context)
-        val result = packageInstaller.createSession(apkUri) {
-            confirmation = Confirmation.IMMEDIATE
-
-            notification {
-                title = NotificationString.default()
-                icon = R.drawable.placeholder
-            }
-        }.await()
-
-        try {
-            when (result) {
-                is SessionResult.Success -> Logger.d("Success")
-                is SessionResult.Error -> Logger.d(result.cause.message)
-            }
-        } catch (e: Exception) {
-            Logger.e(e)
-        }
-    }
+//    private suspend fun installApk(context: Context, apkUri: Uri) {
+//        val packageInstaller = PackageInstaller.getInstance(context)
+//        val result = packageInstaller.createSession(apkUri) {
+//            confirmation = Confirmation.IMMEDIATE
+//
+//            notification {
+//                title = NotificationString.default()
+//                icon = R.drawable.placeholder
+//            }
+//        }.await()
+//
+//        try {
+//            when (result) {
+//                is SessionResult.Success -> Logger.d("Success")
+//                is SessionResult.Error -> Logger.d(result.cause.message)
+//            }
+//        } catch (e: Exception) {
+//            Logger.e(e)
+//        }
+//    }
 }

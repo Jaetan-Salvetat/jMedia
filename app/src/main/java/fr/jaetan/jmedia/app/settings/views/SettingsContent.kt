@@ -102,7 +102,7 @@ private fun VersionCell() {
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = R.string.version_x_and_build_x.localized(GlobalSettings.versionName, GlobalSettings.versionCode),
+            text = R.string.version_x_and_build_x.localized(GlobalSettings.fullVersionName, GlobalSettings.versionCode),
             color = MaterialTheme.colorScheme.outline,
             fontStyle = FontStyle.Italic
         )

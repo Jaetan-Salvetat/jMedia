@@ -1,3 +1,4 @@
 /build
 src/release/google-services.json
 src/staging/google-services.json
+keystore.jks
