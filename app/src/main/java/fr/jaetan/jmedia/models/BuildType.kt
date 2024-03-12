@@ -8,9 +8,6 @@ enum class BuildType {
     Demo,
     Debug;
 
-    val isInRelease: Boolean
-        get() = this == Release
-
     companion object {
         fun get(): BuildType = when (BuildConfig.BUILD_TYPE) {
             "release" -> Release

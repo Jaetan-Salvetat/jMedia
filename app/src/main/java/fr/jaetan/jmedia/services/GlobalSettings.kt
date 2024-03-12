@@ -10,8 +10,8 @@ object GlobalSettings {
     const val versionName = BuildConfig.VERSION_NAME
     const val versionCode = BuildConfig.VERSION_CODE
 
-    val isInRelease: Boolean
-        get() = buildType.isInRelease
+    val isInDemo: Boolean
+        get() = buildType == BuildType.Demo
 
     enum class ApiKeys(val key: String) {
         Github(BuildConfig.GITHUB_API_KEY),

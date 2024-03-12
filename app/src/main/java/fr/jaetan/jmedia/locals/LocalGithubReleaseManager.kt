@@ -35,7 +35,7 @@ private fun rememberGithubRelease(makeRequest: Boolean): GithubReleaseManager {
     val githubReleaseManager by remember { mutableStateOf(GithubReleaseManager()) }
     val scope = rememberCoroutineScope()
 
-    if (!GlobalSettings.isInRelease || !makeRequest) return githubReleaseManager
+    if (!GlobalSettings.isInDemo || !makeRequest) return githubReleaseManager
 
     SideEffect {
         scope.launch {
