@@ -44,14 +44,14 @@ jobs:
         run: |
           echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
-          echo 'keystone.password="${{ secrets.KEYSTONE_PASSWORD }}"' >> local.properties
-          echo 'keystone.alias="${{ secrets.KEYSTONE_ALIAS }}"' >> local.properties
-          echo 'keystone.key.password="${{ secrets.KEYSTONE_KEY_PASSWORD }}"' >> local.properties
+          echo 'keystore.password="${{ secrets.KEYSTONE_PASSWORD }}"' >> local.properties
+          echo 'keystore.alias="${{ secrets.KEYSTONE_ALIAS }}"' >> local.properties
+          echo 'keystore.key.password="${{ secrets.KEYSTONE_KEY_PASSWORD }}"' >> local.properties
 
       - name: Decode Keystore
         uses: timheuer/base64-to-file@v1
         with:
-          fileName: ${{ github.workspace }}/app/keystone.jks
+          fileName: keystore.jks
           encodedString: ${{ secrets.KEYSTONE }}
 
       # Build

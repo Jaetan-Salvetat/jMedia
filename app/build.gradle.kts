@@ -29,6 +29,7 @@ android {
         targetSdk = 34
         versionCode = AppVersion.major * 10000 + AppVersion.minor * 100 + AppVersion.patch
         versionName = "${AppVersion.major}.${AppVersion.minor}.${AppVersion.patch}"
+
         buildConfigField("String", "GITHUB_API_KEY", properties.getProperty("github.token"))
         buildConfigField("String", "THE_MOVIE_DB_API_KEY", properties.getProperty("theMovieDb.token"))
 
@@ -40,10 +41,10 @@ android {
 
     signingConfigs {
         create("default") {
-            storeFile = file("keystone.jks")
-            storePassword = properties.getProperty("keystone.password")
-            keyAlias = properties.getProperty("keystone.alias")
-            keyPassword = properties.getProperty("keystone.key.password")
+            storeFile = file("/jMedia/keystore.jks")
+            storePassword = properties.getProperty("keystore.password")
+            keyAlias = properties.getProperty("keystore.alias")
+            keyPassword = properties.getProperty("keystore.key.password")
         }
     }
 
@@ -54,7 +55,6 @@ android {
             isMinifyEnabled = false
             versionNameSuffix = "-staging"
             applicationIdSuffix = ".staging"
-            signingConfig = signingConfigs.getByName("default")
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -62,7 +62,6 @@ android {
             )
         }
         create("demo") {
-            isDebuggable = false
             isMinifyEnabled = false
             versionNameSuffix = "-demo"
             applicationIdSuffix = ".demo"
