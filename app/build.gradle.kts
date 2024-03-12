@@ -39,7 +39,7 @@ android {
     }
 
     signingConfigs {
-        create("demo") {
+        create("default") {
             storeFile = file("keystone.jks")
             storePassword = properties.getProperty("keystone.password")
             keyAlias = properties.getProperty("keystone.alias")
@@ -54,7 +54,7 @@ android {
             isMinifyEnabled = false
             versionNameSuffix = "-staging"
             applicationIdSuffix = ".staging"
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("default")
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -66,7 +66,7 @@ android {
             isMinifyEnabled = false
             versionNameSuffix = "-demo"
             applicationIdSuffix = ".demo"
-            signingConfig = signingConfigs.getByName("demo")
+            signingConfig = signingConfigs.getByName("default")
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -75,7 +75,7 @@ android {
         }
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("default")
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
