@@ -41,7 +41,7 @@ android {
 
     signingConfigs {
         create("default") {
-            storeFile = file("/jMedia/keystore.jks")
+            storeFile = file("keystore.jks")
             storePassword = properties.getProperty("keystore.password")
             keyAlias = properties.getProperty("keystore.alias")
             keyPassword = properties.getProperty("keystore.key.password")
