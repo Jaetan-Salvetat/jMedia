@@ -3,8 +3,12 @@ import java.util.Properties
 object AppVersion {
     const val major = 0
     const val minor = 0
-    const val patch = 7
+    const val patch = 8
 }
+
+val properties = Properties()
+val keystoreFile = project.rootProject.file("local.properties")
+properties.load(keystoreFile.inputStream())
 
 plugins {
     id("com.android.application")
@@ -20,21 +24,27 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        val properties = Properties()
-        val keystoreFile = project.rootProject.file("local.properties")
-        properties.load(keystoreFile.inputStream())
-
         applicationId = "fr.jaetan.jmedia"
         minSdk = 26
         targetSdk = 34
         versionCode = AppVersion.major * 10000 + AppVersion.minor * 100 + AppVersion.patch
         versionName = "${AppVersion.major}.${AppVersion.minor}.${AppVersion.patch}"
+
         buildConfigField("String", "GITHUB_API_KEY", properties.getProperty("github.token"))
         buildConfigField("String", "THE_MOVIE_DB_API_KEY", properties.getProperty("theMovieDb.token"))
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    signingConfigs {
+        create("default") {
+            storeFile = file("keystore.jks")
+            storePassword = properties.getProperty("keystore.password")
+            keyAlias = properties.getProperty("keystore.alias")
+            keyPassword = properties.getProperty("keystore.key.password")
         }
     }
 
@@ -52,9 +62,20 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("demo") {
+            isMinifyEnabled = false
+            versionNameSuffix = "-demo"
+            applicationIdSuffix = ".demo"
+            signingConfig = signingConfigs.getByName("default")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("default")
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -98,7 +119,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.navigation:navigation-compose:2.8.0-alpha04")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
 
     // Networking

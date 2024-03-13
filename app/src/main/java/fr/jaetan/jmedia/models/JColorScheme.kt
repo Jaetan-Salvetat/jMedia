@@ -21,8 +21,7 @@ enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolea
     System(R.string.system, Build.VERSION.SDK_INT >= Build.VERSION_CODES.S),
     CosmicLatte(R.string.cosmic_latte, true),
     SunsetSienna(R.string.sunset_sienna, true),
-    NeonCity(R.string.neon_city, true),
-    Default(0, false);
+    NeonCity(R.string.neon_city, true);
 
     val colorScheme: ColorScheme
         @Composable
@@ -38,7 +37,7 @@ enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolea
                 CosmicLatte -> if (isDarkTheme) CosmicLatteDarkColorScheme else CosmicLatteLightColorScheme
                 SunsetSienna -> if (isDarkTheme) SunsetSiennaDarkColorScheme else SunsetSiennaLightColorScheme
                 NeonCity -> if (isDarkTheme) NeonCityDarkColorScheme else NeonCityLightColorScheme
-                System, Default -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                System -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     if (isDarkTheme) SystemDarkColorScheme else dynamicLightColorScheme(context)
                 } else {
                     if (isDarkTheme) NeonCityDarkColorScheme else NeonCityLightColorScheme
@@ -52,7 +51,13 @@ enum class JColorScheme(@StringRes val title: Int, val shouldBeDisplayed: Boolea
             SunsetSienna.name -> SunsetSienna
             NeonCity.name -> NeonCity
             System.name -> System
-            else -> Default
+            else -> default
+        }
+
+        var default: JColorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            System
+        } else {
+            NeonCity
         }
     }
 }

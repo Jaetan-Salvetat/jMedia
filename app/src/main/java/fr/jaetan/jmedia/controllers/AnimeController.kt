@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.controllers
 import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.AnimeApi
 import fr.jaetan.jmedia.core.realm.entities.toAnimes
+import fr.jaetan.jmedia.core.realm.repositories.AnimeRepository
 import fr.jaetan.jmedia.models.works.Anime
 import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AnimeController : IWorkController<Anime>() {
+    private val repository by lazy { AnimeRepository(MainViewModel.realm) }
     override val fetchedWorks = mutableStateListOf<Anime>()
     override var localWorks = mutableStateListOf<Anime>()
 
@@ -25,7 +27,7 @@ class AnimeController : IWorkController<Anime>() {
 
     override suspend fun initializeFlow() {
         CoroutineScope(Dispatchers.IO).launch {
-            MainViewModel.animeRepository.all.collect {
+            repository.all.collect {
                 localWorks.clear()
                 localWorks.addAll(it.list.toAnimes())
                 setLibraryValues()
@@ -42,11 +44,15 @@ class AnimeController : IWorkController<Anime>() {
     override suspend fun libraryHandler(work: Anime) {
         if (work.isInLibrary) {
             localWorks.takeWhereEqualTo(work)?.let {
-                MainViewModel.animeRepository.remove(it.toBdd())
+                repository.remove(it.toBdd())
             }
             return
         }
 
-        MainViewModel.animeRepository.add(work.toBdd())
+        repository.add(work.toBdd())
+    }
+
+    override suspend fun removeAll() {
+        repository.removeAll()
     }
 }

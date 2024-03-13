@@ -25,10 +25,9 @@
 # Screens
 ### Onboarding
 - [ ] Show the onboarding at the first app start 
-- [ ] Make onboarding button in the settings view
+- [x] Make onboarding button in the settings view
 - List of content:
   - [ ] Application purpose explanation
-  - [ ] View Customization
   - [ ] Theming Customization
   - [ ] Data storage explanation
   - [ ] Thank for reading: "contact for feature idea, bug, and stuff in settings view"
@@ -75,6 +74,4 @@
   - [ ] ~~Can Edit the grid list size~~
 - [ ] User feedback (Google form ?)
 - Display OnBoarding
-  - [ ] Select works type
-  - [ ] Select theme
 - [x] Display Version and build

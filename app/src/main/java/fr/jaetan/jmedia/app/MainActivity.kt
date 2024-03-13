@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun requestStoragePermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && GlobalSettings.isInRelease) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && GlobalSettings.isInDemo) {
             requestPermissionLauncher.launch(WRITE_EXTERNAL_STORAGE)
         }
     }

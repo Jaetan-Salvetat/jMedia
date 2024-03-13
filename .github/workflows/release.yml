@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      main
 name: Create Release
 
 permissions:
@@ -39,9 +39,7 @@ jobs:
         id: readRelease
         run: bash ./parse_changelog.sh
 
-      - run: echo ${{ env.RELEASE_BODY }}
-
-      # Generate local.properties
+      # Generate temp files
       - name: Create local.properties
         run: touch local.properties
 
@@ -49,17 +47,27 @@ jobs:
         run: |
           echo 'github.token="${{ secrets.GIT_TOKEN }}"' >> local.properties
           echo 'theMovieDb.token="${{ secrets.THE_MOVIE_DB_TOKEN }}"' >> local.properties
+          echo 'keystore.alias=${{ secrets.KEYSTORE_ALIAS }}' >> local.properties
+          echo 'keystore.password=${{ secrets.KEYSTORE_PASSWORD }}' >> local.properties
+          echo 'keystore.key.password=${{ secrets.KEYSTORE_KEY_PASSWORD }}' >> local.properties
+
+      - name: Decode Keystore
+        uses: timheuer/base64-to-file@v1
+        with:
+          fileName: keystore.jks
+          fileDir: ${{ github.workspace }}/app/
+          encodedString: ${{ secrets.KEYSTORE }}
 
       # Build
       - name: Build release
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleDemo
 
       # Manage release
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
           name: App
-          path: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
+          path: ${{ github.workspace }}/app/build/outputs/apk/demo/app-demo.apk
 
       - name: Create Release
         uses: svenstaro/upload-release-action@v2
@@ -67,4 +75,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.previousTag.outputs.tag }}
           body: ${{ env.RELEASE_BODY }}
-          file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
+          file: ${{ github.workspace }}/app/build/outputs/apk/demo/app-demo.apk

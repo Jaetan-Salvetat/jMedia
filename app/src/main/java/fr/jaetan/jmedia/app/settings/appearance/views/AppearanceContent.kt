@@ -1,5 +1,6 @@
 package fr.jaetan.jmedia.app.settings.appearance.views
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,6 +32,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -89,7 +91,11 @@ private fun AppearanceView.ThemeCell(scheme: JColorScheme) {
                 .height(150.dp)
                 .padding(10.dp)
                 .background(scheme.colorScheme.surface, RoundedCornerShape(8.dp))
-                .border(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent, RoundedCornerShape(8.dp))
+                .border(
+                    1.dp,
+                    if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                    RoundedCornerShape(8.dp)
+                )
                 .clip(RoundedCornerShape(8.dp))
                 .clickable { viewModel.setColorScheme(context, colorScheme = scheme) }
                 .padding(10.dp),
@@ -134,7 +140,11 @@ private fun AppearanceView.ThemeCell(scheme: JColorScheme) {
 
             Row {
                 Spacer(Modifier.weight(1f))
-                Box(Modifier.size(20.dp).background(scheme.colorScheme.primary, RoundedCornerShape(4.dp)))
+                Box(
+                    Modifier
+                        .size(20.dp)
+                        .background(scheme.colorScheme.primary, RoundedCornerShape(4.dp))
+                )
             }
         }
 
@@ -173,9 +183,26 @@ private fun AppearanceView.ThemeSwitcher() {
                     onDismissRequest = { viewModel.showThemeSelectorMenu = false }
                 ) {
                     JTheme.entries.forEach {
+                        val selectedThemeColor by animateColorAsState(
+                            label = "",
+                            targetValue = if (it == MainViewModel.userSettings.currentTheme) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onBackground
+                            }
+                        )
+
                         DropdownMenuItem(
-                            text = { Text(it.title.localized()) },
-                            leadingIcon = { Icon(it.icon, null) },
+                            text = {
+                                Text(text = it.title.localized(), color = selectedThemeColor)
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = it.icon,
+                                    contentDescription = null,
+                                    tint = selectedThemeColor
+                                )
+                            },
                             onClick = { viewModel.setTheme(context, it) }
                         )
                     }

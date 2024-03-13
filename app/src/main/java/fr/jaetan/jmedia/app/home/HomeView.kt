@@ -1,6 +1,7 @@
 package fr.jaetan.jmedia.app.home
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import fr.jaetan.jmedia.app.home.views.BottomBarView
 import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.app.settings.SettingsView
+import fr.jaetan.jmedia.services.Navigator
 import fr.jaetan.jmedia.ui.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,5 +87,13 @@ class HomeView : Screen<HomeViewModel>() {
         libraryView.Initialize(navController, viewModel(), scrollBehavior)
         searchView.Initialize(navController, viewModel(), scrollBehavior)
         settingsView.Initialize(navController, viewModel(), scrollBehavior)
+
+        val navState = navController?.currentBackStackEntryAsState()
+
+        if (navState?.value?.destination?.route == Navigator.home.route) {
+            BackHandler(viewModel.currentScreen != HomeBottomBarItems.Library) {
+                viewModel.currentScreen = HomeBottomBarItems.Library
+            }
+        }
     }
 }

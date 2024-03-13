@@ -1,2 +1,9 @@
- ### Features
- - Edit the color scheme UI on appearance page
+### Features
+- Change the text color of the selected theme on `Appearance` view
+
+### Bugfix
+ - Remove `Default` value from `JColorScheme`
+
+### Tech
+- Refactor WorksController management
+- Update dependencies
