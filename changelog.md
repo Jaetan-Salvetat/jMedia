@@ -1,9 +1,7 @@
 ### Features
-- Change the text color of the selected theme on `Appearance` view
+- Change the search bar style on library view
+- Change the local search view (from library view)
 
 ### Bugfix
- - Remove `Default` value from `JColorScheme`
 
 ### Tech
-- Refactor WorksController management
-- Update dependencies
