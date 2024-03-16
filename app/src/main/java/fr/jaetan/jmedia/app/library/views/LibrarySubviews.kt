@@ -62,7 +62,7 @@ fun LibraryView.TopBarView() {
     TopAppBar(
         title = { SearchBar() },
         actions = {
-            IconButton(onClick = {}, modifier = Modifier.padding(start = 16.dp, end = 8.dp)) {
+            IconButton(onClick = {}, modifier = Modifier.padding(start = 16.dp, end = 13.dp)) {
                 Icon(Icons.Rounded.FilterList, null)
             }
         }

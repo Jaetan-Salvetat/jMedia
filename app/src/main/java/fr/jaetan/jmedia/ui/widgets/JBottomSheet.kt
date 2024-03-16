@@ -26,9 +26,12 @@ fun JBottomSheet(
     dismiss: () -> Unit,
     shouldBeFullScreen: Boolean = false,
     state: SheetState = rememberModalBottomSheetState(shouldBeFullScreen),
+    onVisible: () -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
     if (isVisible) {
+        onVisible()
+
         ModalBottomSheet(
             onDismissRequest = dismiss,
             sheetState = state,
