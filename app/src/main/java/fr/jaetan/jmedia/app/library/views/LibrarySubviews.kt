@@ -154,16 +154,17 @@ fun LibraryView.SearchBottomSheet() {
 @Composable
 private fun LibraryView.SearchBar() {
     Row(
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp), CircleShape)
             .clip(CircleShape)
             .clickable { viewModel.isSearchBarActive = true }
-            .padding(vertical = 16.dp, horizontal = 24.dp)
+            .padding(vertical = 10.dp, horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(R.string.research.localized(), color = MaterialTheme.colorScheme.outline, fontSize = 17.sp)
-        Spacer(Modifier.weight(1f))
         Icon(Icons.Filled.Search, null)
+        Text(R.string.research.localized(), color = MaterialTheme.colorScheme.outline, fontSize = 17.sp)
     }
 }
 
