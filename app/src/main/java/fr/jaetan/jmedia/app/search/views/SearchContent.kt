@@ -8,7 +8,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -36,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,6 +64,7 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.localized
+import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.works.IWork
@@ -79,7 +80,10 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SearchView.ContentView() {
-    when (viewModel.listState) {
+    val mediaManager = LocalMediaManager.current
+    val searchState by mediaManager.searchState.collectAsState()
+
+    when (searchState) {
         ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
         ListState.Loading -> WorksList()
         ListState.HasData -> WorksList()
@@ -87,12 +91,13 @@ fun SearchView.ContentView() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchView.WorksList() {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val showButton by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
+    val mediaManager = LocalMediaManager.current
+    val mediasAsList = mediaManager.getFetchedMedias(viewModel.sort, viewModel.sortDirection, viewModel.filters)
 
     val scrollToTop: () -> Unit = {
         scope.launch {
@@ -101,8 +106,8 @@ private fun SearchView.WorksList() {
     }
 
     LazyColumn(state = listState) {
-        items(viewModel.sortedWorks, key = { it.id.toHexString() }) {
-            WorksListItem(it, Modifier.animateItemPlacement())
+        items(mediasAsList, key = { it.id.toHexString() }) {
+            WorksListItem(it, Modifier.animateItem())
         }
 
     }

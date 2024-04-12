@@ -14,15 +14,10 @@ import kotlinx.coroutines.launch
 
 class BookController : IWorkController<Book>() {
     private val repository by lazy { BookRepository(MainViewModel.realm) }
-    override val fetchedWorks = mutableStateListOf<Book>()
     override var localWorks = mutableStateListOf<Book>()
 
-    override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && fetchedWorks.isNotEmpty()) return
-
-        fetchedWorks.clear()
-        fetchedWorks.addAll(BookApi.search(searchValue))
-        setLibraryValues()
+    override suspend fun fetch(searchValue: String): List<Book> {
+        return BookApi.search(searchValue)
     }
 
     override suspend fun initializeFlow() {
@@ -36,9 +31,9 @@ class BookController : IWorkController<Book>() {
     }
 
     override fun setLibraryValues() {
-        fetchedWorks.replaceAll { book ->
+        /*fetchedWorks.replaceAll { book ->
             book.copy(isInLibrary = isInLibrary(book))
-        }
+        }*/
     }
 
     override suspend fun libraryHandler(work: Book) {

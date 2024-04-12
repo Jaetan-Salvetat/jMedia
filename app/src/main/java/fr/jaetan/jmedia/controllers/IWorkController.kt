@@ -6,9 +6,8 @@ import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.equalTo
 
 abstract class IWorkController<T : IWork> {
-    abstract val fetchedWorks: SnapshotStateList<T>
     abstract val localWorks: SnapshotStateList<T>
-    abstract suspend fun fetch(searchValue: String, force: Boolean)
+    abstract suspend fun fetch(searchValue: String): List<T>
     abstract suspend fun libraryHandler(work: T)
     abstract suspend fun initializeFlow()
     abstract suspend fun removeAll()

@@ -14,15 +14,10 @@ import kotlinx.coroutines.launch
 
 class MovieController : IWorkController<Movie>() {
     private val repository by lazy { MovieRepository(MainViewModel.realm) }
-    override val fetchedWorks = mutableStateListOf<Movie>()
     override var localWorks = mutableStateListOf<Movie>()
 
-    override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && fetchedWorks.isNotEmpty()) return
-
-        fetchedWorks.clear()
-        fetchedWorks.addAll(MovieApi.search(searchValue))
-        setLibraryValues()
+    override suspend fun fetch(searchValue: String): List<Movie> {
+        return MovieApi.search(searchValue)
     }
 
     override suspend fun initializeFlow() {
@@ -36,9 +31,9 @@ class MovieController : IWorkController<Movie>() {
     }
 
     override fun setLibraryValues() {
-        fetchedWorks.replaceAll { movie ->
+        /*fetchedWorks.replaceAll { movie ->
             movie.copy(isInLibrary = isInLibrary(movie))
-        }
+        }*/
     }
 
     override suspend fun libraryHandler(work: Movie) {
@@ -56,10 +51,10 @@ class MovieController : IWorkController<Movie>() {
         var movie = MovieApi.getDetail(work.apiId)
         movie = movie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
-        fetchedWorks.replaceAll {
+        /*fetchedWorks.replaceAll {
             if (it.id == work.id) movie
             else it
-        }
+        }*/
 
         repository.add(movie.toBdd())
     }

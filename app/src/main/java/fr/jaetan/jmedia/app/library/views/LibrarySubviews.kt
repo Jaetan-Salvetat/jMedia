@@ -93,7 +93,7 @@ fun LibraryView.TopBarView() {
                     }
                 }
             },
-            placeholder = { Text(R.string.search_library_placeholder.localized(MainViewModel.worksController.worksSize)) },
+            placeholder = { Text(R.string.search_library_placeholder.localized(0)) },
             content = { SearchBarContent(onQuit) }
         )
 
@@ -140,7 +140,7 @@ private fun LibraryView.SearchBarContent(onQuit: () -> Unit) {
             item { NavigateToSearchViewButton(onQuit) }
 
             items(viewModel.filteredWorks, key = { it.id.toHexString() }) {
-                VerticalWorksListItem(it, Modifier.animateItemPlacement(), MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp))
+                VerticalWorksListItem(it, Modifier.animateItem(), MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp))
             }
         }
     }
@@ -187,7 +187,7 @@ fun LibraryView.BottomSheetsView() {
         
         LazyColumn(Modifier.fillMaxSize()) {
             items(controller.localWorks, key = { it.id.toHexString() }) {
-                VerticalWorksListItem(work = it, modifier = Modifier.animateItemPlacement(), isShowingTag = false)
+                VerticalWorksListItem(work = it, modifier = Modifier.animateItem(), isShowingTag = false)
             }
 
             item { Spacer(Modifier.weight(1f)) }

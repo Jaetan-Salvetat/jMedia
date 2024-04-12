@@ -109,7 +109,7 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.6.3"
+    val composeVersion = "1.6.5"
     val ackpineVersion = "0.5.1"
 
     // Androidx
@@ -119,15 +119,15 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.navigation:navigation-compose:2.8.0-alpha04")
+    implementation("androidx.navigation:navigation-compose:2.8.0-alpha06")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
 
     // Networking
-    implementation("io.ktor:ktor-client-core:2.3.7")
+    implementation("io.ktor:ktor-client-core:2.3.9")
     implementation("io.ktor:ktor-client-android:2.3.5")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
     implementation("io.ktor:ktor-client-serialization:2.3.5")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
     implementation("io.ktor:ktor-client-logging:2.3.5")
     implementation("io.ktor:ktor-client-okhttp:2.3.5")
 
@@ -142,7 +142,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Images
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Markdown
     implementation("com.meetup:twain:0.2.2")
@@ -161,7 +161,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.02"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     // Others

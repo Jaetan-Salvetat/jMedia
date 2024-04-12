@@ -39,16 +39,14 @@ import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.extensions.localized
-import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.Image
 import fr.jaetan.jmedia.models.works.shared.WorkType
 import fr.jaetan.jmedia.services.MainViewModel
-import fr.jaetan.jmedia.ui.shared.InfoCell
 
 @Composable
 fun LibraryView.ContentView() {
-    if (MainViewModel.worksController.worksSize <= 0) {
+/*    if (MainViewModel.worksController.worksSize <= 0) {
         InfoCell(smiley = Smiley.Surprise, message = R.string.empty_library) {
             TextButton(onClick = { navigateToSearchBab(null) }) {
                 Text(R.string.add_to_library.localized())
@@ -57,6 +55,7 @@ fun LibraryView.ContentView() {
     } else {
         WorksList()
     }
+ */
 }
 
 @OptIn(ExperimentalFoundationApi::class)

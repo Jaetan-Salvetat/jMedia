@@ -14,15 +14,10 @@ import kotlinx.coroutines.launch
 
 class SerieController : IWorkController<Serie>() {
     private val repository by lazy { SerieRepository(MainViewModel.realm) }
-    override val fetchedWorks = mutableStateListOf<Serie>()
     override var localWorks = mutableStateListOf<Serie>()
 
-    override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && fetchedWorks.isNotEmpty()) return
-
-        fetchedWorks.clear()
-        fetchedWorks.addAll(SerieApi.search(searchValue))
-        setLibraryValues()
+    override suspend fun fetch(searchValue: String): List<Serie> {
+        return SerieApi.search(searchValue)
     }
 
     override suspend fun initializeFlow() {
@@ -36,9 +31,9 @@ class SerieController : IWorkController<Serie>() {
     }
 
     override fun setLibraryValues() {
-        fetchedWorks.replaceAll { serie ->
+        /*fetchedWorks.replaceAll { serie ->
             serie.copy(isInLibrary = isInLibrary(serie))
-        }
+        }*/
     }
 
     override suspend fun libraryHandler(work: Serie) {
@@ -56,10 +51,10 @@ class SerieController : IWorkController<Serie>() {
         var serie = SerieApi.getDetails(work.apiId)
         serie = serie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
 
-        fetchedWorks.replaceAll {
+        /*fetchedWorks.replaceAll {
             if (it.id == work.id) serie
             else it
-        }
+        }*/
 
         repository.add(serie.toBdd())
     }

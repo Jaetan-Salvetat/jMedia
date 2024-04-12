@@ -14,15 +14,10 @@ import kotlinx.coroutines.launch
 
 class AnimeController : IWorkController<Anime>() {
     private val repository by lazy { AnimeRepository(MainViewModel.realm) }
-    override val fetchedWorks = mutableStateListOf<Anime>()
     override var localWorks = mutableStateListOf<Anime>()
 
-    override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && fetchedWorks.isNotEmpty()) return
-
-        fetchedWorks.clear()
-        fetchedWorks.addAll(AnimeApi.search(searchValue))
-        setLibraryValues()
+    override suspend fun fetch(searchValue: String): List<Anime> {
+        return AnimeApi.search(searchValue)
     }
 
     override suspend fun initializeFlow() {
@@ -36,9 +31,9 @@ class AnimeController : IWorkController<Anime>() {
     }
 
     override fun setLibraryValues() {
-        fetchedWorks.replaceAll { manga ->
+        /*fetchedWorks.replaceAll { manga ->
             manga.copy(isInLibrary = isInLibrary(manga))
-        }
+        }*/
     }
 
     override suspend fun libraryHandler(work: Anime) {
