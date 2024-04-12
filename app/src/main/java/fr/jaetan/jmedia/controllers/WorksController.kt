@@ -65,13 +65,13 @@ class WorksController {
         val filtered = fetchedMediasAsList.mapNotNull { if (filters.contains(it.type)) it else null }
 
         return if (sortDirection == SortDirection.Ascending) {
-            when(sort) {
+            when (sort) {
                 Sort.Name -> filtered.sortedBy { it.title }
                 Sort.Rating -> filtered.sortedBy { it.rating }
                 Sort.Default -> filtered
             }
         } else {
-            when(sort) {
+            when (sort) {
                 Sort.Name -> filtered.sortedByDescending { it.title }
                 Sort.Rating -> filtered.sortedByDescending { it.rating }
                 Sort.Default -> filtered
