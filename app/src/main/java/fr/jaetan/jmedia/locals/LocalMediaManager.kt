@@ -10,7 +10,7 @@ private fun rememberMediaManager() = remember {
     WorksController.instance
 }
 
-object LocalMediaManager: ReplaceableLocal<WorksController>() {
+object LocalMediaManager : ReplaceableLocal<WorksController>() {
     @Composable
     override fun currentValue(): WorksController = rememberMediaManager()
 }
