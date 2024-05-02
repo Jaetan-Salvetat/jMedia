@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.settings.SettingsView
 import fr.jaetan.jmedia.extensions.localized
+import fr.jaetan.jmedia.locals.LocalMediaManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,6 +30,7 @@ fun SettingsView.TopBarView() {
 
 @Composable
 fun SettingsView.RemoveDataDialog() {
+    val mediasManager = LocalMediaManager.current
     val context = LocalContext.current
 
     if (viewModel.showRemoveDataDialog) {
@@ -43,7 +45,7 @@ fun SettingsView.RemoveDataDialog() {
             },
             confirmButton = {
                 TextButton(
-                    onClick = { viewModel.removeData(context) },
+                    onClick = { viewModel.removeData(context, mediasManager) },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )

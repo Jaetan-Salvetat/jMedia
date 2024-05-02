@@ -4,8 +4,8 @@ import fr.jaetan.jmedia.extensions.removeDuplicate
 import fr.jaetan.jmedia.models.medias.Movie
 import fr.jaetan.jmedia.models.medias.shared.Genre
 import fr.jaetan.jmedia.models.medias.shared.Image
-import fr.jaetan.jmedia.models.medias.shared.Status
 import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.Status
 import fr.jaetan.jmedia.models.medias.shared.fromString
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -52,7 +52,7 @@ fun MovieApiEntities.MovieDetail.toMovie(): Movie = Movie(
     apiId = id,
     genres = genres.toGenres(),
     releaseDate = try { LocalDate.parse(releaseDate) } catch (e: Exception) { null },
-    status = Status.fromString(status, MediaType.Movie),
+    status = Status.fromString(status, MediaType.Movie)
 )
 
 private fun List<MovieApiEntities.GenreData>.toGenres(): List<Genre> = map { Genre(name = it.name) }

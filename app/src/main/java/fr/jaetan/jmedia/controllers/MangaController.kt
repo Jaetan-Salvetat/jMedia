@@ -4,7 +4,6 @@ import fr.jaetan.jmedia.core.networking.MangaApi
 import fr.jaetan.jmedia.core.realm.entities.toMangas
 import fr.jaetan.jmedia.core.realm.repositories.MangaRepository
 import fr.jaetan.jmedia.models.medias.Manga
-import fr.jaetan.jmedia.models.medias.takeWhereEqualTo
 import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -28,10 +27,10 @@ class MangaController : IMediaController<Manga>() {
 
     override suspend fun libraryHandler(media: Manga) {
         if (media.isInLibrary) {
-            localWorks.takeWhereEqualTo(media)?.let {
-                repository.remove(it.toBdd())
-            }
-            return
+//            localWorks.takeWhereEqualTo(media)?.let {
+//                repository.remove(it.toBdd())
+//            }
+//            return
         }
 
         repository.add(media.toBdd())

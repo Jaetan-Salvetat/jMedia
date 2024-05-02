@@ -4,7 +4,6 @@ import fr.jaetan.jmedia.core.networking.MovieApi
 import fr.jaetan.jmedia.core.realm.entities.toMovies
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
 import fr.jaetan.jmedia.models.medias.Movie
-import fr.jaetan.jmedia.models.medias.takeWhereEqualTo
 import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -28,10 +27,10 @@ class MovieController : IMediaController<Movie>() {
 
     override suspend fun libraryHandler(media: Movie) {
         if (media.isInLibrary) {
-            localWorks.takeWhereEqualTo(media)?.let {
-                repository.remove(it.toBdd())
-            }
-            return
+//            localWorks.takeWhereEqualTo(media)?.let {
+//                repository.remove(it.toBdd())
+//            }
+//            return
         }
 
         addToLibrary(media)

@@ -4,7 +4,6 @@ import fr.jaetan.jmedia.core.networking.BookApi
 import fr.jaetan.jmedia.core.realm.entities.toBooks
 import fr.jaetan.jmedia.core.realm.repositories.BookRepository
 import fr.jaetan.jmedia.models.medias.Book
-import fr.jaetan.jmedia.models.medias.takeWhereEqualTo
 import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -28,10 +27,10 @@ class BookController : IMediaController<Book>() {
 
     override suspend fun libraryHandler(media: Book) {
         if (media.isInLibrary) {
-            localWorks.takeWhereEqualTo(media)?.let {
-                repository.remove(it.toBdd())
-            }
-            return
+//            localWorks.takeWhereEqualTo(media)?.let {
+//                repository.remove(it.toBdd())
+//            }
+//            return
         }
 
         repository.add(media.toBdd())

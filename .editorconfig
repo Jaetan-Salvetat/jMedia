@@ -18,3 +18,7 @@ function-signature=unset
 ktlint_standard_filename = disabled
 ktlint_standard_no-trailing-spaces=disabled
 ktlint_standard_import-ordering=disabled
+ktlint_standard_comment-wrapping=disabled
+ktlint_standard_chain-wrapping=disabled
+ktlint_standard_indent=disabled
+ktlint_standard_statement-wrapping=disabled

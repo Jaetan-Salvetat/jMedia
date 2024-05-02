@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.controllers.MediasManager
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -24,11 +25,11 @@ class SettingsViewModel : ViewModel() {
         showRemoveDataDialog = true
     }
 
-    fun removeData(context: Context) {
+    fun removeData(context: Context, mediasManager: MediasManager) {
         viewModelScope.launch {
             isLoading = true
 
-            MainViewModel.clearUserData(context)
+            MainViewModel.clearUserData(context, mediasManager)
 
             showRemoveDataDialog = false
             isLoading = false

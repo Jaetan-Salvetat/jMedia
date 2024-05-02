@@ -14,9 +14,9 @@ interface IMedia {
     val rating: Double?
 }
 
-fun <T: IMedia> IMedia.equalTo(work: T): Boolean = title == work.title
+fun <T : IMedia> IMedia.equalTo(work: T): Boolean = title == work.title
         && synopsis == work.synopsis
         && type == work.type
 
 @Suppress("UNCHECKED_CAST")
-fun <T: IMedia> List<IMedia>.takeWhereEqualTo(work: T): T? = takeWhile { it.equalTo(work) }.firstOrNull() as T?
+fun <T : IMedia> List<IMedia>.takeWhereEqualTo(work: T): T? = takeWhile { it.equalTo(work) }.firstOrNull() as T?

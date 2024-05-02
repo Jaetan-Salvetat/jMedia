@@ -4,7 +4,6 @@ import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.core.realm.entities.toSeries
 import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
 import fr.jaetan.jmedia.models.medias.Serie
-import fr.jaetan.jmedia.models.medias.takeWhereEqualTo
 import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -28,10 +27,10 @@ class SerieController : IMediaController<Serie>() {
 
     override suspend fun libraryHandler(media: Serie) {
         if (media.isInLibrary) {
-            localWorks.takeWhereEqualTo(media)?.let {
-                repository.remove(it.toBdd())
-            }
-            return
+//            localWorks.takeWhereEqualTo(media)?.let {
+//                repository.remove(it.toBdd())
+//            }
+//            return
         }
 
         addToLibrary(media)

@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.app.search
 
-
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,13 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
-import fr.jaetan.jmedia.models.medias.IMedia
 import fr.jaetan.jmedia.models.medias.shared.MediaType
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.launch
 
-class SearchViewModel() : ViewModel() {
-    private var _sort by mutableStateOf(Sort.Name)
+class SearchViewModel : ViewModel() {
+    private var localSort by mutableStateOf(Sort.Name)
 
     // States
     var searchValue by mutableStateOf("")
@@ -25,10 +23,10 @@ class SearchViewModel() : ViewModel() {
         get() = MainViewModel.userSettings.selectedMediaTypes
     var sort: Sort
         get() = when {
-            filters.size > 1 && _sort == Sort.Default -> Sort.Name
-            else -> _sort
+            filters.size > 1 && localSort == Sort.Default -> Sort.Name
+            else -> localSort
         }
-        set(value) { _sort = value }
+        set(value) { localSort = value }
 
     // Variables
     val implementedFilters = MediaType.all.filter { it.implemented }
@@ -36,12 +34,6 @@ class SearchViewModel() : ViewModel() {
         get() = searchValue.length >= 2 && filters.isNotEmpty()
 
     // Methods
-    fun libraryHandler(media: IMedia) {
-        viewModelScope.launch {
-            MainViewModel.worksController.getController(media.type).libraryHandler(media)
-        }
-    }
-
     fun filterHandler(context: Context, action: suspend (filters: List<MediaType>?) -> Unit) {
         viewModelScope.launch {
             if (filters.size == implementedFilters.size) {

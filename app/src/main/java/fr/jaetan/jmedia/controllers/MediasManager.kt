@@ -103,7 +103,7 @@ class MediasManager {
      * Add or remove a media from the db
      * @param media media to save
      */
-    fun <T: IMedia> libraryHandler(media: T) {
+    fun <T : IMedia> libraryHandler(media: T) {
         CoroutineScope(Dispatchers.IO).launch {
             getController(media.type).libraryHandler(media)
         }
