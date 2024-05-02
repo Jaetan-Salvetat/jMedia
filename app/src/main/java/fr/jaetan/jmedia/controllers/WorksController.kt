@@ -21,8 +21,11 @@ class WorksController {
     )
     private var lastSearchValue = ""
     private val fetchedMedias = MutableStateFlow(mutableMapOf<WorkType, List<IWork>?>())
+    private val localMedias = MutableStateFlow(mutableMapOf<WorkType, List<IWork>?>())
     private val fetchedMediasAsList: List<IWork>
         get() = fetchedMedias.value.values.filterNotNull().flatten()
+    val localMediasAsList: List<IWork>
+        get() = localMedias.value.values.filterNotNull().flatten()
 
     var searchState = MutableStateFlow(ListState.Default)
 
@@ -86,12 +89,22 @@ class WorksController {
     fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
 
     /**
-     * Initialize all work controllers
+     * Initialize all work controllers flow
      */
     suspend fun initializeControllers() {
         controllersMap.forEach {
-            it.value.initializeFlow()
+            it.value.initializeFlow { list ->
+                localMedias.value[it.key] = list
+            }
         }
+    }
+
+    /**
+     * Add or remove a media from the db
+     * @param media media to save
+     */
+    suspend fun <T: IWork> libraryHandler(media: T) {
+        getController(media.type).libraryHandler(media)
     }
 
     /**

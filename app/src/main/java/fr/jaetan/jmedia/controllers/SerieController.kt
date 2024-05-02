@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.controllers
 
-import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.core.realm.entities.toSeries
 import fr.jaetan.jmedia.core.realm.repositories.SerieRepository
@@ -14,26 +13,17 @@ import kotlinx.coroutines.launch
 
 class SerieController : IWorkController<Serie>() {
     private val repository by lazy { SerieRepository(MainViewModel.realm) }
-    override var localWorks = mutableStateListOf<Serie>()
 
     override suspend fun fetch(searchValue: String): List<Serie> {
         return SerieApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow() {
+    override suspend fun initializeFlow(onDbChanged: (medias: List<Serie>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
-                localWorks.clear()
-                localWorks.addAll(it.list.toSeries())
-                setLibraryValues()
+                onDbChanged(it.list.toSeries())
             }
         }
-    }
-
-    override fun setLibraryValues() {
-        /*fetchedWorks.replaceAll { serie ->
-            serie.copy(isInLibrary = isInLibrary(serie))
-        }*/
     }
 
     override suspend fun libraryHandler(work: Serie) {

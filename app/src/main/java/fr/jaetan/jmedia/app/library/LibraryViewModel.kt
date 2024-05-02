@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import fr.jaetan.jmedia.models.works.IWork
 import fr.jaetan.jmedia.models.works.shared.WorkType
 
 class LibraryViewModel : ViewModel() {
@@ -12,8 +11,6 @@ class LibraryViewModel : ViewModel() {
     var bottomSheetWorkType by mutableStateOf(null as WorkType?)
     var searchValue by mutableStateOf("")
 
-    val filteredWorks: List<IWork>
-        get() = emptyList()
     /*
     MainViewModel.worksController.allAsList.map {
             if (it.title.lowercase().contains(searchValue.lowercase())) it

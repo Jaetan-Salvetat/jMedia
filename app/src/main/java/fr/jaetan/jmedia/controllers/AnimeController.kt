@@ -1,11 +1,9 @@
 package fr.jaetan.jmedia.controllers
 
-import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.AnimeApi
 import fr.jaetan.jmedia.core.realm.entities.toAnimes
 import fr.jaetan.jmedia.core.realm.repositories.AnimeRepository
 import fr.jaetan.jmedia.models.works.Anime
-import fr.jaetan.jmedia.models.works.takeWhereEqualTo
 import fr.jaetan.jmedia.models.works.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -14,33 +12,22 @@ import kotlinx.coroutines.launch
 
 class AnimeController : IWorkController<Anime>() {
     private val repository by lazy { AnimeRepository(MainViewModel.realm) }
-    override var localWorks = mutableStateListOf<Anime>()
 
     override suspend fun fetch(searchValue: String): List<Anime> {
         return AnimeApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow() {
+    override suspend fun initializeFlow(onDbChanged: (medias: List<Anime>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
-                localWorks.clear()
-                localWorks.addAll(it.list.toAnimes())
-                setLibraryValues()
+                onDbChanged(it.list.toAnimes())
             }
         }
     }
 
-    override fun setLibraryValues() {
-        /*fetchedWorks.replaceAll { manga ->
-            manga.copy(isInLibrary = isInLibrary(manga))
-        }*/
-    }
-
     override suspend fun libraryHandler(work: Anime) {
         if (work.isInLibrary) {
-            localWorks.takeWhereEqualTo(work)?.let {
-                repository.remove(it.toBdd())
-            }
+            repository.remove(work.toBdd())
             return
         }
 

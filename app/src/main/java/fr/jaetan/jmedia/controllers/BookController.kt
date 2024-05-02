@@ -1,6 +1,5 @@
 package fr.jaetan.jmedia.controllers
 
-import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.BookApi
 import fr.jaetan.jmedia.core.realm.entities.toBooks
 import fr.jaetan.jmedia.core.realm.repositories.BookRepository
@@ -14,26 +13,17 @@ import kotlinx.coroutines.launch
 
 class BookController : IWorkController<Book>() {
     private val repository by lazy { BookRepository(MainViewModel.realm) }
-    override var localWorks = mutableStateListOf<Book>()
 
     override suspend fun fetch(searchValue: String): List<Book> {
         return BookApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow() {
+    override suspend fun initializeFlow(onDbChanged: (medias: List<Book>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
-                localWorks.clear()
-                localWorks.addAll(it.list.toBooks())
-                setLibraryValues()
+                onDbChanged(it.list.toBooks())
             }
         }
-    }
-
-    override fun setLibraryValues() {
-        /*fetchedWorks.replaceAll { book ->
-            book.copy(isInLibrary = isInLibrary(book))
-        }*/
     }
 
     override suspend fun libraryHandler(work: Book) {

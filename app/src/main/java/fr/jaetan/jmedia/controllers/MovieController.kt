@@ -20,20 +20,12 @@ class MovieController : IWorkController<Movie>() {
         return MovieApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow() {
+    override suspend fun initializeFlow(onDbChanged: (medias: List<Movie>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
-                localWorks.clear()
-                localWorks.addAll(it.list.toMovies())
-                setLibraryValues()
+                onDbChanged(it.list.toMovies())
             }
         }
-    }
-
-    override fun setLibraryValues() {
-        /*fetchedWorks.replaceAll { movie ->
-            movie.copy(isInLibrary = isInLibrary(movie))
-        }*/
     }
 
     override suspend fun libraryHandler(work: Movie) {
