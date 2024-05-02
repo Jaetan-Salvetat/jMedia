@@ -11,19 +11,19 @@ class BookRepository(private val realm: Realm) : IRepository<BookEntity>() {
     override val all: Flow<ResultsChange<BookEntity>>
         get() = realm.query<BookEntity>().find().asFlow()
 
-    override suspend fun add(work: BookEntity) {
+    override suspend fun add(media: BookEntity) {
         realm.write {
             try {
-                copyToRealm(work)
+                copyToRealm(media)
             } catch (e: Exception) {
                 e.log("BookRepository().add")
             }
         }
     }
 
-    override suspend fun remove(work: BookEntity) {
+    override suspend fun remove(media: BookEntity) {
         realm.write {
-            realm.query<BookEntity>("id == $0", work.id).find().firstOrNull()?.let { entity ->
+            realm.query<BookEntity>("id == $0", media.id).find().firstOrNull()?.let { entity ->
                 findLatest(entity)?.let {
                     delete(it)
                 }

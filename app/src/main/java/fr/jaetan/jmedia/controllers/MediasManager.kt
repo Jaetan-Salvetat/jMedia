@@ -4,27 +4,27 @@ import fr.jaetan.jmedia.extensions.log
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
-import fr.jaetan.jmedia.models.works.IWork
-import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.models.medias.IMedia
+import fr.jaetan.jmedia.models.medias.shared.MediaType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class WorksController {
+class MediasManager {
     private val controllersMap = mapOf(
-        WorkType.Manga to MangaController(),
-        WorkType.Anime to AnimeController(),
-        WorkType.Book to BookController(),
-        WorkType.Movie to MovieController(),
-        WorkType.Serie to SerieController()
+        MediaType.Manga to MangaController(),
+        MediaType.Anime to AnimeController(),
+        MediaType.Book to BookController(),
+        MediaType.Movie to MovieController(),
+        MediaType.Serie to SerieController()
     )
     private var lastSearchValue = ""
-    private val fetchedMedias = MutableStateFlow(mutableMapOf<WorkType, List<IWork>?>())
-    private val localMedias = MutableStateFlow(mutableMapOf<WorkType, List<IWork>?>())
-    private val fetchedMediasAsList: List<IWork>
+    private val fetchedMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
+    private val localMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
+    private val fetchedMediasAsList: List<IMedia>
         get() = fetchedMedias.value.values.filterNotNull().flatten()
-    val localMediasAsList: List<IWork>
+    val localMediasAsList: List<IMedia>
         get() = localMedias.value.values.filterNotNull().flatten()
 
     var searchState = MutableStateFlow(ListState.Default)
@@ -34,7 +34,7 @@ class WorksController {
      * @param searchValue the field that will be research
      * @param mediaTypes the filters for the research
      */
-    suspend fun search(searchValue: String, mediaTypes: List<WorkType>) {
+    suspend fun search(searchValue: String, mediaTypes: List<MediaType>) {
         if (searchValue.length < 2) return
         val force = searchValue != lastSearchValue
 
@@ -62,9 +62,9 @@ class WorksController {
      * Return all medias filtered
      * @param sort [Name, Rating or Default]
      * @param sortDirection [Ascending, Descending]
-     * @param filters a list of [WorkType]
+     * @param filters a list of [MediaType]
      */
-    fun getFetchedMedias(sort: Sort, sortDirection: SortDirection, filters: List<WorkType>): List<IWork> {
+    fun getFetchedMedias(sort: Sort, sortDirection: SortDirection, filters: List<MediaType>): List<IMedia> {
         val filtered = fetchedMediasAsList.mapNotNull { if (filters.contains(it.type)) it else null }
 
         return if (sortDirection == SortDirection.Ascending) {
@@ -83,10 +83,10 @@ class WorksController {
     }
 
     /**
-     * Return a [IWorkController] from a [WorkType]
+     * Return a [IMediaController] from a [MediaType]
      */
     @Suppress("UNCHECKED_CAST")
-    fun getController(type: WorkType): IWorkController<IWork> = controllersMap[type] as IWorkController<IWork>
+    fun getController(type: MediaType): IMediaController<IMedia> = controllersMap[type] as IMediaController<IMedia>
 
     /**
      * Initialize all work controllers flow
@@ -103,8 +103,10 @@ class WorksController {
      * Add or remove a media from the db
      * @param media media to save
      */
-    suspend fun <T: IWork> libraryHandler(media: T) {
-        getController(media.type).libraryHandler(media)
+    fun <T: IMedia> libraryHandler(media: T) {
+        CoroutineScope(Dispatchers.IO).launch {
+            getController(media.type).libraryHandler(media)
+        }
     }
 
     /**
@@ -115,6 +117,6 @@ class WorksController {
     }
 
     companion object {
-        val instance = WorksController()
+        val instance = MediasManager()
     }
 }

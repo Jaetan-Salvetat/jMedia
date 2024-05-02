@@ -28,7 +28,7 @@ import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.ui.shared.InfoCell
-import fr.jaetan.jmedia.ui.shared.VerticalWorksListItem
+import fr.jaetan.jmedia.ui.shared.VerticalMediasListItem
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,14 +38,14 @@ fun SearchView.ContentView() {
 
     when (searchState) {
         ListState.Default -> InfoCell(Smiley.Smile, R.string.default_search_text)
-        ListState.Loading -> WorksList()
-        ListState.HasData -> WorksList()
+        ListState.Loading -> MediaList()
+        ListState.HasData -> MediaList()
         ListState.EmptyData -> InfoCell(Smiley.Surprise, R.string.empty_search)
     }
 }
 
 @Composable
-private fun SearchView.WorksList() {
+private fun SearchView.MediaList() {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val showButton by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
@@ -60,7 +60,7 @@ private fun SearchView.WorksList() {
 
     LazyColumn(state = listState) {
         items(mediasAsList, key = { it.id.toHexString() }) {
-            VerticalWorksListItem(it, Modifier.animateItem())
+            VerticalMediasListItem(it, Modifier.animateItem())
         }
     }
 

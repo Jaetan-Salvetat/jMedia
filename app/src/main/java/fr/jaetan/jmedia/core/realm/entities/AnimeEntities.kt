@@ -1,10 +1,10 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Anime
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.fromString
+import fr.jaetan.jmedia.models.medias.Anime
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.types.RealmList
@@ -56,7 +56,7 @@ fun AnimeEntity.toAnime(): Anime = Anime(
     title = title,
     synopsis = synopsis,
     episodes = episodes,
-    status = Status.fromString(status, WorkType.Anime),
+    status = Status.fromString(status, MediaType.Anime),
     rating = rating,
     image = image?.let {
        Image(

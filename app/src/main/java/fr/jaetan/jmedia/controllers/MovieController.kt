@@ -1,20 +1,18 @@
 package fr.jaetan.jmedia.controllers
 
-import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MovieApi
 import fr.jaetan.jmedia.core.realm.entities.toMovies
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
-import fr.jaetan.jmedia.models.works.Movie
-import fr.jaetan.jmedia.models.works.takeWhereEqualTo
-import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.models.medias.Movie
+import fr.jaetan.jmedia.models.medias.takeWhereEqualTo
+import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MovieController : IWorkController<Movie>() {
+class MovieController : IMediaController<Movie>() {
     private val repository by lazy { MovieRepository(MainViewModel.realm) }
-    override var localWorks = mutableStateListOf<Movie>()
 
     override suspend fun fetch(searchValue: String): List<Movie> {
         return MovieApi.search(searchValue)
@@ -28,20 +26,20 @@ class MovieController : IWorkController<Movie>() {
         }
     }
 
-    override suspend fun libraryHandler(work: Movie) {
-        if (work.isInLibrary) {
-            localWorks.takeWhereEqualTo(work)?.let {
+    override suspend fun libraryHandler(media: Movie) {
+        if (media.isInLibrary) {
+            localWorks.takeWhereEqualTo(media)?.let {
                 repository.remove(it.toBdd())
             }
             return
         }
 
-        addToLibrary(work)
+        addToLibrary(media)
     }
 
-    private suspend fun addToLibrary(work: Movie) {
-        var movie = MovieApi.getDetail(work.apiId)
-        movie = movie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
+    private suspend fun addToLibrary(media: Movie) {
+        var movie = MovieApi.getDetail(media.apiId)
+        movie = movie.copy(id = media.id, title = media.title, isInLibrary = media.isInLibrary)
 
         /*fetchedWorks.replaceAll {
             if (it.id == work.id) movie

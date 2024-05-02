@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 abstract class IRepository<T: RealmObject> {
     abstract val all: Flow<ResultsChange<T>>
 
-    abstract suspend fun add(work: T)
-    abstract suspend fun remove(work: T)
+    abstract suspend fun add(media: T)
+    abstract suspend fun remove(media: T)
 
     abstract suspend fun removeAll()
 }

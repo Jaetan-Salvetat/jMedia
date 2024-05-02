@@ -1,13 +1,13 @@
 package fr.jaetan.jmedia.core.networking.models
 
 import fr.jaetan.jmedia.extensions.removeDuplicate
-import fr.jaetan.jmedia.models.works.Serie
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Season
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.fromString
+import fr.jaetan.jmedia.models.medias.Serie
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Season
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.fromString
 import kotlinx.serialization.Serializable
 
 class SerieApiEntities {
@@ -57,7 +57,7 @@ fun SerieApiEntities.SerieDetails.toSerie(): Serie = Serie(
     apiId = id,
     rating = voteAverage,
     ratingCount = voteCount,
-    status = Status.fromString(status, WorkType.Serie),
+    status = Status.fromString(status, MediaType.Serie),
     genres = genres.toGenres(),
     seasons = seasons.toSeasons()
 )

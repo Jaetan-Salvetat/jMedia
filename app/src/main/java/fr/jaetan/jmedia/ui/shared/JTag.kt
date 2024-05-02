@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.models.medias.shared.MediaType
 
 @Composable
-fun JTag(type: WorkType) {
+fun JTag(type: MediaType) {
     Box(
         Modifier
             .clip(CircleShape)

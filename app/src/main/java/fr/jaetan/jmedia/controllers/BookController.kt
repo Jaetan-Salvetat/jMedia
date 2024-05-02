@@ -3,15 +3,15 @@ package fr.jaetan.jmedia.controllers
 import fr.jaetan.jmedia.core.networking.BookApi
 import fr.jaetan.jmedia.core.realm.entities.toBooks
 import fr.jaetan.jmedia.core.realm.repositories.BookRepository
-import fr.jaetan.jmedia.models.works.Book
-import fr.jaetan.jmedia.models.works.takeWhereEqualTo
-import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.models.medias.Book
+import fr.jaetan.jmedia.models.medias.takeWhereEqualTo
+import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BookController : IWorkController<Book>() {
+class BookController : IMediaController<Book>() {
     private val repository by lazy { BookRepository(MainViewModel.realm) }
 
     override suspend fun fetch(searchValue: String): List<Book> {
@@ -26,15 +26,15 @@ class BookController : IWorkController<Book>() {
         }
     }
 
-    override suspend fun libraryHandler(work: Book) {
-        if (work.isInLibrary) {
-            localWorks.takeWhereEqualTo(work)?.let {
+    override suspend fun libraryHandler(media: Book) {
+        if (media.isInLibrary) {
+            localWorks.takeWhereEqualTo(media)?.let {
                 repository.remove(it.toBdd())
             }
             return
         }
 
-        repository.add(work.toBdd())
+        repository.add(media.toBdd())
     }
 
     override suspend fun removeAll() {

@@ -56,7 +56,7 @@ import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
-import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.models.medias.shared.MediaType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -138,7 +138,7 @@ private fun SearchView.TopBarCell() {
 fun SearchView.FilterCell() {
     val context = LocalContext.current
     val mediaManager = LocalMediaManager.current
-    val editFilters: (filter: WorkType?) -> Unit = { type ->
+    val editFilters: (filter: MediaType?) -> Unit = { type ->
         if (type == null) {
             viewModel.filterHandler(context) { types ->
                 types?.let { mediaManager.search(viewModel.searchValue, it) }

@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models.works.shared
+package fr.jaetan.jmedia.models.medias.shared
 
 import fr.jaetan.jmedia.core.realm.entities.SeasonEntity
 import org.mongodb.kbson.ObjectId

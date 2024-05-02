@@ -37,7 +37,7 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.library.LibraryView
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.locals.LocalMediaManager
-import fr.jaetan.jmedia.ui.shared.VerticalWorksListItem
+import fr.jaetan.jmedia.ui.shared.VerticalMediasListItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,7 +134,7 @@ private fun LibraryView.SearchBarContent(onQuit: () -> Unit) {
             item { NavigateToSearchViewButton(onQuit) }
 
             items(mediasController.localMediasAsList, key = { it.id.toHexString() }) {
-                VerticalWorksListItem(it, Modifier.animateItem(), MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp))
+                VerticalMediasListItem(it, Modifier.animateItem(), MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp))
             }
         }
     }

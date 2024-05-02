@@ -1,9 +1,9 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.shared.Author
-import fr.jaetan.jmedia.models.works.shared.Demographic
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Season
+import fr.jaetan.jmedia.models.medias.shared.Author
+import fr.jaetan.jmedia.models.medias.shared.Demographic
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Season
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.BsonObjectId

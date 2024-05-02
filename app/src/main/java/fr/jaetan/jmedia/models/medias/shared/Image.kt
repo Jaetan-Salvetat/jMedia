@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models.works.shared
+package fr.jaetan.jmedia.models.medias.shared
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

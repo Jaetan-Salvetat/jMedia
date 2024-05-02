@@ -1,14 +1,14 @@
 package fr.jaetan.jmedia.core.networking.models
 
 import fr.jaetan.jmedia.extensions.removeDuplicate
-import fr.jaetan.jmedia.models.works.Manga
-import fr.jaetan.jmedia.models.works.shared.Author
-import fr.jaetan.jmedia.models.works.shared.Demographic
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.fromString
+import fr.jaetan.jmedia.models.medias.Manga
+import fr.jaetan.jmedia.models.medias.shared.Author
+import fr.jaetan.jmedia.models.medias.shared.Demographic
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.fromString
 import kotlinx.serialization.Serializable
 
 class MangaApiEntities {
@@ -40,7 +40,7 @@ fun MangaApiEntities.MangasApi.toMangas(): List<Manga> = data.removeDuplicate().
         title = it.title.trim(),
         synopsis = it.synopsis?.trim(),
         volumes = it.volumes,
-        status = Status.fromString(it.status, WorkType.Manga),
+        status = Status.fromString(it.status, MediaType.Manga),
         rating = it.score,
         image = it.images.webp,
         authors = it.authors,

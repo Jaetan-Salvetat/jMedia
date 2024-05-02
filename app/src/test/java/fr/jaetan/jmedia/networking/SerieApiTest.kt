@@ -2,7 +2,7 @@ package fr.jaetan.jmedia.networking
 
 import fr.jaetan.jmedia.core.networking.SerieApi
 import fr.jaetan.jmedia.extensions.printDataClassToString
-import fr.jaetan.jmedia.models.works.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Test
