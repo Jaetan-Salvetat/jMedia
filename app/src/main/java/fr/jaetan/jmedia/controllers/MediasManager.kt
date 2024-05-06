@@ -7,6 +7,7 @@ import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
 import fr.jaetan.jmedia.models.medias.IMedia
+import fr.jaetan.jmedia.models.medias.equalTo
 import fr.jaetan.jmedia.models.medias.shared.MediaType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -108,6 +109,8 @@ class MediasManager : ViewModel() {
      */
     fun <T : IMedia> libraryHandler(media: T) {
         CoroutineScope(Dispatchers.IO).launch {
+            val newMedia = localMedias.value[media.type]?.find { it.equalTo(media) }
+                ?: media
             getController(media.type).libraryHandler(media)
         }
     }

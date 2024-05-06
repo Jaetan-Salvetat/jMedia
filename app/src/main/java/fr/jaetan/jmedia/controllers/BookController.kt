@@ -27,10 +27,8 @@ class BookController : IMediaController<Book>() {
 
     override suspend fun libraryHandler(media: Book) {
         if (media.isInLibrary) {
-//            localWorks.takeWhereEqualTo(media)?.let {
-//                repository.remove(it.toBdd())
-//            }
-//            return
+            repository.remove(media.toBdd())
+            return
         }
 
         repository.add(media.toBdd())

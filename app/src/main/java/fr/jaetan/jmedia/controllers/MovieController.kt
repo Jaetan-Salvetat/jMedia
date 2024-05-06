@@ -27,10 +27,8 @@ class MovieController : IMediaController<Movie>() {
 
     override suspend fun libraryHandler(media: Movie) {
         if (media.isInLibrary) {
-//            localWorks.takeWhereEqualTo(media)?.let {
-//                repository.remove(it.toBdd())
-//            }
-//            return
+            repository.remove(media.toBdd())
+            return
         }
 
         addToLibrary(media)

@@ -27,10 +27,8 @@ class SerieController : IMediaController<Serie>() {
 
     override suspend fun libraryHandler(media: Serie) {
         if (media.isInLibrary) {
-//            localWorks.takeWhereEqualTo(media)?.let {
-//                repository.remove(it.toBdd())
-//            }
-//            return
+            repository.remove(media.toBdd())
+            return
         }
 
         addToLibrary(media)
