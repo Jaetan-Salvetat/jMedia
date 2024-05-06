@@ -2,6 +2,7 @@ package fr.jaetan.jmedia.controllers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
@@ -50,13 +51,14 @@ class MediasManager : ViewModel() {
      */
     suspend fun search(searchValue: String, mediaTypes: List<MediaType>) {
         if (searchValue.length < 2) return
-        val force = searchValue != lastSearchValue
-
         lastSearchValue = searchValue
         searchState.value = ListState.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
             mediaTypes.forEach { type ->
+                val force = searchValue != lastSearchValue
+                        || fetchedMedias.value[type].isNull()
+
                 if (fetchedMedias.value[type] != null && !force) return@forEach
 
                 controllersMap[type]?.fetch(searchValue)?.let {
@@ -96,12 +98,6 @@ class MediasManager : ViewModel() {
     }
 
     /**
-     * Return a [IMediaController] from a [MediaType]
-     */
-    @Suppress("UNCHECKED_CAST")
-    private fun getController(type: MediaType): IMediaController<IMedia> = controllersMap[type] as IMediaController<IMedia>
-
-    /**
      * Add or remove a media from the db
      * @param media media to save
      */
@@ -119,6 +115,12 @@ class MediasManager : ViewModel() {
     suspend fun removeAll() {
         controllersMap.values.forEach { it.removeAll() }
     }
+
+    /**
+     * Return a [IMediaController] from a [MediaType]
+     */
+    @Suppress("UNCHECKED_CAST")
+    private fun getController(type: MediaType): IMediaController<IMedia> = controllersMap[type] as IMediaController<IMedia>
 
     companion object {
         val instance = MediasManager()
