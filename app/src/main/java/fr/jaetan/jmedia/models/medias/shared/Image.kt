@@ -22,7 +22,7 @@ data class Image(
  * Generate a bitmap and set it to **Image.bitmap**.
  * @return **true** if the operation is successful else **false**
  */
- suspend fun Image.generateBitmap() : Boolean {
+ suspend fun Image.generateBitmap(): Boolean {
      bitmap = try {
          withContext(Dispatchers.IO) {
              val url = URL(imageUrl.toHttpsPrefix())
