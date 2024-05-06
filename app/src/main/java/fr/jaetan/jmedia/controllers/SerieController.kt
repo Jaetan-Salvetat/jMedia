@@ -17,7 +17,7 @@ class SerieController : IMediaController<Serie>() {
         return SerieApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow(onDbChanged: (medias: List<Serie>) -> Unit) {
+    override fun initializeFlow(onDbChanged: (medias: List<Serie>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
                 onDbChanged(it.list.toSeries())

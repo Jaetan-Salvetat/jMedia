@@ -17,7 +17,7 @@ class BookController : IMediaController<Book>() {
         return BookApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow(onDbChanged: (medias: List<Book>) -> Unit) {
+    override fun initializeFlow(onDbChanged: (medias: List<Book>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
                 onDbChanged(it.list.toBooks())

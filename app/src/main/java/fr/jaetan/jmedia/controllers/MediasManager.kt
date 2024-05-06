@@ -111,7 +111,7 @@ class MediasManager : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             val newMedia = localMedias.value[media.type]?.find { it.equalTo(media) }
                 ?: media
-            getController(media.type).libraryHandler(media)
+            getController(media.type).libraryHandler(newMedia)
         }
     }
 

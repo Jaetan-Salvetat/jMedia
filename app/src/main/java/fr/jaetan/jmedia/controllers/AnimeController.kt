@@ -17,7 +17,7 @@ class AnimeController : IMediaController<Anime>() {
         return AnimeApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow(onDbChanged: (medias: List<Anime>) -> Unit) {
+    override fun initializeFlow(onDbChanged: (medias: List<Anime>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
                 onDbChanged(it.list.toAnimes())

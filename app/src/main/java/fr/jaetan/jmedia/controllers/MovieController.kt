@@ -17,7 +17,7 @@ class MovieController : IMediaController<Movie>() {
         return MovieApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow(onDbChanged: (medias: List<Movie>) -> Unit) {
+    override fun initializeFlow(onDbChanged: (medias: List<Movie>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
                 onDbChanged(it.list.toMovies())
