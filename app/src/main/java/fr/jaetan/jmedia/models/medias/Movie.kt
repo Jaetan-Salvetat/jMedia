@@ -1,11 +1,11 @@
-package fr.jaetan.jmedia.models.works
+package fr.jaetan.jmedia.models.medias
 
 import fr.jaetan.jmedia.core.realm.entities.MovieEntity
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.toBdd
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.toBdd
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 
@@ -16,14 +16,14 @@ data class Movie(
     override val rating: Double? = null,
     override val id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
-    override val type: WorkType = WorkType.Movie,
+    override val type: MediaType = MediaType.Movie,
 
     val apiId: Long,
     val ratingCounts: Long = 0,
     val genres: List<Genre> = emptyList(),
     val status: Status = Status.Unknown,
     val releaseDate: LocalDate? = null
-) : IWork
+) : IMedia
 
 fun Movie.toBdd(): MovieEntity = MovieEntity(
     id = id,

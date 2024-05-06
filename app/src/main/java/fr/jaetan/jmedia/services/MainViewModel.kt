@@ -3,7 +3,6 @@ package fr.jaetan.jmedia.services
 import android.content.Context
 import android.content.Intent
 import fr.jaetan.jmedia.app.MainActivity
-import fr.jaetan.jmedia.controllers.WorksController
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
@@ -18,7 +17,6 @@ import io.realm.kotlin.RealmConfiguration
 
 object MainViewModel {
     val userSettings = UserSettingsModel()
-    val worksController = WorksController()
 
     private val realmConfig = RealmConfiguration.Builder(
         schema = setOf(
@@ -42,8 +40,6 @@ object MainViewModel {
     suspend fun initialize(context: Context) {
         // Let it at first
         initializeSettings()
-
-        worksController.initializeControllers()
         userSettings.initialize(context)
     }
 
@@ -55,14 +51,10 @@ object MainViewModel {
         realm = Realm.open(realmConfig.build())
     }
 
-    suspend fun clearUserData(context: Context) {
-        worksController.removeAll()
-        userSettings.clearUserPreferences(context)
-
-        restartApp(context)
-    }
-
-    private fun restartApp(context: Context) {
+    /**
+     * Restart MainActivity
+     */
+    fun restartApp(context: Context) {
         val activity = (context as MainActivity?)
         val intent = Intent(activity, MainActivity::class.java)
 

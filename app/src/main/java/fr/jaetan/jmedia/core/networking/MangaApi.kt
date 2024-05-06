@@ -2,7 +2,7 @@ package fr.jaetan.jmedia.core.networking
 
 import fr.jaetan.jmedia.core.networking.models.MangaApiEntities
 import fr.jaetan.jmedia.core.networking.models.toMangas
-import fr.jaetan.jmedia.models.works.Manga
+import fr.jaetan.jmedia.models.medias.Manga
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLBuilder

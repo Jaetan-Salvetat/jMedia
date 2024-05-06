@@ -1,34 +1,41 @@
 package fr.jaetan.jmedia.app.search
 
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import fr.jaetan.jmedia.app.search.views.ContentView
 import fr.jaetan.jmedia.app.search.views.TopBarView
-import fr.jaetan.jmedia.ui.SubScreen
-import kotlinx.coroutines.flow.StateFlow
+import fr.jaetan.jmedia.services.Navigator
+import fr.jaetan.jmedia.services.slideIntoVerticalContainer
+import fr.jaetan.jmedia.services.slideOutVerticalContainer
+import fr.jaetan.jmedia.ui.Screen
 
-@OptIn(ExperimentalMaterial3Api::class)
-class SearchView(val searchValue: StateFlow<String>) : SubScreen<SearchViewModel>() {
+class SearchView : Screen<SearchViewModel>() {
     @Composable
     override fun TopBar() {
         TopBarView()
     }
 
     @Composable
-    override fun Content() {
-        ContentView()
+    override fun Content(padding: PaddingValues) {
+        Box(Modifier.padding(padding)) {
+            ContentView()
+        }
     }
+}
 
-    @Composable
-    override fun Initialize(
-        nc: NavHostController?,
-        model: SearchViewModel,
-        scrollBehavior: TopAppBarScrollBehavior?
+fun NavGraphBuilder.searchComposable(navController: NavHostController) {
+    composable(
+        Navigator.search.route,
+        enterTransition = { slideIntoVerticalContainer() },
+        exitTransition = { slideOutVerticalContainer() }
     ) {
-        super.Initialize(nc, model, scrollBehavior)
-        viewModel.searchValue = searchValue.collectAsState().value
+        SearchView().GetView(navController, viewModel())
     }
 }

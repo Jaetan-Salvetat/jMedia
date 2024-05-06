@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models.works.shared
+package fr.jaetan.jmedia.models.medias.shared
 
 import fr.jaetan.jmedia.exceptions.UnknownStatusException
 import fr.jaetan.jmedia.extensions.log
@@ -13,13 +13,13 @@ enum class Status {
     companion object
 }
 
-fun Status.Companion.fromString(field: String, type: WorkType): Status = try {
+fun Status.Companion.fromString(field: String, type: MediaType): Status = try {
     getStatusFromString(field, type)
 } catch (e: Exception) {
     throwUnknownStatus(e)
 }
 
-private fun getStatusFromString(field: String, type: WorkType) = when {
+private fun getStatusFromString(field: String, type: MediaType) = when {
     // Mangas only
     field == "Publishing" -> Status.InProgress
     field == "On Hiatus" -> Status.Pause

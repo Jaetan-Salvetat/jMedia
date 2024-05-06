@@ -11,19 +11,19 @@ class SerieRepository(private val realm: Realm) : IRepository<SerieEntity>() {
     override val all: Flow<ResultsChange<SerieEntity>>
         get() = realm.query<SerieEntity>().find().asFlow()
 
-    override suspend fun add(work: SerieEntity) {
+    override suspend fun add(media: SerieEntity) {
         realm.write {
             try {
-                copyToRealm(work)
+                copyToRealm(media)
             } catch (e: Exception) {
                 e.log("SerieRepository().add")
             }
         }
     }
 
-    override suspend fun remove(work: SerieEntity) {
+    override suspend fun remove(media: SerieEntity) {
         realm.write {
-            realm.query<SerieEntity>("id == $0", work.id).find().firstOrNull()?.let { entity ->
+            realm.query<SerieEntity>("id == $0", media.id).find().firstOrNull()?.let { entity ->
                 findLatest(entity)?.let {
                     delete(it)
                 }

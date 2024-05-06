@@ -1,13 +1,13 @@
 package fr.jaetan.jmedia.core.networking.models
 
 import fr.jaetan.jmedia.extensions.removeDuplicate
-import fr.jaetan.jmedia.models.works.Anime
-import fr.jaetan.jmedia.models.works.shared.Demographic
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.fromString
+import fr.jaetan.jmedia.models.medias.Anime
+import fr.jaetan.jmedia.models.medias.shared.Demographic
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.fromString
 import kotlinx.serialization.Serializable
 
 sealed class AnimeApiEntities {
@@ -39,7 +39,7 @@ fun AnimeApiEntities.AnimeApi.toAnimes(): List<Anime> = data.removeDuplicate().m
         title = it.title.trim(),
         synopsis = it.synopsis?.trim(),
         image = it.images.webp,
-        status = Status.fromString(it.status, WorkType.Anime),
+        status = Status.fromString(it.status, MediaType.Anime),
         genres = it.genres,
         demographics = it.demographics,
         episodes = it.episodes,

@@ -50,20 +50,20 @@ import coil.request.ImageRequest
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.extensions.isNotNull
 import fr.jaetan.jmedia.extensions.localized
-import fr.jaetan.jmedia.models.works.IWork
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.services.MainViewModel
+import fr.jaetan.jmedia.locals.LocalMediaManager
+import fr.jaetan.jmedia.models.medias.IMedia
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.MediaType
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun VerticalWorksListItem(work: IWork, modifier: Modifier, backgroundColor: Color = MaterialTheme.colorScheme.background, isShowingTag: Boolean = true) {
+fun VerticalMediasListItem(media: IMedia, modifier: Modifier, backgroundColor: Color = MaterialTheme.colorScheme.background, isShowingTag: Boolean = true) {
     val scope = rememberCoroutineScope()
+    val mediasManager = LocalMediaManager.current
     val density = LocalDensity.current
     val haptic = LocalHapticFeedback.current
     val actionsButtonsSize = 70.dp
@@ -105,7 +105,7 @@ fun VerticalWorksListItem(work: IWork, modifier: Modifier, backgroundColor: Colo
     val onDragStopped: CoroutineScope.(Float) -> Unit = {
         with(density) {
             if (offsetX.value.roundToInt().toDp() < -actionsButtonsSize) {
-                libraryHandler(work)
+                mediasManager.libraryHandler(media)
             }
 
             scope.launch {
@@ -122,9 +122,9 @@ fun VerticalWorksListItem(work: IWork, modifier: Modifier, backgroundColor: Colo
             .height(140.dp)
             .background(actionButtonColor)) {
         // Action button
-        ActionButton(work, actionsButtonsSize, actionButtonScale, Modifier.align(Alignment.CenterEnd))
+        ActionButton(media, actionsButtonsSize, actionButtonScale, Modifier.align(Alignment.CenterEnd))
 
-        // Work details
+        // Media details
         Column {
             Row(
                 modifier = Modifier
@@ -140,12 +140,12 @@ fun VerticalWorksListItem(work: IWork, modifier: Modifier, backgroundColor: Colo
                     .padding(start = 20.dp)
                     .padding(vertical = 15.dp)
             ) {
-                ImageCell(work.image)
+                ImageCell(media.image)
 
                 Column(Modifier.padding(horizontal = 20.dp)) {
-                    WorkTitleCell(work)
-                    TagCell(work.type, isShowingTag)
-                    SynopsisCell(work.synopsis)
+                    MediaTitleCell(media)
+                    TagCell(media.type, isShowingTag)
+                    SynopsisCell(media.synopsis)
                 }
             }
         }
@@ -153,7 +153,7 @@ fun VerticalWorksListItem(work: IWork, modifier: Modifier, backgroundColor: Colo
 }
 
 @Composable
-private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier: Modifier) {
+private fun ActionButton(media: IMedia, buttonSize: Dp, iconScale: Float, modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxHeight()
@@ -166,7 +166,7 @@ private fun ActionButton(work: IWork, buttonSize: Dp, iconScale: Float, modifier
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = if (work.isInLibrary) {
+                painter = if (media.isInLibrary) {
                     painterResource(R.drawable.heart_minus_24px)
                 } else {
                     painterResource(R.drawable.heart_plus_24px)
@@ -198,10 +198,12 @@ private fun ImageCell(image: Image?) {
 }
 
 @Composable
-private fun WorkTitleCell(work: IWork) {
+private fun MediaTitleCell(media: IMedia) {
+    val mediasManager = LocalMediaManager.current
+
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = work.title,
+            text = media.title,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .weight(1f),
@@ -210,15 +212,15 @@ private fun WorkTitleCell(work: IWork) {
         )
 
         JScaledContent(
-            onPressed = { libraryHandler(work) },
+            onPressed = { mediasManager.libraryHandler(media) },
             modifier = Modifier.padding(horizontal = 10.dp)) {
             Icon(
-                painter = if (work.isInLibrary) {
+                painter = if (media.isInLibrary) {
                     painterResource(R.drawable.heart_minus_24px)
                 } else {
                     painterResource(R.drawable.heart_plus_24px)
                 },
-                tint = if (work.isInLibrary) {
+                tint = if (media.isInLibrary) {
                     Color.Red
                 } else {
                     MaterialTheme.colorScheme.onBackground
@@ -231,7 +233,7 @@ private fun WorkTitleCell(work: IWork) {
 }
 
 @Composable
-private fun TagCell(type: WorkType, isShowing: Boolean) {
+private fun TagCell(type: MediaType, isShowing: Boolean) {
     Box(Modifier.padding(vertical = 5.dp)) {
         if (isShowing) {
             JTag(type)
@@ -252,10 +254,4 @@ private fun SynopsisCell(text: String?) {
         fontSize = 12.sp,
         color = MaterialTheme.colorScheme.outline
     )
-}
-
-private fun libraryHandler(work: IWork) {
-    CoroutineScope(Dispatchers.Unconfined).launch {
-        MainViewModel.worksController.getController(work.type).libraryHandler(work)
-    }
 }

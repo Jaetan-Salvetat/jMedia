@@ -5,10 +5,10 @@ import fr.jaetan.jmedia.extensions.isNull
 import fr.jaetan.jmedia.extensions.removeDuplicate
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.extensions.toHttpsPrefix
-import fr.jaetan.jmedia.models.works.Book
-import fr.jaetan.jmedia.models.works.shared.Author
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
+import fr.jaetan.jmedia.models.medias.Book
+import fr.jaetan.jmedia.models.medias.shared.Author
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
 import kotlinx.serialization.Serializable
 
 class BookApiEntities {

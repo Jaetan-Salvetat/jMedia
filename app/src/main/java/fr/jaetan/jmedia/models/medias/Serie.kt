@@ -1,12 +1,12 @@
-package fr.jaetan.jmedia.models.works
+package fr.jaetan.jmedia.models.medias
 
 import fr.jaetan.jmedia.core.realm.entities.SerieEntity
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Season
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.toBdd
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Season
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.toBdd
 import org.mongodb.kbson.ObjectId
 
 data class Serie(
@@ -16,14 +16,14 @@ data class Serie(
     override val rating: Double?,
     override var id: ObjectId = ObjectId(),
     override var isInLibrary: Boolean = false,
-    override val type: WorkType = WorkType.Serie,
+    override val type: MediaType = MediaType.Serie,
 
     val apiId: Long,
     val ratingCount: Long,
     val status: Status = Status.Unknown,
     val genres: List<Genre> = emptyList(),
     val seasons: List<Season> = emptyList()
-) : IWork
+) : IMedia
 
 fun Serie.toBdd(): SerieEntity = SerieEntity(
     id = id,

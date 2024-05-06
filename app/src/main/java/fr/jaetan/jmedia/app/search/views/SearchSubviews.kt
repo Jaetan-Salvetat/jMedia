@@ -35,7 +35,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -49,24 +52,31 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.search.SearchView
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.extensions.scrollableTopAppBarBackground
+import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView.TopBarView() {
+    val mediaManager = LocalMediaManager.current
+    val searchState by mediaManager.searchState.collectAsState()
+
     Column(Modifier.scrollableTopAppBarBackground(scrollBehavior.state)) {
         TopBarCell()
         FilterCell()
 
-        if (viewModel.listState == ListState.Loading) {
+        if (searchState == ListState.Loading) {
             LinearProgressIndicator(Modifier.fillMaxWidth())
         } else {
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .height(3.dp))
+                    .height(3.dp)
+            )
             HorizontalDivider()
         }
     }
@@ -75,11 +85,15 @@ fun SearchView.TopBarView() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchView.TopBarCell() {
+    val mediaManager = LocalMediaManager.current
+    val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
-    val search = {
-        focusManager.clearFocus()
-        viewModel.fetchWorks()
+    val search: () -> Unit = {
+        coroutineScope.launch {
+            focusManager.clearFocus()
+            mediaManager.search(viewModel.searchValue, viewModel.filters)
+        }
     }
 
     TopAppBar(
@@ -113,10 +127,10 @@ private fun SearchView.TopBarCell() {
                 keyboardActions = KeyboardActions(onSearch = { search() })
             )
         },
-        scrollBehavior = scrollBehavior,
+        scrollBehavior = scrollBehavior
     )
 
-    SideEffect {
+    LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
 }
@@ -124,6 +138,18 @@ private fun SearchView.TopBarCell() {
 @Composable
 fun SearchView.FilterCell() {
     val context = LocalContext.current
+    val mediaManager = LocalMediaManager.current
+    val editFilters: (filter: MediaType?) -> Unit = { type ->
+        if (type == null) {
+            viewModel.filterHandler(context) { types ->
+                types?.let { mediaManager.search(viewModel.searchValue, it) }
+            }
+        } else {
+            viewModel.filterHandler(context, type) { types ->
+                types?.let { mediaManager.search(viewModel.searchValue, it) }
+            }
+        }
+    }
 
     Column {
         LazyRow {
@@ -133,7 +159,7 @@ fun SearchView.FilterCell() {
                 Row(Modifier.padding(start = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     FilterChip(
                         selected = viewModel.filters.size == viewModel.implementedFilters.size,
-                        onClick = { viewModel.filterHandler(context) },
+                        onClick = { editFilters(null) },
                         label = { Text(R.string.all.localized()) }
                     )
 
@@ -151,7 +177,7 @@ fun SearchView.FilterCell() {
                 Box(Modifier.padding(start = 5.dp)) {
                     FilterChip(
                         selected = viewModel.filters.contains(it),
-                        onClick = { viewModel.filterHandler(context, it) },
+                        onClick = { editFilters(it) },
                         label = { Text(it.textRes.localized()) }
                     )
                 }

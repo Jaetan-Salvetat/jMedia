@@ -1,10 +1,10 @@
 package fr.jaetan.jmedia.core.realm.entities
 
-import fr.jaetan.jmedia.models.works.Manga
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.fromString
+import fr.jaetan.jmedia.models.medias.Manga
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.fromString
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.types.RealmList
@@ -58,7 +58,7 @@ fun MangaEntity.toManga(): Manga = Manga(
     title = title,
     synopsis = synopsis,
     volumes = volumes,
-    status = Status.fromString(status, WorkType.Manga),
+    status = Status.fromString(status, MediaType.Manga),
     rating = rating,
     image = image?.let {
         Image(

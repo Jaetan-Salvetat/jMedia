@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models.works.shared
+package fr.jaetan.jmedia.models.medias.shared
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -8,7 +8,7 @@ import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.extensions.removeNullValues
 import fr.jaetan.jmedia.ui.theme.JColor
 
-enum class WorkType(
+enum class MediaType(
     @StringRes val textRes: Int,
     @StringRes val titleRes: Int,
     private val backgroundColor: Color,
@@ -31,11 +31,11 @@ enum class WorkType(
     }
 
     companion object {
-        val all: List<WorkType> = WorkType.values().toList()
+        val all: List<MediaType> = entries
 
-        private fun fromString(type: String): WorkType? = all.find { it.name == type }
+        private fun fromString(type: String): MediaType? = all.find { it.name == type }
 
-        fun fromStringSet(types: Set<String>): List<WorkType> = types.toList().map {
+        fun fromStringSet(types: Set<String>): List<MediaType> = types.toList().map {
             fromString(it)
         }.removeNullValues()
     }

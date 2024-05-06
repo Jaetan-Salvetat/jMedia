@@ -3,7 +3,7 @@ package fr.jaetan.jmedia.core.networking
 import fr.jaetan.jmedia.core.networking.models.SerieApiEntities
 import fr.jaetan.jmedia.core.networking.models.toSerie
 import fr.jaetan.jmedia.core.networking.models.toSeries
-import fr.jaetan.jmedia.models.works.Serie
+import fr.jaetan.jmedia.models.medias.Serie
 import fr.jaetan.jmedia.services.GlobalSettings
 import io.ktor.client.call.body
 import io.ktor.client.request.get

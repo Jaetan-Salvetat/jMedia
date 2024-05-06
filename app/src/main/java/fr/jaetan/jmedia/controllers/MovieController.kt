@@ -1,65 +1,47 @@
 package fr.jaetan.jmedia.controllers
 
-import androidx.compose.runtime.mutableStateListOf
 import fr.jaetan.jmedia.core.networking.MovieApi
 import fr.jaetan.jmedia.core.realm.entities.toMovies
 import fr.jaetan.jmedia.core.realm.repositories.MovieRepository
-import fr.jaetan.jmedia.models.works.Movie
-import fr.jaetan.jmedia.models.works.takeWhereEqualTo
-import fr.jaetan.jmedia.models.works.toBdd
+import fr.jaetan.jmedia.models.medias.Movie
+import fr.jaetan.jmedia.models.medias.toBdd
 import fr.jaetan.jmedia.services.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MovieController : IWorkController<Movie>() {
+class MovieController : IMediaController<Movie>() {
     private val repository by lazy { MovieRepository(MainViewModel.realm) }
-    override val fetchedWorks = mutableStateListOf<Movie>()
-    override var localWorks = mutableStateListOf<Movie>()
 
-    override suspend fun fetch(searchValue: String, force: Boolean) {
-        if (!force && fetchedWorks.isNotEmpty()) return
-
-        fetchedWorks.clear()
-        fetchedWorks.addAll(MovieApi.search(searchValue))
-        setLibraryValues()
+    override suspend fun fetch(searchValue: String): List<Movie> {
+        return MovieApi.search(searchValue)
     }
 
-    override suspend fun initializeFlow() {
+    override suspend fun initializeFlow(onDbChanged: (medias: List<Movie>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.all.collect {
-                localWorks.clear()
-                localWorks.addAll(it.list.toMovies())
-                setLibraryValues()
+                onDbChanged(it.list.toMovies())
             }
         }
     }
 
-    override fun setLibraryValues() {
-        fetchedWorks.replaceAll { movie ->
-            movie.copy(isInLibrary = isInLibrary(movie))
-        }
-    }
-
-    override suspend fun libraryHandler(work: Movie) {
-        if (work.isInLibrary) {
-            localWorks.takeWhereEqualTo(work)?.let {
-                repository.remove(it.toBdd())
-            }
+    override suspend fun libraryHandler(media: Movie) {
+        if (media.isInLibrary) {
+            repository.remove(media.toBdd())
             return
         }
 
-        addToLibrary(work)
+        addToLibrary(media)
     }
 
-    private suspend fun addToLibrary(work: Movie) {
-        var movie = MovieApi.getDetail(work.apiId)
-        movie = movie.copy(id = work.id, title = work.title, isInLibrary = work.isInLibrary)
+    private suspend fun addToLibrary(media: Movie) {
+        var movie = MovieApi.getDetail(media.apiId)
+        movie = movie.copy(id = media.id, title = media.title, isInLibrary = media.isInLibrary)
 
-        fetchedWorks.replaceAll {
+        /*fetchedWorks.replaceAll {
             if (it.id == work.id) movie
             else it
-        }
+        }*/
 
         repository.add(movie.toBdd())
     }

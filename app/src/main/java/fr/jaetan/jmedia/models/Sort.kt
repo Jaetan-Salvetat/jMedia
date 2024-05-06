@@ -9,7 +9,7 @@ enum class Sort(@StringRes val textRes: Int) {
     Default(R.string.sort_by_default);
 
     companion object {
-        val all = Sort.values().toList()
+        val all = entries
     }
 }
 
@@ -18,6 +18,6 @@ enum class SortDirection(@StringRes val textRes: Int) {
     Descending(R.string.descending);
 
     companion object {
-        val all = SortDirection.values().toList()
+        val all = entries
     }
 }

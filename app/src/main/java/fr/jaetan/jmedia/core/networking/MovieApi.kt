@@ -3,7 +3,7 @@ package fr.jaetan.jmedia.core.networking
 import fr.jaetan.jmedia.core.networking.models.MovieApiEntities
 import fr.jaetan.jmedia.core.networking.models.toMovie
 import fr.jaetan.jmedia.core.networking.models.toMovies
-import fr.jaetan.jmedia.models.works.Movie
+import fr.jaetan.jmedia.models.medias.Movie
 import fr.jaetan.jmedia.services.GlobalSettings
 import io.ktor.client.call.body
 import io.ktor.client.request.get

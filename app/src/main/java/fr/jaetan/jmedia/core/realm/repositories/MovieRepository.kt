@@ -11,19 +11,19 @@ class MovieRepository(private val realm: Realm) : IRepository<MovieEntity>() {
     override val all: Flow<ResultsChange<MovieEntity>>
         get() = realm.query<MovieEntity>().find().asFlow()
 
-    override suspend fun add(work: MovieEntity) {
+    override suspend fun add(media: MovieEntity) {
         realm.write {
             try {
-                copyToRealm(work)
+                copyToRealm(media)
             } catch (e: Exception) {
                 e.log("MovieRepository().add")
             }
         }
     }
 
-    override suspend fun remove(work: MovieEntity) {
+    override suspend fun remove(media: MovieEntity) {
         realm.write {
-            realm.query<MovieEntity>("id == $0", work.id).find().firstOrNull()?.let { entity ->
+            realm.query<MovieEntity>("id == $0", media.id).find().firstOrNull()?.let { entity ->
                 findLatest(entity)?.let {
                     delete(it)
                 }

@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.models.works.shared
+package fr.jaetan.jmedia.models.medias.shared
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,7 +18,11 @@ data class Image(
     @Transient var bitmap: Bitmap? = null
 )
 
- suspend fun Image.generateBitmap() {
+/**
+ * Generate a bitmap and set it to **Image.bitmap**.
+ * @return **true** if the operation is successful else **false**
+ */
+ suspend fun Image.generateBitmap(): Boolean {
      bitmap = try {
          withContext(Dispatchers.IO) {
              val url = URL(imageUrl.toHttpsPrefix())
@@ -35,4 +39,6 @@ data class Image(
          Logger.e(e)
          null
      }
+
+    return bitmap != null
  }

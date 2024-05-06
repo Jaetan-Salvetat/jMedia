@@ -11,19 +11,19 @@ class MangaRepository(private val realm: Realm) : IRepository<MangaEntity>() {
     override val all: Flow<ResultsChange<MangaEntity>>
         get() = realm.query<MangaEntity>().find().asFlow()
 
-    override suspend fun add(work: MangaEntity) {
+    override suspend fun add(media: MangaEntity) {
         realm.write {
             try {
-                copyToRealm(work)
+                copyToRealm(media)
             } catch (e: Exception) {
                 e.log("MangaRepository().add")
             }
         }
     }
 
-    override suspend fun remove(work: MangaEntity) {
+    override suspend fun remove(media: MangaEntity) {
         realm.write {
-            realm.query<MangaEntity>("id == $0", work.id).find().firstOrNull()?.let { entity ->
+            realm.query<MangaEntity>("id == $0", media.id).find().firstOrNull()?.let { entity ->
                 findLatest(entity)?.let {
                     delete(it)
                 }

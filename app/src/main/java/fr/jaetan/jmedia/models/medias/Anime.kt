@@ -1,12 +1,12 @@
-package fr.jaetan.jmedia.models.works
+package fr.jaetan.jmedia.models.medias
 
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
-import fr.jaetan.jmedia.models.works.shared.Demographic
-import fr.jaetan.jmedia.models.works.shared.Genre
-import fr.jaetan.jmedia.models.works.shared.Image
-import fr.jaetan.jmedia.models.works.shared.Status
-import fr.jaetan.jmedia.models.works.shared.WorkType
-import fr.jaetan.jmedia.models.works.shared.toBdd
+import fr.jaetan.jmedia.models.medias.shared.Demographic
+import fr.jaetan.jmedia.models.medias.shared.Genre
+import fr.jaetan.jmedia.models.medias.shared.Image
+import fr.jaetan.jmedia.models.medias.shared.Status
+import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.models.medias.shared.toBdd
 import org.mongodb.kbson.ObjectId
 
 data class Anime(
@@ -15,14 +15,14 @@ data class Anime(
     override val image: Image?,
     override val rating: Double?,
     override val id: ObjectId = ObjectId(),
-    override val type: WorkType = WorkType.Anime,
+    override val type: MediaType = MediaType.Anime,
     override var isInLibrary: Boolean = false,
 
     val status: Status,
     val genres: List<Genre>,
     val demographics: List<Demographic>,
     val episodes: Int?,
-) : IWork
+) : IMedia
 
 fun Anime.toBdd(): AnimeEntity = AnimeEntity(
     id = id,

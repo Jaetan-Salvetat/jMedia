@@ -12,7 +12,7 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import fr.jaetan.jmedia.models.JColorScheme
 import fr.jaetan.jmedia.models.JTheme
-import fr.jaetan.jmedia.models.works.shared.WorkType
+import fr.jaetan.jmedia.models.medias.shared.MediaType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class UserSettingsModel {
     private val Context.userSettings by preferencesDataStore(UserSettingsKeys.SETTINGS_KEY)
     private var mainJob: Job? = null
-    var selectedWorkTypes = mutableStateListOf<WorkType>()
+    var selectedMediaTypes = mutableStateListOf<MediaType>()
     var currentColorScheme by mutableStateOf(JColorScheme.default)
     var currentTheme by mutableStateOf(JTheme.System)
     var isPureDark by mutableStateOf(false)
@@ -32,8 +32,8 @@ class UserSettingsModel {
         mainJob = CoroutineScope(Dispatchers.IO).launch {
             context.userSettings.data.collect { prefs ->
                 prefs[UserSettingsKeys.workTypes]?.let {
-                    selectedWorkTypes.clear()
-                    selectedWorkTypes.addAll(WorkType.fromStringSet(it))
+                    selectedMediaTypes.clear()
+                    selectedMediaTypes.addAll(MediaType.fromStringSet(it))
                 }
 
                 currentColorScheme = JColorScheme.fromString(prefs[UserSettingsKeys.currentColorScheme])
@@ -43,7 +43,7 @@ class UserSettingsModel {
         }
     }
 
-    suspend fun setWorkTypes(context: Context, types: List<WorkType>) {
+    suspend fun setMediaTypes(context: Context, types: List<MediaType>) {
         context.userSettings.edit { prefs ->
             prefs[UserSettingsKeys.workTypes] = types.map { it.name }.toSet()
         }
