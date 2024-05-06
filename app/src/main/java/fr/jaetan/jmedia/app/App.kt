@@ -1,8 +1,5 @@
 package fr.jaetan.jmedia.app
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
@@ -25,14 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.meetup.twain.MarkdownText
 import fr.jaetan.jmedia.R
-import fr.jaetan.jmedia.app.home.HomeView
-import fr.jaetan.jmedia.app.settings.appearance.AppearanceView
+import fr.jaetan.jmedia.app.library.libraryComposable
+import fr.jaetan.jmedia.app.search.searchComposable
+import fr.jaetan.jmedia.app.settings.appearance.appearanceComposable
+import fr.jaetan.jmedia.app.settings.settingsComposable
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.locals.LocalGithubReleaseManager
 import fr.jaetan.jmedia.services.Navigator
@@ -40,27 +37,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun App(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Navigator.home.route) {
-        composable(Navigator.home.route) {
-            HomeView().GetView(navController, viewModel())
-        }
-        composable(
-            route = Navigator.appearance.route,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    spring(.85f, Spring.StiffnessLow)
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    spring(.85f, Spring.StiffnessLow)
-                )
-            }
-        ) {
-            AppearanceView().GetView(navController, viewModel())
-        }
+    NavHost(navController = navController, startDestination = Navigator.library.route) {
+        libraryComposable(navController)
+        searchComposable(navController)
+        settingsComposable(navController)
+        appearanceComposable(navController)
     }
 
     UpdaterDialog()

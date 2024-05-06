@@ -22,6 +22,6 @@ fun AppearanceView.TopBarView() {
                 Icon(Icons.AutoMirrored.Default.ArrowBack, null)
             }
         },
-        scrollBehavior = scrollBehavior,
+        scrollBehavior = scrollBehavior
     )
 }

@@ -3,6 +3,7 @@ package fr.jaetan.jmedia.app.search.views
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -44,6 +45,7 @@ fun SearchView.ContentView() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchView.MediaList() {
     val listState = rememberLazyListState()
@@ -60,7 +62,7 @@ private fun SearchView.MediaList() {
 
     LazyColumn(state = listState) {
         items(mediasAsList, key = { it.id.toHexString() }) {
-            VerticalMediasListItem(it, Modifier.animateItem())
+            VerticalMediasListItem(it, Modifier.animateItemPlacement())
         }
     }
 

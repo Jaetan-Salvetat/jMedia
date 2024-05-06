@@ -35,7 +35,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -75,7 +75,8 @@ fun SearchView.TopBarView() {
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .height(3.dp))
+                    .height(3.dp)
+            )
             HorizontalDivider()
         }
     }
@@ -126,10 +127,10 @@ private fun SearchView.TopBarCell() {
                 keyboardActions = KeyboardActions(onSearch = { search() })
             )
         },
-        scrollBehavior = scrollBehavior,
+        scrollBehavior = scrollBehavior
     )
 
-    SideEffect {
+    LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
 }

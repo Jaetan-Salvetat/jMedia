@@ -1,5 +1,7 @@
 package fr.jaetan.jmedia.controllers
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import fr.jaetan.jmedia.extensions.log
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
@@ -11,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class MediasManager {
+class MediasManager : ViewModel() {
     private val controllersMap = mapOf(
         MediaType.Manga to MangaController(),
         MediaType.Anime to AnimeController(),
@@ -21,6 +23,8 @@ class MediasManager {
     )
     private var lastSearchValue = ""
     private val fetchedMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
+    val count: Int
+        get() = localMediasAsList.size
     private val localMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
     private val fetchedMediasAsList: List<IMedia>
         get() = fetchedMedias.value.values.filterNotNull().flatten()
@@ -28,6 +32,16 @@ class MediasManager {
         get() = localMedias.value.values.filterNotNull().flatten()
 
     var searchState = MutableStateFlow(ListState.Default)
+
+    init {
+        viewModelScope.launch {
+            controllersMap.forEach {
+                it.value.initializeFlow { list ->
+                    localMedias.value[it.key] = list
+                }
+            }
+        }
+    }
 
     /**
      * Search medias
@@ -86,18 +100,7 @@ class MediasManager {
      * Return a [IMediaController] from a [MediaType]
      */
     @Suppress("UNCHECKED_CAST")
-    fun getController(type: MediaType): IMediaController<IMedia> = controllersMap[type] as IMediaController<IMedia>
-
-    /**
-     * Initialize all work controllers flow
-     */
-    suspend fun initializeControllers() {
-        controllersMap.forEach {
-            it.value.initializeFlow { list ->
-                localMedias.value[it.key] = list
-            }
-        }
-    }
+    private fun getController(type: MediaType): IMediaController<IMedia> = controllersMap[type] as IMediaController<IMedia>
 
     /**
      * Add or remove a media from the db
