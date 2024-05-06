@@ -55,7 +55,7 @@ object MainViewModel {
      * Restart MainActivity
      */
     fun restartApp(context: Context) {
-        val activity = (context as MainActivity?)
+        val activity = context as MainActivity?
         val intent = Intent(activity, MainActivity::class.java)
 
         activity?.finish()

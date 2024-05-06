@@ -2,7 +2,6 @@ package fr.jaetan.jmedia.controllers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.jaetan.jmedia.extensions.log
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Sort
 import fr.jaetan.jmedia.models.SortDirection
@@ -58,7 +57,6 @@ class MediasManager : ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
             mediaTypes.forEach { type ->
-                "type($type): ${fetchedMedias.value[type]?.size}".log()
                 if (fetchedMedias.value[type] != null && !force) return@forEach
 
                 controllersMap[type]?.fetch(searchValue)?.let {
@@ -80,7 +78,7 @@ class MediasManager : ViewModel() {
      * @param filters a list of [MediaType]
      */
     fun getFetchedMedias(sort: Sort, sortDirection: SortDirection, filters: List<MediaType>): List<IMedia> {
-        val filtered = fetchedMediasAsList.mapNotNull { if (filters.contains(it.type)) it else null }
+        val filtered = fetchedMediasAsList.filter { filters.contains(it.type) }
 
         return if (sortDirection == SortDirection.Ascending) {
             when (sort) {
