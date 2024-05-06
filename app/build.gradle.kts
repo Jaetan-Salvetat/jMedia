@@ -110,7 +110,8 @@ android {
 
 dependencies {
     val composeVersion = "1.6.7"
-    val ackpineVersion = "0.5.1"
+    val ackpineVersion = "0.5.5"
+    val ktorVersion = "2.3.10"
 
     // Androidx
     implementation("androidx.core:core-ktx:1.13.1")
@@ -119,17 +120,17 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.compose.material:material-icons-extended:$composeVersion")
 
     // Networking
-    implementation("io.ktor:ktor-client-core:2.3.9")
-    implementation("io.ktor:ktor-client-android:2.3.5")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.7")
-    implementation("io.ktor:ktor-client-serialization:2.3.5")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
-    implementation("io.ktor:ktor-client-logging:2.3.5")
-    implementation("io.ktor:ktor-client-okhttp:2.3.5")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
 
     // Data
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
@@ -138,7 +139,7 @@ dependencies {
     implementation("com.github.supersu-man:apkupdater-library:v2.0.0")
 
     // Storage
-    implementation("io.realm.kotlin:library-base:1.13.0")
+    implementation("io.realm.kotlin:library-base:1.16.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Images
