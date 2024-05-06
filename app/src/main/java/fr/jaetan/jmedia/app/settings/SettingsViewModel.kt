@@ -15,21 +15,32 @@ class SettingsViewModel : ViewModel() {
         private set
     var isLoading by mutableStateOf(false)
 
+    /**
+     * Hide the **remove data** dialog
+     */
     fun hideRemoveDataDialog() {
         if (!isLoading) {
             showRemoveDataDialog = false
         }
     }
 
+    /**
+     * Show the **remove data** dialog
+     */
     fun showRemoveDataDialog() {
         showRemoveDataDialog = true
     }
 
+    /**
+     * Remove all app data
+     */
     fun removeData(context: Context, mediasManager: MediasManager) {
         viewModelScope.launch {
             isLoading = true
 
-            MainViewModel.clearUserData(context, mediasManager)
+            mediasManager.removeAll()
+            MainViewModel.userSettings.clearUserPreferences(context)
+            MainViewModel.restartApp(context)
 
             showRemoveDataDialog = false
             isLoading = false

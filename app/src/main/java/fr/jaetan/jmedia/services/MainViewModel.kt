@@ -3,7 +3,6 @@ package fr.jaetan.jmedia.services
 import android.content.Context
 import android.content.Intent
 import fr.jaetan.jmedia.app.MainActivity
-import fr.jaetan.jmedia.controllers.MediasManager
 import fr.jaetan.jmedia.core.realm.entities.AnimeEntity
 import fr.jaetan.jmedia.core.realm.entities.AuthorEntity
 import fr.jaetan.jmedia.core.realm.entities.BookEntity
@@ -52,14 +51,10 @@ object MainViewModel {
         realm = Realm.open(realmConfig.build())
     }
 
-    suspend fun clearUserData(context: Context, mediasManager: MediasManager) {
-        mediasManager.removeAll()
-        userSettings.clearUserPreferences(context)
-
-        restartApp(context)
-    }
-
-    private fun restartApp(context: Context) {
+    /**
+     * Restart MainActivity
+     */
+    fun restartApp(context: Context) {
         val activity = (context as MainActivity?)
         val intent = Intent(activity, MainActivity::class.java)
 
