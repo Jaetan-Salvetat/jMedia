@@ -29,7 +29,7 @@ import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.ListState
 import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.ui.shared.InfoCell
-import fr.jaetan.jmedia.ui.shared.VerticalMediasListItem
+import fr.jaetan.jmedia.ui.shared.list.VerticalMediasListItem
 import kotlinx.coroutines.launch
 
 @Composable

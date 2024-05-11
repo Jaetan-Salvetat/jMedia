@@ -1,4 +1,4 @@
-package fr.jaetan.jmedia.ui.shared
+package fr.jaetan.jmedia.ui.shared.list
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -54,6 +54,7 @@ import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.medias.IMedia
 import fr.jaetan.jmedia.models.medias.shared.Image
 import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.ui.shared.JTag
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JScaledContent
 import kotlinx.coroutines.CoroutineScope
