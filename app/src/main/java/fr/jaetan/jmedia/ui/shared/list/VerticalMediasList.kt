@@ -98,7 +98,7 @@ fun VerticalMediasListItem(media: IMedia, modifier: Modifier, backgroundColor: C
             } else if (newValue.roundToInt().toDp() > -actionsButtonsSize) {
                 hasVibrate = false
             }
-            scope.launch { offsetX.animateTo(newValue, spring(stiffness =  Spring.StiffnessVeryLow, visibilityThreshold = 0f)) }
+            scope.launch { offsetX.animateTo(newValue, spring(stiffness = Spring.StiffnessVeryLow, visibilityThreshold = 0f)) }
         }
     }
 
@@ -110,7 +110,7 @@ fun VerticalMediasListItem(media: IMedia, modifier: Modifier, backgroundColor: C
             }
 
             scope.launch {
-                offsetX.animateTo(0f, spring(stiffness =  Spring.StiffnessMedium))
+                offsetX.animateTo(0f, spring(stiffness = Spring.StiffnessMedium))
             }
 
             hasVibrate = false
@@ -121,7 +121,8 @@ fun VerticalMediasListItem(media: IMedia, modifier: Modifier, backgroundColor: C
     Box(
         modifier
             .height(140.dp)
-            .background(actionButtonColor)) {
+            .background(actionButtonColor)
+    ) {
         // Action button
         ActionButton(media, actionsButtonsSize, actionButtonScale, Modifier.align(Alignment.CenterEnd))
 
@@ -214,7 +215,8 @@ private fun MediaTitleCell(media: IMedia) {
 
         JScaledContent(
             onPressed = { mediasManager.libraryHandler(media) },
-            modifier = Modifier.padding(horizontal = 10.dp)) {
+            modifier = Modifier.padding(horizontal = 10.dp)
+        ) {
             Icon(
                 painter = if (media.isInLibrary) {
                     painterResource(R.drawable.heart_minus_24px)
