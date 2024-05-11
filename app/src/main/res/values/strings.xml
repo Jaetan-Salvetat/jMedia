@@ -59,4 +59,5 @@
     <string name="pur_dark_subtitle">Utilise moins d\'énergie pour les écrans AMOLED</string>
     <string name="new_version_x">Nouvelle version: %s</string>
     <string name="new_available_version">Une nouvelle version est disponible</string>
+    <string name="default_error_message">Une erreur est survenue. viens nous faire un retour depuis les paramètres.</string>
 </resources>

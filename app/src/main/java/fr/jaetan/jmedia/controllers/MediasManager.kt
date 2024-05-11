@@ -24,15 +24,15 @@ class MediasManager : ViewModel() {
     )
     private var lastSearchValue = ""
     private val fetchedMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
-    val count: Int
-        get() = localMediasAsList.size
-    private val localMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
     private val fetchedMediasAsList: List<IMedia>
         get() = fetchedMedias.value.values.filterNotNull().flatten()
-    val localMediasAsList: List<IMedia>
-        get() = localMedias.value.values.filterNotNull().flatten()
+    private val localMediasAsList: List<IMedia>
+        get() = localMedias.value.values.flatten()
 
+    val localMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>>())
     var searchState = MutableStateFlow(ListState.Default)
+    val count: Int
+        get() = localMediasAsList.size
 
     init {
         viewModelScope.launch {
