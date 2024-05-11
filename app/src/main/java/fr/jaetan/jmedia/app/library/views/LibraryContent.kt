@@ -36,7 +36,9 @@ import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.Smiley
 import fr.jaetan.jmedia.models.medias.IMedia
 import fr.jaetan.jmedia.models.medias.shared.MediaType
+import fr.jaetan.jmedia.ui.shared.ErrorMessage
 import fr.jaetan.jmedia.ui.shared.InfoCell
+import fr.jaetan.jmedia.ui.shared.list.GridMediasList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -106,9 +108,15 @@ fun LibraryView.TabBar(medias: Map<MediaType, List<IMedia>?>, pagerState: PagerS
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PageContent(type: MediaType, pagerState: PagerState) {
+    val mediasManager = LocalMediaManager.current
+    val localMedias by mediasManager.localMedias.collectAsState()
+
     HorizontalPager(state = pagerState) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(type.textRes.localized())
+            when (val medias = localMedias[type]) {
+                null -> ErrorMessage()
+                else -> GridMediasList(medias = medias) {}
+            }
         }
     }
 }

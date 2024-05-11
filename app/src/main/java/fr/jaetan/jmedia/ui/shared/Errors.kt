@@ -1,12 +1,15 @@
 package fr.jaetan.jmedia.ui.shared
 
+import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,6 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fr.jaetan.jmedia.R
+import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.ui.theme.JColor
 import fr.jaetan.jmedia.ui.widgets.JBottomSheet
 
@@ -64,5 +69,16 @@ fun ErrorSheet(@StringRes message: Int, isVisible: Boolean, dismiss: () -> Unit)
                 fontStyle = FontStyle.Italic
             )
         }
+    }
+}
+
+@SuppressLint("ModifierParameter")
+@Composable
+fun ErrorMessage(
+    modifier: Modifier = Modifier.fillMaxSize(),
+    @StringRes message: Int = R.string.default_error_message
+) {
+    Box(modifier = modifier) {
+        Text(message.localized())
     }
 }
