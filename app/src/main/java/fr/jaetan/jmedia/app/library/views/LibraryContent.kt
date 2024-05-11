@@ -3,9 +3,11 @@ package fr.jaetan.jmedia.app.library.views
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jmedia.R
 import fr.jaetan.jmedia.app.library.LibraryView
+import fr.jaetan.jmedia.extensions.isNotNullOrEmpty
 import fr.jaetan.jmedia.extensions.localized
 import fr.jaetan.jmedia.locals.LocalMediaManager
 import fr.jaetan.jmedia.models.Smiley
@@ -46,13 +49,14 @@ import kotlinx.coroutines.launch
 fun LibraryView.ContentView() {
     val mediaManager = LocalMediaManager.current
     val localMedias by mediaManager.localMedias.collectAsState(mapOf())
+    val medias = localMedias.filter { it.value.isNotNullOrEmpty() }
     val pagerState = rememberPagerState(pageCount = { MediaType.entries.size })
-    val currentType = localMedias.toList().getOrNull(pagerState.currentPage)?.first
+    val currentType = medias.toList().getOrNull(pagerState.currentPage)?.first
 
     when {
        mediaManager.count <= 0 || currentType == null -> InfoCell(Smiley.Surprise, R.string.empty_library)
-        else -> Column {
-            TabBar(localMedias, pagerState)
+        else -> Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            TabBar(medias, pagerState)
             PageContent(currentType, pagerState)
         }
     }
@@ -60,7 +64,7 @@ fun LibraryView.ContentView() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LibraryView.TabBar(medias: Map<MediaType, List<IMedia>?>, pagerState: PagerState) {
+fun LibraryView.TabBar(medias: Map<MediaType, List<IMedia>>, pagerState: PagerState) {
     val coroutineScope = rememberCoroutineScope()
     val onNavigate: (toIndex: Int) -> Unit = {
         coroutineScope.launch {
@@ -70,12 +74,15 @@ fun LibraryView.TabBar(medias: Map<MediaType, List<IMedia>?>, pagerState: PagerS
 
     ScrollableTabRow(
         selectedTabIndex = pagerState.currentPage,
+        edgePadding = 15.dp,
+        modifier = Modifier.fillMaxWidth(),
         indicator = {
             TabIndicator(
                 tabIndex = pagerState.currentPage,
                 tabPositions = it
             )
-        }
+        },
+        divider = {}
     ) {
         medias.entries.forEachIndexed { index, entry ->
             val backgroundColor by animateColorAsState(
@@ -87,19 +94,17 @@ fun LibraryView.TabBar(medias: Map<MediaType, List<IMedia>?>, pagerState: PagerS
                 label = ""
             )
 
-            entry.value?.let {
-                Tab(
-                    selected = index == viewModel.currentTabIndex,
-                    onClick = { onNavigate(index) },
-                    modifier = Modifier
-                        .height(50.dp)
-                        .padding(horizontal = 5.dp)
-                        .padding(bottom = 10.dp)
-                        .background(backgroundColor, RoundedCornerShape(8.dp))
-                        .clip(RoundedCornerShape(8.dp))
-                ) {
-                    Text(entry.key.textRes.localized())
-                }
+            Tab(
+                selected = index == viewModel.currentTabIndex,
+                onClick = { onNavigate(index) },
+                modifier = Modifier
+                    .height(50.dp)
+                    .padding(horizontal = 5.dp)
+                    .padding(bottom = 10.dp)
+                    .background(backgroundColor, RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
+            ) {
+                Text(entry.key.textRes.localized())
             }
         }
     }
@@ -112,9 +117,10 @@ private fun PageContent(type: MediaType, pagerState: PagerState) {
     val localMedias by mediasManager.localMedias.collectAsState()
 
     HorizontalPager(state = pagerState) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(Modifier.fillMaxSize()) {
             when (val medias = localMedias[type]) {
-                null -> ErrorMessage()
+                null -> ErrorMessage(Modifier.align(Alignment.Center))
+                emptyList<IMedia>() -> ErrorMessage(Modifier.align(Alignment.Center))
                 else -> GridMediasList(medias = medias) {}
             }
         }

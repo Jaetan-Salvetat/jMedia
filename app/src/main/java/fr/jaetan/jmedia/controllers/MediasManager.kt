@@ -27,9 +27,9 @@ class MediasManager : ViewModel() {
     private val fetchedMediasAsList: List<IMedia>
         get() = fetchedMedias.value.values.filterNotNull().flatten()
     private val localMediasAsList: List<IMedia>
-        get() = localMedias.value.values.filterNotNull().flatten()
+        get() = localMedias.value.values.flatten()
 
-    val localMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>?>())
+    val localMedias = MutableStateFlow(mutableMapOf<MediaType, List<IMedia>>())
     var searchState = MutableStateFlow(ListState.Default)
     val count: Int
         get() = localMediasAsList.size
